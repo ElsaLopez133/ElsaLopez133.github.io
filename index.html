@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elsa López Pérez — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --ink:       #0e1117;
+    --ink-2:     #3a3f4b;
+    --ink-3:     #717888;
+    --bg:        #f7f8fa;
+    --surface:   #ffffff;
+    --accent:    #1a56db;   /* signal blue — clean, technical */
+    --accent-2:  #e8f0fe;
+    --rust:      #c8432a;   /* second accent: alert/highlight */
+    --mono:      'IBM Plex Mono', monospace;
+    --sans:      'IBM Plex Sans', sans-serif;
+    --radius:    4px;
+    --gap:       clamp(2rem, 4vw, 4rem);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 5vw, 2.5rem);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(247,248,250,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e1e4ea;
+    padding: 0.85rem 0;
+  }
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.75rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  #hero {
+    padding: calc(var(--gap) * 2) 0 var(--gap);
+    border-bottom: 1px solid #e1e4ea;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+  h1 span { color: var(--accent); }
+  .hero-summary {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--ink-2);
+    max-width: 640px;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    background: var(--accent-2);
+    color: var(--accent);
+    border: 1px solid #c3d4fb;
+    border-radius: var(--radius);
+    padding: 0.3rem 0.65rem;
+  }
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover { background: #1446c0; }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink-2);
+    border: 1px solid #c5c9d4;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SECTION HEADERS ── */
+  section { padding: var(--gap) 0; border-bottom: 1px solid #e1e4ea; }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 0.4rem;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2rem;
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid #e1e4ea;
+    border-radius: 6px;
+    padding: 1.75rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+  }
+  .project-card:hover {
+    box-shadow: 0 4px 24px rgba(26,86,219,0.08);
+    border-color: #c3d4fb;
+  }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+  }
+  .project-kicker {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .project-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    background: #f1f3f8;
+    color: var(--ink-2);
+    border-radius: 3px;
+    padding: 0.2rem 0.5rem;
+  }
+  .badge-rust { background: #fff0ed; color: #c8432a; }
+  .badge-python { background: #f0f7ff; color: #1a56db; }
+  .badge-tamarin { background: #f3f0ff; color: #6a3fb5; }
+  .badge-ros { background: #f0fff4; color: #1a7a3c; }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+  .project-desc {
+    font-size: 0.93rem;
+    color: var(--ink-2);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .project-highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .project-highlights li {
+    font-size: 0.88rem;
+    color: var(--ink-2);
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .project-highlights li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+  .project-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .project-link {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .project-link:hover { border-color: var(--accent); }
+  .project-link + .project-link::before {
+    content: '·';
+    margin-right: 0.5rem;
+    color: var(--ink-3);
+  }
+  .highlight-stat {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    background: #fff8f0;
+    color: #a0530f;
+    border: 1px solid #f0dcc3;
+    border-radius: 3px;
+    padding: 0.2rem 0.55rem;
+  }
+
+  /* ── EXPERIENCE ── */
+  .timeline { display: flex; flex-direction: column; gap: 1.75rem; }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .timeline-item { grid-template-columns: 1fr; gap: 0.4rem; }
+  }
+  .timeline-meta {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    padding-top: 0.2rem;
+  }
+  .timeline-meta strong {
+    display: block;
+    color: var(--ink-2);
+    font-size: 0.8rem;
+    margin-bottom: 0.2rem;
+  }
+  .timeline-body h4 {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.15rem;
+  }
+  .timeline-body .role {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 300;
+    margin-bottom: 0.6rem;
+  }
+  .timeline-body p {
+    font-size: 0.88rem;
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
+  .timeline-body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+  }
+  .timeline-body ul li {
+    font-size: 0.87rem;
+    color: var(--ink-2);
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .timeline-body ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--ink-3);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+
+  /* ── PUBLICATIONS ── */
+  .pubs { display: flex; flex-direction: column; gap: 1rem; }
+  .pub-item {
+    background: var(--surface);
+    border: 1px solid #e1e4ea;
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .pub-year {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    white-space: nowrap;
+    padding-top: 0.15rem;
+    min-width: 40px;
+  }
+  .pub-body h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .pub-body p {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+  }
+  .pub-award {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    background: #fff8e8;
+    color: #9a6200;
+    border: 1px solid #f0dec8;
+    border-radius: 3px;
+    padding: 0.15rem 0.45rem;
+    margin-left: 0.5rem;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .skill-group {
+    background: var(--surface);
+    border: 1px solid #e1e4ea;
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem;
+  }
+  .skill-group h4 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .skill-group p {
+    font-size: 0.85rem;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 0;
+    border-top: 1px solid #e1e4ea;
+  }
+  footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 500px) {
+    h1 { font-size: 2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <a class="nav-name" href="#hero">elsa.lopez</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#skills">Skills</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <p class="hero-eyebrow">PhD Researcher · IoT Security · ML · Sports Performance</p>
+    <h1>Elsa López <span>Pérez</span></h1>
+    <p class="hero-summary">
+      I spend my days building formally verified cryptographic protocols for constrained IoT devices,
+      and my evenings analysing wearable data to understand recovery, load, and performance.
+    </p>
+    <p class="hero-summary" style="margin-top: -0.75rem;">
+      I'm a PhD researcher at Inria &amp; Sorbonne Université, a Level 2 certified triathlon coach,
+      and an triathlon athlete. I'm looking for roles where rigorous data work meets human performance.
+      This includes sports analytics, performance science, or applied ML in athletic and health contexts.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">Rust · Embedded</span>
+      <span class="tag">Formal Verification</span>
+      <span class="tag">IETF Standardization</span>
+      <span class="tag">Reinforcement Learning</span>
+      <span class="tag">Deep Learning</span>
+      <span class="tag">ARM Cortex-M</span>
+      <span class="tag">Time-Series ML</span>
+    </div>
+    <div class="hero-links">
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/elopezpe" target="_blank">↗ LinkedIn</a>
+      <a class="btn btn-outline" href="https://github.com/ElsaLopez133" target="_blank">⌥ GitHub</a>
+      <a class="btn btn-outline" href="mailto:elsa.lopez.133@outlook.es">✉ Email</a>
+      <a class="btn btn-outline" href="https://scholar.google.com/citations?user=Lw9WMpUAAAAJ&hl=es" target="_blank">◎ Scholar</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label">Work</p>
+    <h2>Selected Projects</h2>
+    <div class="projects-grid">
+
+      <!-- Wearable time-series -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Time-Series ML · Personal Research</span>
+          <div class="project-badges">
+            <span class="badge badge-python">Python</span>
+            <span class="badge badge-python">pandas</span>
+            <span class="badge badge-python">FastAPI</span>
+            <span class="badge">HRV · Sleep</span>
+          </div>
+        </div>
+        <h3>Physiological Cycle Phase &amp; Ovulation Prediction from Wearable Data</h3>
+        <p class="project-desc">
+          An end-to-end personal research project: built a privacy-preserving platform to collect
+          longitudinal wearable data (heart-rate variability, resting HR, sleep architecture, stress,
+          training load) from multiple participants, and a multi-class time-series pipeline to model
+          physiological cycle phases — and detect ovulation — from continuous biosignals.
+        </p>
+        <ul class="project-highlights">
+          <li>Built and deployed a participant data-collection system (FastAPI web app + packaged cross-platform desktop app) that gathers wearable data without ever storing user credentials, scaling the study beyond a single subject</li>
+          <li>Rolling-window feature engineering — lag features, past-only rolling means, and day-to-day deltas — capturing temporal patterns across HRV, sleep stages, and training load</li>
+          <li>Statistically validated that the follicular - luteal transition (ovulation) is detectable from resting HR and HRV (cycle-aligned analysis, paired tests, large effect sizes)</li>
+        </ul>
+        <div class="project-footer">
+          <a class="project-link" href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- EDHOC-PSK lakers -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Cryptography · IoT Protocol</span>
+          <div class="project-badges">
+            <span class="badge badge-rust">Rust</span>
+            <span class="badge">no_std</span>
+            <span class="badge">IETF LAKE</span>
+          </div>
+        </div>
+        <h3>EDHOC-PSK — lakers crate</h3>
+        <p class="project-desc">
+          Core contributor to <em>lakers</em>, the reference Rust implementation of the EDHOC lightweight
+          authenticated key exchange protocol (RFC 9528). I designed and implemented the Pre-Shared Key (PSK)
+          authentication extension, working directly with IETF LAKE Working Group engineers to ensure
+          interoperability across implementations and production readiness for constrained IoT hardware.
+        </p>
+        <ul class="project-highlights">
+          <li>PSK extension enables EDHOC on devices with no PKI infrastructure, reducing handshake overhead</li>
+          <li>Supports both software backends (RustCrypto) and hardware-accelerated backends (STM32 PKA, Nordic CC310) through a unified abstraction layer</li>
+          <li><code>no_std</code>, zero heap allocations — runs on ARM Cortex-M with kilobytes of RAM</li>
+          <li>C and Python bindings shipped alongside the core library</li>
+        </ul>
+        <div class="project-footer">
+          <span class="highlight-stat">70k+ crate downloads</span>
+          <a class="project-link" href="https://github.com/ElsaLopez133/lakers" target="_blank">GitHub</a>
+          <a class="project-link" href="https://crates.io/crates/lakers" target="_blank">crates.io</a>
+          <a class="project-link" href="https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/" target="_blank">IETF Draft</a>
+        </div>
+      </div>
+
+      <!-- Formal analysis -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Formal Verification · Security Proofs</span>
+          <div class="project-badges">
+            <span class="badge badge-tamarin">Tamarin</span>
+            <span class="badge badge-tamarin">ProVerif</span>
+            <span class="badge badge-tamarin">SAPIC+</span>
+            <span class="badge badge-python">Python</span>
+          </div>
+        </div>
+        <h3>Formal Security Analysis of EDHOC-PSK</h3>
+        <p class="project-desc">
+          Symbolic security proofs for the EDHOC-PSK protocol extension, modelling authentication, secrecy,
+          anonymity, and unlinkability under advanced adversary models, including post-quantum
+          Save-Now-Decrypt-Later (SNDL) attackers. Published at ACM ASIACCS 2026.
+        </p>
+        <ul class="project-highlights">
+          <li>Protocol models written in SAPIC+, automatically compiled to both Tamarin and ProVerif for cross-tool verification</li>
+          <li>Identified concrete authentication and identity-protection weaknesses under SNDL adversaries, fed back into the IETF standardization process</li>
+          <li>Dockerised automation scripts enable one-command reproduction of all proof results</li>
+          <li>Extended to 5G network attachment scenarios and remote attestation variants (separate repos)</li>
+        </ul>
+        <div class="project-footer">
+          <a class="project-link" href="https://github.com/ElsaLopez133/edhoc-psk-formal-analysis" target="_blank">GitHub (core)</a>
+          <a class="project-link" href="https://github.com/ElsaLopez133/edhoc-psk-5g-formal-analysis" target="_blank">5G variant</a>
+          <a class="project-link" href="https://github.com/ElsaLopez133/edhoc-psk-attestation-formal-analysis" target="_blank">Attestation variant</a>
+        </div>
+      </div>
+
+      <!-- embedded-cal / STM32 -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Embedded Systems · Hardware Cryptography</span>
+          <div class="project-badges">
+            <span class="badge badge-rust">Rust</span>
+            <span class="badge">STM32</span>
+            <span class="badge">nRF54</span>
+            <span class="badge">ARM Cortex-M</span>
+          </div>
+        </div>
+        <h3>embedded-cal — Formally Verified Cryptographic Provider</h3>
+        <p class="project-desc">
+          Co-designed with Cryspen a reusable Rust cryptographic abstraction layer that gives uniform access
+          to hardware-accelerated and formally verified software primitives across ARM Cortex-M platforms.
+          Received the <strong>Best Paper Award</strong> at SPT-IoT 2026.
+        </p>
+        <ul class="project-highlights">
+          <li>Unified HAL over STM32 PKA, AES-256, SHA-256 (STM32WBA55) and Nordic CryptoCell/CC310 (nRF54) — no code changes needed to switch targets</li>
+          <li>Benchmarked execution time, flash usage, and power consumption: hardware acceleration delivers significant speedups over software-only implementations at the same security level</li>
+          <li>Memory safety and secret-independence guarantees preserved end-to-end, verified against the formally verified HACL* cryptographic library</li>
+          <li>Bare-metal STM32 driver experiments publicly available in the companion repository</li>
+        </ul>
+        <div class="project-footer">
+          <span class="highlight-stat">Best Paper Award — SPT-IoT 2026</span>
+          <a class="project-link" href="https://github.com/ElsaLopez133/stm32wba55-crypto" target="_blank">STM32 repo</a>
+        </div>
+      </div>
+
+      <!-- Nokia RL -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Reinforcement Learning · Robotics</span>
+          <div class="project-badges">
+            <span class="badge badge-python">Python</span>
+            <span class="badge badge-ros">ROS</span>
+            <span class="badge badge-ros">Gazebo</span>
+            <span class="badge">PPO</span>
+          </div>
+        </div>
+        <h3>Multi-Robot Navigation with RVO-Shaped RL (Nokia Bell Labs)</h3>
+        <p class="project-desc">
+          At Nokia Bell Labs I integrated and re-trained a PPO-based multi-agent navigation policy within
+          a full ROS robotics stack, then led the simulation-to-real transfer analysis to close the
+          gap between Gazebo high-fidelity simulation and physical robot deployment.
+        </p>
+        <ul class="project-highlights">
+          <li>Re-trained the policy with a Reciprocal Velocity Obstacle (RVO) shaped reward to improve collision avoidance in dense multi-robot scenarios</li>
+          <li>Diagnosed and resolved sim-to-real failures caused by sensing noise and actuation delay — improved navigation success rate to 98% in randomised high-fidelity scenarios</li>
+          <li>Designed multi-stage curriculum training pipeline (4 robots → 10 robots → 20 robots) to progressively increase task difficulty</li>
+          <li>Validated policy generalisation across circle and random initialisation scenarios with up to 20 simultaneous agents</li>
+        </ul>
+        <div class="project-footer">
+          <a class="project-link" href="https://github.com/ElsaLopez133/rl_rvo_nav" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Pharmaceutical VAE -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Deep Learning · Computer Vision</span>
+          <div class="project-badges">
+            <span class="badge badge-python">PyTorch</span>
+            <span class="badge badge-python">scikit-learn</span>
+            <span class="badge badge-python">OpenCV</span>
+          </div>
+        </div>
+        <h3>Semi-Supervised Deep Learning for Pharmaceutical Imaging (IBISC)</h3>
+        <p class="project-desc">
+          Built a semi-supervised classification pipeline for automated quality control of microscopic
+          flow imaging (MFI) particle images in a pharmaceutical manufacturing context, addressing
+          a dataset of over 190,000 images with significant class imbalance and label noise.
+        </p>
+        <ul class="project-highlights">
+          <li>Convolutional Variational Autoencoder (VAE) trained to learn compact latent representations combining texture, shape, and geometric features</li>
+          <li>Semi-supervised approach leverages the large unlabelled pool — critical when expert annotation is expensive in regulated pharmaceutical environments</li>
+          <li>Improved binary classification accuracy from 70% to 86% after systematic class-imbalance correction and mislabelling audit</li>
+          <li>Evaluated with confusion matrices, PCA, t-SNE, and reconstruction loss to understand failure modes and latent space structure</li>
+        </ul>
+        <div class="project-footer">
+          <span class="highlight-stat">+16 pp accuracy gain</span>
+          <span class="highlight-stat">190k+ images</span>
+          <a class="project-link" href="https://github.com/ElsaLopez133/ibisc-pharmaceutical_imaging" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- HPC Dijkstra -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">High-Performance Computing · Parallel Algorithms</span>
+          <div class="project-badges">
+            <span class="badge">C</span>
+            <span class="badge">MPI</span>
+            <span class="badge">OpenMP</span>
+            <span class="badge badge-python">Python</span>
+          </div>
+        </div>
+        <h3>Parallel Dijkstra for HPC Clusters</h3>
+        <p class="project-desc">
+          Parallel implementations of Dijkstra's shortest-path algorithm for high-performance computing
+          environments, comparing serial, OpenMP (shared-memory) and MPI (distributed-memory) strategies
+          on randomly generated graphs and benchmarking their scaling on a computing cluster.
+        </p>
+        <ul class="project-highlights">
+          <li>Three implementations — serial, OpenMP, and MPI — sharing a common graph-generation and benchmarking pipeline</li>
+          <li>Python tooling to generate random graphs and visualise results, with shell scripts for cluster job submission via <code>qsub</code></li>
+          <li>Evaluated parallel speedup and scaling behaviour across varying graph sizes and core counts on an MPICH cluster</li>
+        </ul>
+        <div class="project-footer">
+          <a class="project-link" href="https://github.com/ElsaLopez133/HPC-for-Data-Science" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Data Mining -->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Data Mining · Recommendation Systems</span>
+          <div class="project-badges">
+            <span class="badge badge-python">Python</span>
+            <span class="badge badge-python">Jupyter</span>
+            <span class="badge">Query Mining</span>
+          </div>
+        </div>
+        <h3>Query Recommendation &amp; Importance Mining</h3>
+        <p class="project-desc">
+          A data mining project in two parts: a query recommendation system that suggests relevant queries
+          to users, and a method to quantify the importance of a query to a given user — applied to a
+          real-estate (house) search dataset.
+        </p>
+        <ul class="project-highlights">
+          <li>Built a query recommendation engine from user–query interaction data</li>
+          <li>Designed a scoring method to estimate how important a query is to each user</li>
+          <li>Modular notebooks with reusable auxiliary and database-handling functions over JSON-backed data</li>
+        </ul>
+        <div class="project-footer">
+          <a class="project-link" href="https://github.com/ElsaLopez133/Data-Mining-Project" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Machine Learning · Statistical Theory</span>
+          <div class="project-badges">
+            <span class="badge badge-python">Python</span>
+            <span class="badge">Gaussian Processes</span>
+            <span class="badge">PAC-Bayes</span>
+          </div>
+        </div>
+        <h3>Supervised Learning based on Gaussian Processes</h3>
+        <p class="project-desc">
+          Bachelor's thesis exploring the theoretical foundations of Gaussian process regression,
+          its connection to kernel-based methods, and statistical regularization. Grounded theoretical
+          results in experiments on real-world data.
+        </p>
+        <ul class="project-highlights">
+          <li>Studied PAC-Bayesian performance guarantees for supervised learning, connecting theory to practice</li>
+          <li>Analysed the equivalence between Gaussian process regression and kernel ridge regression</li>
+          <li>Applied GP regression to a 7-DOF anthropomorphic robotic arm: mapping a 21-dimensional input space to the corresponding 7 torque outputs</li>
+          <li>Validated theoretical results through experiments on real-world datasets</li>
+        </ul>
+        <div class="project-footer">
+          <a class="project-link" href="https://uvadoc.uva.es/handle/10324/50614" target="_blank">↗ Full thesis</a>
+        </div>
+      </div>
+      
+      <!-- <div class="project-card">
+        <div class="project-header">
+          <span class="project-kicker">Computational Physics · Simulation</span>
+          <div class="project-badges">
+            <span class="badge">Monte Carlo</span>
+            <span class="badge">Thermodynamics</span>
+            <span class="badge">Materials Science</span>
+          </div>
+        </div>
+        <h3>Monte Carlo Simulations for Hydrogen Storage in Polymers (PIMs)</h3>
+        <p class="project-desc">
+          Physics bachelor's thesis modelling hydrogen storage in microporous polymers as a clean
+          alternative fuel for hydrogen vehicles, using Monte Carlo simulations to evaluate
+          gravimetric and volumetric storage capacity across temperature and pressure conditions.
+        </p>
+        <ul class="project-highlights">
+          <li>Simulated HPB-PIM, PIM-TMN-Trip, and PIM-1 using Metropolis Monte Carlo at varying temperatures and pressures</li>
+          <li>Results showed strong agreement with experimental data, confirming PIMs as promising hydrogen storage materials</li>
+          <li>Work linked to the PROMETEO scholarship for market-oriented prototype development</li>
+        </ul>
+        <div class="project-footer">
+          <a class="project-link" href="https://uvadoc.uva.es/handle/10324/50711" target="_blank">↗ Full thesis</a>
+        </div>
+      </div> -->
+      
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label">Career</p>
+    <h2>Experience &amp; Education</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <strong>Inria · Sorbonne</strong>
+          Nov 2023 – Dec 2026<br>Paris, France
+        </div>
+        <div class="timeline-body">
+          <h4>Inria – Sorbonne Université</h4>
+          <p class="role">PhD Researcher — Secure IoT Protocols</p>
+          <ul>
+            <li>Designed, implemented, and formally verified the EDHOC-PSK authentication protocol for constrained IoT devices using SAPIC+</li>
+            <li>Identified authentication and identity-protection weaknesses under advanced adversary models including post-quantum attackers</li>
+            <li>Benchmarked performance and memory footprint on ARM Cortex-M platforms</li>
+            <li>Contributed protocol specifications directly to the IETF LAKE standardization process</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <strong>Nokia Bell Labs</strong>
+          Mar – Aug 2023<br>Paris, France
+        </div>
+        <div class="timeline-body">
+          <h4>Nokia Bell Labs</h4>
+          <p class="role">Research Intern — Reinforcement Learning &amp; Multi-Robot Systems</p>
+          <ul>
+            <li>Integrated and re-trained a PPO-based multi-agent navigation policy within a ROS robotics stack</li>
+            <li>Led simulation-to-real transfer analysis, resolving deployment failures from sensing noise and actuation delays</li>
+            <li>Improved navigation success rate to 98% in randomised high-fidelity simulation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <strong>IBISC · Paris-Saclay</strong>
+          May – Aug 2022<br>Évry, France
+        </div>
+        <div class="timeline-body">
+          <h4>IBISC – Université Paris-Saclay</h4>
+          <p class="role">ML Intern — AI for Pharmaceutical Imaging</p>
+          <ul>
+            <li>Built a semi-supervised deep learning pipeline for automated classification of 190k+ MFI particle images</li>
+            <li>Improved binary classification accuracy from 70% to 86% by addressing class imbalance and dataset mislabelling</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <strong>Education</strong>
+          2016 – 2026
+        </div>
+        <div class="timeline-body">
+          <h4>Academic Background</h4>
+          <p class="role">PhD · Master · Double Bachelor</p>
+          <ul>
+            <li><strong>PhD in Secure Protocols</strong> — Sorbonne Université &amp; Inria (2023–2026)</li>
+            <li><strong>EIT Digital Master in Data Science &amp; AI</strong> — Université Paris-Saclay &amp; Università di Trento (2021–2023)</li>
+            <li><strong>Double Bachelor, Mathematics &amp; Physics</strong> — Univ. of Valladolid &amp; Univ. of Dundee, Erasmus (2016–2021)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="container">
+    <p class="section-label">Research</p>
+    <h2>Selected Publications</h2>
+    <p style="margin-bottom: 1.5rem;">
+      <a class="project-link" href="https://scholar.google.com/citations?user=Lw9WMpUAAAAJ&hl=es" target="_blank">↗ View full list on Google Scholar</a>
+    </p>
+    <div class="pubs">
+      <div class="pub-item">
+        <span class="pub-year">2026</span>
+        <div class="pub-body">
+          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:ufrVoPGSRksC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">embedded-cal: A Formally Verified Cryptographic Provider for Embedded Platforms</a>
+            <span class="pub-award">🏆 Best Paper</span>
+          </h4>
+          <p>Elsa López Pérez et al. — SPT-IoT 2026</p>
+        </div>
+      </div>
+      <div class="pub-item">
+        <span class="pub-year">2026</span>
+        <div class="pub-body">
+          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:roLk4NBRz8UC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">Formal Verification of EDHOC-PSK: A Symbolic Approach</a></h4>
+          <p>Elsa López Pérez et al. — ACM ASIACCS 2026</p>
+        </div>
+      </div>
+      <div class="pub-item">
+        <span class="pub-year">2025</span>
+        <div class="pub-body">
+          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:eQOLeE2rZwMC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">Pre-Shared Key Authentication With EDHOC: The Security–Performance Tradeoff</a></h4>
+          <p>Elsa López Pérez et al. — IEEE Access 2025</p>
+        </div>
+      </div>
+      <div class="pub-item">
+        <span class="pub-year">2024</span>
+        <div class="pub-body">
+          <h4><a href="https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">EDHOC Authenticated with Pre-Shared Keys (PSK)</a></h4>
+          <p>Elsa López Pérez et al. — IETF Internet Draft 2024</p>
+        </div>
+      </div>
+      <div class="pub-item">
+        <span class="pub-year">2024</span>
+        <div class="pub-body">
+          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:u-x6o8ySG0sC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">EDHOC is a New Security Handshake Standard</a></h4>
+          <p>Elsa López Pérez et al. — IEEE Computer 2024</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label">Toolbox</p>
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h4>Languages</h4>
+        <p>Rust (embedded cryptography), C/C++ (microcontroller drivers), Python (ML pipelines)</p>
+      </div>
+      <div class="skill-group">
+        <h4>ML &amp; Data Science</h4>
+        <p>PyTorch, scikit-learn, TensorFlow, time-series analysis, multi-agent RL, VAEs, PPO</p>
+      </div>
+      <div class="skill-group">
+        <h4>Formal Methods</h4>
+        <p>Tamarin Prover, ProVerif, SAPIC+, symbolic security analysis, protocol modelling</p>
+      </div>
+      <div class="skill-group">
+        <h4>Embedded &amp; Hardware</h4>
+        <p>ARM Cortex-M, STM32WBA55, nRF54, bare-metal Rust, hardware crypto accelerators</p>
+      </div>
+      <div class="skill-group">
+        <h4>Robotics</h4>
+        <p>ROS, Gazebo simulation, sim-to-real transfer, multi-robot coordination</p>
+      </div>
+      <div class="skill-group">
+        <h4>Standardization</h4>
+        <p>IETF LAKE Working Group contributor, RFC 9528 (EDHOC), CoAP, COSE, CBOR, OSCORE</p>
+      </div>
+      <div class="skill-group">
+        <h4>Languages spoken</h4>
+        <p>Spanish (native), English (proficient), French (proficient), Italian (intermediate)</p>
+      </div>
+      <div class="skill-group">
+        <h4>Beyond the terminal</h4>
+        <p>Professional saxophone diploma · Level 2 Triathlon coach · Triathlon athlete</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>Elsa López Pérez — <a href="mailto:elsa.lopez.133@outlook.es">elsa.lopez.133@outlook.es</a></p>
+    <p>+33 07 45 47 36 40 · <a href="https://www.linkedin.com/in/elopezpe" target="_blank">LinkedIn</a> · <a href="https://github.com/ElsaLopez133" target="_blank">GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
