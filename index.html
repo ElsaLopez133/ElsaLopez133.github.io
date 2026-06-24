@@ -5,163 +5,195 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Elsa López Pérez — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* ── TOKENS ── */
+  /* ───────────────────────── TOKENS ───────────────────────── */
   :root {
     --ink:       #0e1117;
     --ink-2:     #3a3f4b;
     --ink-3:     #717888;
     --bg:        #f7f8fa;
     --surface:   #ffffff;
-    --accent:    #1a56db;   /* signal blue — clean, technical */
+    --accent:    #1a56db;
     --accent-2:  #e8f0fe;
-    --rust:      #c8432a;   /* second accent: alert/highlight */
     --mono:      'IBM Plex Mono', monospace;
     --sans:      'IBM Plex Sans', sans-serif;
+    --display:   'Space Grotesk', sans-serif;
     --radius:    4px;
     --gap:       clamp(2rem, 4vw, 4rem);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { font-size: 16px; scroll-behavior: smooth; }
-
   body {
     font-family: var(--sans);
     background: var(--bg);
     color: var(--ink);
     line-height: 1.65;
+    overflow-x: hidden;
   }
+  a { color: inherit; }
+  /* highlighter-marker for key phrases — adapts colour per world */
+  .hl { font-weight: 600; background: linear-gradient(transparent 58%, rgba(26,86,219,0.18) 58%); border-radius: 1px; }
+  #world-ml .hl { background: linear-gradient(transparent 58%, rgba(103,232,249,0.25) 58%); color: #f0eeff; }
+  #world-sports .hl { background: linear-gradient(transparent 58%, rgba(255,61,95,0.22) 58%); color: #2a1410; }
+  .container { max-width: 940px; margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 2.5rem); }
 
-  /* ── LAYOUT ── */
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 clamp(1.25rem, 5vw, 2.5rem);
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(247,248,250,0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid #e1e4ea;
-    padding: 0.85rem 0;
-  }
-  nav .container {
+  /* ───────────────────────── HUB ───────────────────────── */
+  #hub-hero {
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 0 3rem;
+    position: relative;
   }
-  .nav-name {
-    font-family: var(--mono);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-    text-decoration: none;
-  }
-  .nav-links {
-    display: flex;
-    gap: 1.75rem;
-    list-style: none;
-  }
-  .nav-links a {
+  .hub-eyebrow {
     font-family: var(--mono);
     font-size: 0.78rem;
-    letter-spacing: 0.05em;
-    color: var(--ink-2);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-
-  /* ── HERO ── */
-  #hero {
-    padding: calc(var(--gap) * 2) 0 var(--gap);
-    border-bottom: 1px solid #e1e4ea;
-  }
-  .hero-eyebrow {
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     color: var(--accent);
     text-transform: uppercase;
     margin-bottom: 1rem;
   }
-  h1 {
-    font-family: var(--mono);
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--ink);
+  #hub-hero h1 {
+    font-family: var(--display);
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     margin-bottom: 1.25rem;
   }
-  h1 span { color: var(--accent); }
-  .hero-summary {
-    font-size: 1.05rem;
+  #hub-hero h1 span { color: inherit; }
+  .hub-summary {
+    font-size: 1.08rem;
     font-weight: 300;
     color: var(--ink-2);
     max-width: 640px;
-    line-height: 1.75;
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
   }
-  .hero-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
+  .hub-prompt {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--ink-3);
+    margin: 2.25rem 0 1rem;
+    letter-spacing: 0.04em;
   }
-  .tag {
+  .hub-prompt::before { content: '// '; color: var(--accent); }
+
+  /* Portal buttons */
+  .portals {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 720px) { .portals { grid-template-columns: 1fr; } }
+
+  .portal {
+    position: relative;
+    border: 1px solid #d8dce4;
+    border-radius: 14px;
+    padding: 1.6rem 1.5rem 1.5rem;
+    background: var(--surface);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    isolation: isolate;
+  }
+  .portal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.25s;
+    z-index: -1;
+  }
+  .portal:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.10); }
+  .portal .p-icon { font-size: 1.6rem; display: block; margin-bottom: 0.7rem; }
+  .portal .p-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.01em;
+  }
+  .portal .p-sub {
     font-family: var(--mono);
     font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    background: var(--accent-2);
-    color: var(--accent);
-    border: 1px solid #c3d4fb;
-    border-radius: var(--radius);
-    padding: 0.3rem 0.65rem;
+    color: var(--ink-3);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.8rem;
   }
-  .hero-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+  .portal .p-enter {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
   }
+
+  .portal-crypto:hover { border-color: #2bd967; }
+  .portal-crypto::before { background: linear-gradient(160deg, #0c130c, #07210f); }
+  .portal-crypto:hover::before { opacity: 1; }
+  .portal-crypto:hover .p-title, .portal-crypto:hover .p-sub,
+  .portal-crypto:hover .p-enter { color: #4dffa0; }
+  .portal-crypto .p-enter { color: #1a7a3c; }
+
+  .portal-ml:hover { border-color: #8b5cf6; }
+  .portal-ml::before { background: linear-gradient(160deg, #160e2e, #0c1b3a); }
+  .portal-ml:hover::before { opacity: 1; }
+  .portal-ml:hover .p-title, .portal-ml:hover .p-sub { color: #e9e4ff; }
+  .portal-ml:hover .p-enter { color: #c4b5fd; }
+  .portal-ml .p-enter { color: #6d3fc4; }
+
+  .portal-sports:hover { border-color: #ff7a18; }
+  .portal-sports::before { background: linear-gradient(160deg, #ff7a18, #ff3d5f); }
+  .portal-sports:hover::before { opacity: 1; }
+  .portal-sports:hover .p-title, .portal-sports:hover .p-sub,
+  .portal-sports:hover .p-enter { color: #fff; }
+  .portal-sports .p-enter { color: #d8501a; }
+
+  .hub-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .btn {
     font-family: var(--mono);
     font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    padding: 0.6rem 1.2rem;
+    letter-spacing: 0.04em;
+    padding: 0.55rem 1.1rem;
     border-radius: var(--radius);
     text-decoration: none;
     transition: all 0.15s;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    border: 1px solid var(--accent);
-  }
-  .btn-primary:hover { background: #1446c0; }
-  .btn-outline {
-    background: transparent;
-    color: var(--ink-2);
     border: 1px solid #c5c9d4;
+    color: var(--ink-2);
+    background: transparent;
+    cursor: pointer;
   }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #1446c0; color: #fff; }
 
-  /* ── SECTION HEADERS ── */
-  section { padding: var(--gap) 0; border-bottom: 1px solid #e1e4ea; }
-  section:last-child { border-bottom: none; }
+  .scroll-hint {
+    position: absolute;
+    bottom: 1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100%{ transform: translate(-50%,0);} 50%{ transform: translate(-50%,6px);} }
 
+  /* ───────────── CLASSIC CV (below hub, the escape hatch) ───────────── */
+  #cv { border-top: 1px solid #e1e4ea; }
+  #cv section { padding: var(--gap) 0; border-bottom: 1px solid #e1e4ea; }
+  #cv section:last-child { border-bottom: none; }
   .section-label {
     font-family: var(--mono);
     font-size: 0.72rem;
@@ -170,801 +202,1011 @@
     color: var(--ink-3);
     margin-bottom: 0.4rem;
   }
-  h2 {
-    font-family: var(--mono);
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 2rem;
+  #cv h2 {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
   }
+  .timeline { display: flex; flex-direction: column; gap: 1.75rem; }
+  .timeline-item { display: grid; grid-template-columns: 160px 1fr; gap: 1.5rem; }
+  @media (max-width: 600px) { .timeline-item { grid-template-columns: 1fr; gap: 0.4rem; } }
+  .timeline-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3); padding-top: 0.2rem; }
+  .timeline-meta strong { display: block; color: var(--ink-2); font-size: 0.8rem; margin-bottom: 0.2rem; }
+  .timeline-body h4 { font-family: var(--mono); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.15rem; }
+  .timeline-body .role { font-size: 0.85rem; color: var(--accent); font-weight: 300; margin-bottom: 0.6rem; }
+  .timeline-body ul { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.5rem; }
+  .timeline-body ul li { font-size: 0.87rem; color: var(--ink-2); padding-left: 1.1rem; position: relative; }
+  .timeline-body ul li::before { content: '→'; position: absolute; left: 0; color: var(--ink-3); font-family: var(--mono); font-size: 0.75rem; }
+  .pubs { display: flex; flex-direction: column; gap: 1rem; }
+  .pub-item { background: var(--surface); border: 1px solid #e1e4ea; border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .pub-year { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3); white-space: nowrap; padding-top: 0.15rem; min-width: 40px; }
+  .pub-body h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .pub-body h4 a { text-decoration: none; border-bottom: 1px solid #c3d4fb; }
+  .pub-body p { font-size: 0.82rem; color: var(--ink-3); }
+  .pub-award { font-family: var(--mono); font-size: 0.68rem; background: #fff8e8; color: #9a6200; border: 1px solid #f0dec8; border-radius: 3px; padding: 0.15rem 0.45rem; margin-left: 0.5rem; }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+  .skill-group { background: var(--surface); border: 1px solid #e1e4ea; border-radius: var(--radius); padding: 1.1rem 1.25rem; }
+  .skill-group h4 { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+  .skill-group p { font-size: 0.85rem; color: var(--ink-2); line-height: 1.6; }
+  .project-link { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  .project-link:hover { border-color: var(--accent); }
+  footer { padding: 2rem 0; border-top: 1px solid #e1e4ea; }
+  footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  footer p { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3); }
+  footer a { color: var(--accent); text-decoration: none; }
 
-  /* ── PROJECTS ── */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  /* ───────────────────────── WORLD OVERLAY (shared) ───────────────────────── */
+  .world {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.02);
+    transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
   }
+  body[data-world="crypto"] #world-crypto,
+  body[data-world="ml"]     #world-ml,
+  body[data-world="sports"] #world-sports {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+  body[data-world="crypto"], body[data-world="ml"], body[data-world="sports"] { overflow: hidden; }
 
-  .project-card {
-    background: var(--surface);
-    border: 1px solid #e1e4ea;
-    border-radius: 6px;
-    padding: 1.75rem;
-    transition: box-shadow 0.2s, border-color 0.2s;
-    position: relative;
-  }
-  .project-card:hover {
-    box-shadow: 0 4px 24px rgba(26,86,219,0.08);
-    border-color: #c3d4fb;
-  }
+  .world-inner { max-width: 880px; margin: 0 auto; padding: clamp(4.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) 5rem; }
 
-  .project-header {
+  .world-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 0.4rem;
+    align-items: center;
+    padding: 0.9rem clamp(1.25rem,5vw,2.5rem);
+    backdrop-filter: blur(8px);
   }
-  .project-kicker {
+  .back-btn, .world-switch button {
     font-family: var(--mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.15s;
   }
-  .project-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-  .badge {
-    font-family: var(--mono);
-    font-size: 0.66rem;
-    background: #f1f3f8;
-    color: var(--ink-2);
-    border-radius: 3px;
-    padding: 0.2rem 0.5rem;
-  }
-  .badge-rust { background: #fff0ed; color: #c8432a; }
-  .badge-python { background: #f0f7ff; color: #1a56db; }
-  .badge-tamarin { background: #f3f0ff; color: #6a3fb5; }
-  .badge-ros { background: #f0fff4; color: #1a7a3c; }
+  .world-switch { display: flex; gap: 0.4rem; }
+  .world-switch button { font-size: 0.9rem; line-height: 1; padding: 0.4rem 0.6rem; }
 
-  h3 {
+  .world-tag {
     font-family: var(--mono);
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.75rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
   }
-  .project-desc {
-    font-size: 0.93rem;
-    color: var(--ink-2);
-    line-height: 1.7;
+  .world h2.world-title {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    line-height: 1.08;
     margin-bottom: 1rem;
   }
-  .project-highlights {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1.25rem;
-  }
-  .project-highlights li {
-    font-size: 0.88rem;
-    color: var(--ink-2);
-    padding-left: 1.1rem;
-    position: relative;
-  }
-  .project-highlights li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
+  .world-lede { font-size: 1.02rem; max-width: 640px; margin-bottom: 2.5rem; }
+
+  /* ═══════════════════════ WORLD 1 — CRYPTO / TERMINAL ═══════════════════════ */
+  #world-crypto {
+    background: #070b08;
+    color: #b7f7cf;
     font-family: var(--mono);
-    font-size: 0.78rem;
+    cursor: crosshair;
   }
-  .project-footer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: center;
+  #world-crypto::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,255,128,0.025) 3px);
+    pointer-events: none;
+    z-index: 5;
   }
-  .project-link {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.15s;
+  #world-crypto .world-bar { color: #4dffa0; }
+  #world-crypto .back-btn { border: 1px solid #1f5a36; color: #4dffa0; }
+  #world-crypto .back-btn:hover { background: #0e2316; }
+  #world-crypto .world-switch button { color: #2e7d4f; border: 1px solid transparent; }
+  #world-crypto .world-switch button:hover { color: #4dffa0; }
+  .term-window {
+    border: 1px solid #1f5a36;
+    border-radius: 8px;
+    background: #050805;
+    box-shadow: 0 0 60px rgba(45,217,103,0.08);
+    overflow: hidden;
   }
-  .project-link:hover { border-color: var(--accent); }
-  .project-link + .project-link::before {
-    content: '·';
-    margin-right: 0.5rem;
-    color: var(--ink-3);
-  }
-  .highlight-stat {
-    display: inline-block;
-    font-family: var(--mono);
+  .term-titlebar {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    background: #0c130c;
+    border-bottom: 1px solid #173f25;
     font-size: 0.72rem;
-    background: #fff8f0;
-    color: #a0530f;
-    border: 1px solid #f0dcc3;
-    border-radius: 3px;
-    padding: 0.2rem 0.55rem;
+    color: #5fae7d;
   }
+  .term-dot { width: 11px; height: 11px; border-radius: 50%; }
+  .td-r{background:#ff5f56}.td-y{background:#ffbd2e}.td-g{background:#27c93f}
+  .term-body { padding: 1.3rem 1.4rem 1.6rem; font-size: 0.86rem; line-height: 1.75; min-height: 60vh; }
+  #term-stream { white-space: pre-wrap; }
+  .term-cursor { display: inline-block; width: 9px; height: 1.05em; background: #4dffa0; vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .term-prompt-line { color: #4dffa0; }
+  .term-path { color: #5fa8ff; }
+  .crypto-proj { animation: fadeup 0.4s both; margin: 1.4rem 0; border-left: 2px solid #173f25; padding: 0.4rem 0 0.4rem 1rem; }
+  @keyframes fadeup { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .crypto-proj .cp-head { color: #4dffa0; font-weight: 600; }
+  .crypto-proj .cp-meta { color: #5fae7d; font-size: 0.78rem; }
+  .crypto-proj .cp-desc { color: #9fd9b6; font-size: 0.82rem; margin: 0.5rem 0; }
+  .crypto-proj .cp-stat { color: #ffd479; }
+  .crypto-proj a { color: #5fa8ff; text-decoration: none; border-bottom: 1px dotted #2b5a8f; }
+  .crypto-proj a:hover { color: #9fd0ff; }
+  #term-input-line { display: none; margin-top: 1.4rem; align-items: center; }
+  body[data-world="crypto"].term-ready #term-input-line { display: flex; }
+  #term-input { background: transparent; border: none; color: #4dffa0; font-family: var(--mono); font-size: 0.86rem; flex: 1; outline: none; }
 
-  /* ── EXPERIENCE ── */
-  .timeline { display: flex; flex-direction: column; gap: 1.75rem; }
-  .timeline-item {
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 1.5rem;
+  /* ═══════════════════════ WORLD 2 — ML / NEURAL ═══════════════════════ */
+  #world-ml {
+    background: radial-gradient(120% 120% at 70% 10%, #1b1140 0%, #0a0e22 55%, #05060f 100%);
+    color: #dcd8f5;
+    font-family: var(--sans);
   }
-  @media (max-width: 600px) {
-    .timeline-item { grid-template-columns: 1fr; gap: 0.4rem; }
+  #neural-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  #world-ml .world-inner { position: relative; z-index: 2; }
+  #world-ml .world-bar { color: #c4b5fd; z-index: 11; }
+  #world-ml .back-btn { border: 1px solid #4c3a8a; color: #c4b5fd; }
+  #world-ml .back-btn:hover { background: rgba(124,92,246,0.15); }
+  #world-ml .world-switch button { color: #6b62a8; border: 1px solid transparent; }
+  #world-ml .world-switch button:hover { color: #c4b5fd; }
+  #world-ml .world-tag { color: #9d8bff; }
+  #world-ml .world-title { font-family: var(--display); font-weight: 700; background: linear-gradient(90deg,#c4b5fd,#67e8f9); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #world-ml .world-lede { color: #b3acd6; }
+  .ml-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.25rem; }
+  @media (max-width: 680px) { .ml-grid { grid-template-columns: 1fr; } }
+  .ml-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(150,130,255,0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s, transform 0.5s, box-shadow 0.25s, border-color 0.25s;
   }
-  .timeline-meta {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--ink-3);
-    padding-top: 0.2rem;
-  }
-  .timeline-meta strong {
-    display: block;
-    color: var(--ink-2);
-    font-size: 0.8rem;
-    margin-bottom: 0.2rem;
-  }
-  .timeline-body h4 {
-    font-family: var(--mono);
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.15rem;
-  }
-  .timeline-body .role {
-    font-size: 0.85rem;
-    color: var(--accent);
-    font-weight: 300;
-    margin-bottom: 0.6rem;
-  }
-  .timeline-body p {
-    font-size: 0.88rem;
-    color: var(--ink-2);
-    line-height: 1.65;
-  }
-  .timeline-body ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-top: 0.5rem;
-  }
-  .timeline-body ul li {
-    font-size: 0.87rem;
-    color: var(--ink-2);
-    padding-left: 1.1rem;
-    position: relative;
-  }
-  .timeline-body ul li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--ink-3);
-    font-family: var(--mono);
-    font-size: 0.75rem;
-  }
+  body[data-world="ml"] .ml-card.in { opacity: 1; transform: none; }
+  .ml-card:hover { border-color: #67e8f9; box-shadow: 0 18px 50px rgba(103,232,249,0.15); transform: translateY(-4px); }
+  .ml-kicker { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #67e8f9; margin-bottom: 0.5rem; }
+  .ml-card h3 { font-family: var(--display); font-size: 1.1rem; font-weight: 700; color: #f0eeff; margin-bottom: 0.6rem; line-height: 1.25; }
+  .ml-card p { font-size: 0.86rem; color: #b3acd6; line-height: 1.6; margin-bottom: 0.9rem; }
+  .ml-card code { font-family: var(--mono); font-size: 0.82em; color: #c4b5fd; }
+  .ml-metric { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .ml-metric .num { font-family: var(--display); font-weight: 700; font-size: 1.5rem; color: #67e8f9; }
+  .ml-metric .lbl { font-size: 0.74rem; color: #8a82b8; }
+  .ml-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 0.9rem; }
+  .ml-bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#7c5cf6,#67e8f9); transition: width 1.2s ease; border-radius: 3px; }
+  body[data-world="ml"] .ml-card.in .ml-bar span { width: var(--w, 80%); }
+  .ml-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.9rem; }
+  .ml-tags span { font-family: var(--mono); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 4px; background: rgba(124,92,246,0.18); color: #c4b5fd; }
+  .ml-card a { font-family: var(--mono); font-size: 0.74rem; color: #67e8f9; text-decoration: none; border-bottom: 1px solid transparent; }
+  .ml-card a:hover { border-color: #67e8f9; }
 
-  /* ── PUBLICATIONS ── */
-  .pubs { display: flex; flex-direction: column; gap: 1rem; }
-  .pub-item {
-    background: var(--surface);
-    border: 1px solid #e1e4ea;
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
+  /* ═══════════════════════ WORLD 3 — SPORTS / DASHBOARD ═══════════════════════ */
+  #world-sports {
+    background: linear-gradient(160deg, #fff4ec 0%, #ffe9ef 100%);
+    color: #2a1410;
+    font-family: var(--sans);
   }
-  .pub-year {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--ink-3);
-    white-space: nowrap;
-    padding-top: 0.15rem;
-    min-width: 40px;
+  #world-sports .world-bar { color: #d8501a; }
+  #world-sports .back-btn { border: 1px solid #ffc4a3; color: #d8501a; background: rgba(255,255,255,0.6); }
+  #world-sports .back-btn:hover { background: #fff; }
+  #world-sports .world-switch button { color: #c98b6e; border: 1px solid transparent; }
+  #world-sports .world-switch button:hover { color: #ff3d5f; }
+  #world-sports .world-tag { color: #ff3d5f; }
+  #world-sports .world-title { font-family: var(--display); font-weight: 700; color: #b8261a; }
+  #world-sports .world-lede { color: #7a4a3c; }
+  .stat-rings { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem; }
+  .ring-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 1.2rem 1.4rem;
+    box-shadow: 0 10px 30px rgba(255,61,95,0.10);
+    display: flex; align-items: center; gap: 1rem;
+    flex: 1; min-width: 180px;
   }
-  .pub-body h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.2rem;
-  }
-  .pub-body p {
-    font-size: 0.82rem;
-    color: var(--ink-3);
-  }
-  .pub-award {
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    background: #fff8e8;
-    color: #9a6200;
-    border: 1px solid #f0dec8;
-    border-radius: 3px;
-    padding: 0.15rem 0.45rem;
-    margin-left: 0.5rem;
-  }
+  .ring-card svg { width: 64px; height: 64px; transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: #ffe3d6; stroke-width: 8; }
+  .ring-fg { fill: none; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 176; stroke-dashoffset: 176; transition: stroke-dashoffset 1.4s ease; }
+  body[data-world="sports"] .ring-fg { stroke-dashoffset: var(--off, 60); }
+  .ring-card .rc-meta .rc-num { font-family: var(--display); font-weight: 700; font-size: 1.4rem; line-height: 1; }
+  .ring-card .rc-meta .rc-lbl { font-size: 0.74rem; color: #a86a58; font-family: var(--mono); letter-spacing: 0.03em; }
+  .hr-strip { background: #fff; border-radius: 18px; padding: 1.2rem 1.4rem; box-shadow: 0 10px 30px rgba(255,61,95,0.10); margin-bottom: 2.5rem; }
+  .hr-strip h4 { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #a86a58; margin-bottom: 0.6rem; }
+  .hr-strip svg { width: 100%; height: 70px; display: block; }
+  .hr-line { fill: none; stroke: #ff3d5f; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1400; stroke-dashoffset: 1400; }
+  body[data-world="sports"] .hr-line { animation: draw 2.2s ease forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .sport-cards { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem; }
+  .sport-card { background: #fff; border-radius: 18px; padding: 1.6rem; box-shadow: 0 10px 30px rgba(255,61,95,0.08); border-left: 5px solid #ff7a18; }
+  .sport-card .sc-kicker { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #ff3d5f; margin-bottom: 0.4rem; }
+  .sport-card h3 { font-family: var(--display); font-weight: 700; font-size: 1.2rem; margin-bottom: 0.6rem; color: #2a1410; }
+  .sport-card p { font-size: 0.9rem; color: #6a4439; margin-bottom: 0.9rem; }
+  .sport-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .sport-card li { font-size: 0.86rem; color: #6a4439; padding-left: 1.3rem; position: relative; }
+  .sport-card li::before { content: '🏁'; position: absolute; left: 0; font-size: 0.8rem; }
+  .sport-card a { font-family: var(--mono); font-size: 0.76rem; color: #d8501a; text-decoration: none; border-bottom: 1px solid transparent; }
+  .sport-card a:hover { border-color: #d8501a; }
+  .sport-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .sport-pill { background: #fff; border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.82rem; box-shadow: 0 6px 18px rgba(255,61,95,0.08); }
+  .sport-pill b { color: #b8261a; }
+  .sport-plot { width: 100%; border-radius: 10px; display: block; background: #fff; cursor: zoom-in; }
+  .sport-cap { font-size: 0.82rem; color: #7a4a3c; line-height: 1.55; margin-top: 0.6rem; }
+  .sport-stats { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.9rem 0; }
+  .sport-stat { font-family: var(--mono); font-size: 0.72rem; background: #fff0ea; color: #b8261a; border: 1px solid #ffcdb8; border-radius: 999px; padding: 0.3rem 0.7rem; }
 
-  /* ── SKILLS ── */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
-  }
-  .skill-group {
-    background: var(--surface);
-    border: 1px solid #e1e4ea;
-    border-radius: var(--radius);
-    padding: 1.1rem 1.25rem;
-  }
-  .skill-group h4 {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
-  }
-  .skill-group p {
-    font-size: 0.85rem;
-    color: var(--ink-2);
-    line-height: 1.6;
-  }
+  .sport-block-title { font-family: var(--display); font-weight: 700; color: #b8261a; font-size: 1.2rem; margin: 1rem 0; }
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .cert-card { background: #fff; border-radius: 14px; padding: 1.1rem 1.2rem; box-shadow: 0 8px 24px rgba(255,61,95,0.08); border-left: 4px solid #ff7a18; }
+  .cert-card h5 { font-family: var(--display); font-weight: 700; font-size: 0.95rem; color: #2a1410; margin-bottom: 0.2rem; line-height: 1.25; }
+  .cert-cat { font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.04em; color: #a86a58; }
 
-  /* ── FOOTER ── */
-  footer {
-    padding: 2rem 0;
-    border-top: 1px solid #e1e4ea;
-  }
-  footer .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  footer p {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--ink-3);
-  }
-  footer a {
-    color: var(--accent);
-    text-decoration: none;
-  }
+  /* generic click-to-enlarge lightbox */
+  #lightbox { position: fixed; inset: 0; z-index: 2500; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; padding: 2rem; cursor: zoom-out; }
+  #lightbox.open { display: flex; }
+  #lightbox img { max-width: 95%; max-height: 95%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
 
-  @media (max-width: 500px) {
-    h1 { font-size: 2rem; }
+  /* thumbnail preview on rich cards */
+  .ml-thumb { width: 100%; border-radius: 10px; margin-bottom: 0.9rem; display: block; background: #fff; cursor: pointer; border: 1px solid rgba(150,130,255,0.2); transition: filter 0.2s; }
+  .ml-thumb:hover { filter: brightness(1.08); }
+  .ml-more { font-family: var(--mono); font-size: 0.74rem; color: #f0eeff !important; background: linear-gradient(135deg, rgba(124,92,246,0.35), rgba(103,232,249,0.25)); border: 1px solid rgba(150,130,255,0.35); border-radius: 6px; padding: 0.4rem 0.8rem; cursor: pointer; display: inline-block; margin-right: 0.6rem; }
+  .ml-more:hover { border-color: #67e8f9 !important; }
+  .ml-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; }
+
+  /* ═══════════════ CASE STUDY OVERLAY ═══════════════ */
+  .case-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(5,6,15,0.82);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: clamp(1rem,4vw,3rem) 1rem;
+    overflow-y: auto;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
   }
+  .case-overlay.open { opacity: 1; visibility: visible; }
+  .case-panel {
+    position: relative; width: 100%; max-width: 880px;
+    background: #0d1024;
+    border: 1px solid rgba(150,130,255,0.25);
+    border-radius: 18px;
+    padding: clamp(1.4rem,4vw,2.6rem);
+    color: #dcd8f5;
+  }
+  .case-close {
+    position: absolute; top: 1rem; right: 1rem;
+    font-family: var(--mono); font-size: 0.74rem; color: #c4b5fd;
+    background: rgba(124,92,246,0.15); border: 1px solid #4c3a8a;
+    border-radius: 6px; padding: 0.4rem 0.8rem; cursor: pointer; z-index: 2;
+  }
+  .case-close:hover { color: #fff; border-color: #67e8f9; }
+  .case-h { font-family: var(--display); font-weight: 700; font-size: clamp(1.4rem,4vw,1.9rem); line-height: 1.1; background: linear-gradient(90deg,#c4b5fd,#67e8f9); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.4rem; padding-right: 4rem; }
+  .case-sub { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #67e8f9; margin-bottom: 1.4rem; }
+  .case-intro { font-size: 0.92rem; color: #b3acd6; line-height: 1.65; margin-bottom: 1.6rem; }
+
+  /* stepper */
+  .step-dots { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+  .step-dots button { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #4c3a8a; background: transparent; color: #8a82b8; font-family: var(--mono); font-size: 0.82rem; cursor: pointer; transition: all 0.15s; }
+  .step-dots button:hover { color: #c4b5fd; }
+  .step-dots button.active { background: linear-gradient(135deg,#7c5cf6,#67e8f9); color: #fff; border-color: transparent; }
+  .step-stage { background: #fff; border-radius: 12px; padding: 1rem; text-align: center; margin-bottom: 1rem; }
+  .step-stage img { max-width: 100%; max-height: 46vh; border-radius: 6px; }
+  .step-title { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: #f0eeff; margin-bottom: 0.4rem; }
+  .step-text { font-size: 0.9rem; color: #b3acd6; line-height: 1.6; margin-bottom: 1.1rem; min-height: 3.2em; }
+  .step-nav { display: flex; justify-content: space-between; align-items: center; }
+  .step-nav button { font-family: var(--mono); font-size: 0.78rem; color: #c4b5fd; background: rgba(124,92,246,0.15); border: 1px solid #4c3a8a; border-radius: 6px; padding: 0.45rem 0.95rem; cursor: pointer; transition: all 0.15s; }
+  .step-nav button:hover:not(:disabled) { border-color: #67e8f9; color: #fff; }
+  .step-nav button:disabled { opacity: 0.3; cursor: default; }
+  .step-count { font-family: var(--mono); font-size: 0.78rem; color: #8a82b8; }
+
+  /* media blocks (nokia) */
+  .case-media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.4rem; }
+  @media (max-width: 680px) { .case-media-grid { grid-template-columns: 1fr; } }
+  .case-fig { background: #fff; border-radius: 12px; padding: 0.6rem; }
+  .case-fig video, .case-fig img { width: 100%; border-radius: 6px; display: block; }
+  .case-cap { font-size: 0.82rem; color: #b3acd6; margin: 0.5rem 0.2rem 0; line-height: 1.5; }
+  .case-cap b { color: #67e8f9; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-bottom: 0.2rem; }
+  .case-block-title { font-family: var(--display); font-weight: 700; color: #f0eeff; font-size: 1.1rem; margin: 1.8rem 0 0.9rem; }
+
+  /* easter-egg toast */
+  #egg {
+    position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%) translateY(140%);
+    z-index: 3000; background: #0e1117; color: #4dffa0;
+    font-family: var(--mono); font-size: 0.82rem; padding: 0.8rem 1.4rem;
+    border-radius: 8px; border: 1px solid #2bd967; transition: transform 0.4s;
+  }
+  #egg.show { transform: translateX(-50%) translateY(0); }
+
   @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    .ml-card { opacity: 1 !important; transform: none !important; }
+    .hr-line { stroke-dashoffset: 0 !important; }
   }
 </style>
 </head>
-<body>
+<body data-world="hub">
 
-<!-- NAV -->
-<nav>
+<!-- ════════════════════════ HUB ════════════════════════ -->
+<header id="hub-hero">
   <div class="container">
-    <a class="nav-name" href="#hero">elsa.lopez</a>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#publications">Publications</a></li>
-      <li><a href="#skills">Skills</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="container">
-    <p class="hero-eyebrow">PhD Researcher · IoT Security · ML · Sports Performance</p>
+    <p class="hub-eyebrow">PhD Researcher · IoT Security · ML · Sports Performance</p>
     <h1>Elsa López <span>Pérez</span></h1>
-    <p class="hero-summary">
-      I spend my days building formally verified cryptographic protocols for constrained IoT devices,
-      and my evenings analysing wearable data to understand recovery, load, and performance.
+    <p class="hub-summary">
+      I build <span class="hl">formally verified cryptographic protocols</span> for tiny IoT devices, train
+      <span class="hl">models that learn from messy real-world data</span>, and turn
+      <span class="hl">wearable signals into performance insight</span>.
     </p>
-    <p class="hero-summary" style="margin-top: -0.75rem;">
-      I'm a PhD researcher at Inria &amp; Sorbonne Université, a Level 2 certified triathlon coach,
-      and an triathlon athlete. I'm looking for roles where rigorous data work meets human performance.
-      This includes sports analytics, performance science, or applied ML in athletic and health contexts.
+    <p class="hub-summary" style="color:var(--ink-3);font-size:0.95rem;">
+      PhD researcher at Inria &amp; Sorbonne Université · Maths &amp; Physics Bachelor · Data Scientist and ML Engineer · Level 2 triathlon coach · triathlete · saxophonist.
     </p>
-    <div class="hero-tags">
-      <span class="tag">Rust · Embedded</span>
-      <span class="tag">Formal Verification</span>
-      <span class="tag">IETF Standardization</span>
-      <span class="tag">Reinforcement Learning</span>
-      <span class="tag">Deep Learning</span>
-      <span class="tag">ARM Cortex-M</span>
-      <span class="tag">Time-Series ML</span>
+
+    <p class="hub-prompt">selected projects —  pick a world</p>
+    <div class="portals">
+      <button class="portal portal-crypto" onclick="openWorld('crypto')">
+        <span class="p-icon">🔐</span>
+        <span class="p-title">Crypto &amp; IoT Security</span>
+        <span class="p-sub">protocols · formal proofs · embedded</span>
+        <span class="p-enter">$ ./enter --terminal ▸</span>
+      </button>
+      <button class="portal portal-ml" onclick="openWorld('ml')">
+        <span class="p-icon">🤖</span>
+        <span class="p-title">ML, AI &amp; Vision</span>
+        <span class="p-sub">deep learning · RL · computer vision</span>
+        <span class="p-enter">model.load() ▸</span>
+      </button>
+      <button class="portal portal-sports" onclick="openWorld('sports')">
+        <span class="p-icon">🏃‍♀️</span>
+        <span class="p-title">Sports Performance</span>
+        <span class="p-sub">wearables · physiology · coaching</span>
+        <span class="p-enter">start activity ▸</span>
+      </button>
     </div>
-    <div class="hero-links">
+
+    <div class="hub-links">
       <a class="btn btn-primary" href="https://www.linkedin.com/in/elopezpe" target="_blank">↗ LinkedIn</a>
-      <a class="btn btn-outline" href="https://github.com/ElsaLopez133" target="_blank">⌥ GitHub</a>
-      <a class="btn btn-outline" href="mailto:elsa.lopez.133@outlook.es">✉ Email</a>
-      <a class="btn btn-outline" href="https://scholar.google.com/citations?user=Lw9WMpUAAAAJ&hl=es" target="_blank">◎ Scholar</a>
+      <a class="btn" href="https://github.com/ElsaLopez133" target="_blank">⌥ GitHub</a>
+      <a class="btn" href="mailto:elsa.lopez.133@outlook.es">✉ Email</a>
+      <a class="btn" href="https://scholar.google.com/citations?user=Lw9WMpUAAAAJ&hl=es" target="_blank">◎ Scholar</a>
+      <a class="btn" href="#cv">▤ Classic CV</a>
     </div>
   </div>
-</section>
+  <span class="scroll-hint">↓ scroll for the classic CV</span>
+</header>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="container">
-    <p class="section-label">Work</p>
-    <h2>Selected Projects</h2>
-    <div class="projects-grid">
-
-      <!-- Wearable time-series -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Time-Series ML · Personal Research</span>
-          <div class="project-badges">
-            <span class="badge badge-python">Python</span>
-            <span class="badge badge-python">pandas</span>
-            <span class="badge badge-python">FastAPI</span>
-            <span class="badge">HRV · Sleep</span>
+<!-- ════════════════════════ CLASSIC CV (escape hatch) ════════════════════════ -->
+<main id="cv">
+  <section id="experience">
+    <div class="container">
+      <p class="section-label">Career</p>
+      <h2>Experience &amp; Education</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-meta"><strong>Inria · Sorbonne</strong>Nov 2023 – Dec 2026<br>Paris, France<br>· mobility @ HPI, Potsdam</div>
+          <div class="timeline-body">
+            <h4>Inria – Sorbonne Université</h4>
+            <p class="role">PhD Researcher — Secure IoT Protocols</p>
+            <ul>
+              <li>Designed, implemented, and <span class="hl">formally verified</span> the EDHOC-PSK authentication protocol for constrained IoT devices using SAPIC+</li>
+              <li>Identified authentication and identity-protection weaknesses under advanced adversary models including <span class="hl">post-quantum attackers</span></li>
+              <li>Benchmarked performance and memory footprint on ARM Cortex-M platforms</li>
+              <li>Contributed protocol specifications directly to the <span class="hl">IETF LAKE standardization</span> process</li>
+              <li>International research mobility at the <span class="hl">Hasso Plattner Institute (HPI)</span>, Potsdam — developing a project on the <span class="hl">integration of EDHOC into 5G networks</span> (ongoing)</li>
+            </ul>
           </div>
         </div>
-        <h3>Physiological Cycle Phase &amp; Ovulation Prediction from Wearable Data</h3>
-        <p class="project-desc">
-          An end-to-end personal research project: built a privacy-preserving platform to collect
-          longitudinal wearable data (heart-rate variability, resting HR, sleep architecture, stress,
-          training load) from multiple participants, and a multi-class time-series pipeline to model
-          physiological cycle phases — and detect ovulation — from continuous biosignals.
-        </p>
-        <ul class="project-highlights">
-          <li>Built and deployed a participant data-collection system (FastAPI web app + packaged cross-platform desktop app) that gathers wearable data without ever storing user credentials, scaling the study beyond a single subject</li>
-          <li>Rolling-window feature engineering — lag features, past-only rolling means, and day-to-day deltas — capturing temporal patterns across HRV, sleep stages, and training load</li>
-          <li>Statistically validated that the follicular - luteal transition (ovulation) is detectable from resting HR and HRV (cycle-aligned analysis, paired tests, large effect sizes)</li>
-        </ul>
-        <div class="project-footer">
-          <a class="project-link" href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub</a>
+        <div class="timeline-item">
+          <div class="timeline-meta"><strong>Nokia Bell Labs</strong>Mar – Aug 2023<br>Paris, France</div>
+          <div class="timeline-body">
+            <h4>Nokia Bell Labs</h4>
+            <p class="role">Research Intern — Reinforcement Learning &amp; Multi-Robot Systems</p>
+            <ul>
+              <li>Integrated and re-trained a <span class="hl">PPO-based multi-agent navigation policy</span> within a ROS robotics stack</li>
+              <li>Led <span class="hl">simulation-to-real transfer</span> analysis, resolving deployment failures from sensing noise and actuation delays</li>
+              <li>Improved navigation success rate to <span class="hl">98%</span> in randomised high-fidelity simulation</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-meta"><strong>IBISC · Paris-Saclay</strong>May – Aug 2022<br>Évry, France</div>
+          <div class="timeline-body">
+            <h4>IBISC – Université Paris-Saclay</h4>
+            <p class="role">ML Intern — AI for Pharmaceutical Imaging</p>
+            <ul>
+              <li>Built a <span class="hl">semi-supervised deep learning</span> pipeline for automated classification of <span class="hl">190k+ MFI particle images</span></li>
+              <li>Improved binary classification accuracy <span class="hl">from 70% to 86%</span> by addressing class imbalance and dataset mislabelling</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-meta"><strong>Education</strong>2016 – 2026</div>
+          <div class="timeline-body">
+            <h4>Academic Background</h4>
+            <p class="role">PhD · Master · Double Bachelor</p>
+            <ul>
+              <li><strong class="hl">PhD in Secure Protocols</strong> — Sorbonne Université &amp; Inria (2023–2026)</li>
+              <li><strong class="hl">EIT Digital Master in Data Science &amp; AI</strong> — Université Paris-Saclay &amp; Università di Trento (2021–2023)</li>
+              <li><strong class="hl">Double Bachelor, Mathematics &amp; Physics</strong> — Univ. of Valladolid &amp; Univ. of Dundee, Erasmus (2016–2021)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="publications">
+    <div class="container">
+      <p class="section-label">Research</p>
+      <h2>Selected Publications</h2>
+      <p style="margin-bottom:1.5rem;"><a class="project-link" href="https://scholar.google.com/citations?user=Lw9WMpUAAAAJ&hl=es" target="_blank">↗ View full list on Google Scholar</a></p>
+      <div class="pubs">
+        <div class="pub-item"><span class="pub-year">2026</span><div class="pub-body"><h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:ufrVoPGSRksC" target="_blank">embedded-cal: A Formally Verified Cryptographic Provider for Embedded Platforms</a><span class="pub-award">🏆 Best Paper Award</span></h4><p>Elsa López Pérez et al. — SPT-IoT 2026</p></div></div>
+        <div class="pub-item"><span class="pub-year">2026</span><div class="pub-body"><h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:roLk4NBRz8UC" target="_blank">Formal Verification of EDHOC-PSK: A Symbolic Approach</a></h4><p>Elsa López Pérez et al. — ACM ASIACCS 2026</p></div></div>
+        <div class="pub-item"><span class="pub-year">2025</span><div class="pub-body"><h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:eQOLeE2rZwMC" target="_blank">Pre-Shared Key Authentication With EDHOC: The Security–Performance Tradeoff</a></h4><p>Elsa López Pérez et al. — IEEE Access 2025</p></div></div>
+        <div class="pub-item"><span class="pub-year">2024</span><div class="pub-body"><h4><a href="https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/" target="_blank">EDHOC Authenticated with Pre-Shared Keys (PSK)</a></h4><p>Elsa López Pérez et al. — IETF Internet Draft 2024</p></div></div>
+        <div class="pub-item"><span class="pub-year">2024</span><div class="pub-body"><h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:u-x6o8ySG0sC" target="_blank">EDHOC is a New Security Handshake Standard</a></h4><p>Elsa López Pérez et al. — IEEE Computer 2024</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <p class="section-label">Toolbox</p>
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-group"><h4>Programming Languages</h4><p>Rust (embedded cryptography), C/C++ (microcontroller drivers), Python (ML pipelines)</p></div>
+        <div class="skill-group"><h4>ML &amp; Data Science</h4><p>PyTorch, scikit-learn, TensorFlow, time-series analysis, multi-agent RL, VAEs, PPO</p></div>
+        <div class="skill-group"><h4>Formal Methods</h4><p>Tamarin Prover, ProVerif, SAPIC+, symbolic security analysis, protocol modelling</p></div>
+        <div class="skill-group"><h4>Embedded &amp; Hardware</h4><p>ARM Cortex-M, STM32WBA55, nRF54, bare-metal Rust, hardware crypto accelerators</p></div>
+        <div class="skill-group"><h4>Robotics</h4><p>ROS, Gazebo simulation, sim-to-real transfer, multi-robot coordination</p></div>
+        <div class="skill-group"><h4>Standardization</h4><p>IETF LAKE Working Group contributor, EDHOC-PSK draft author </p></div>
+        <div class="skill-group"><h4>Languages</h4><p>Spanish (native), English (proficient), French (proficient), Italian (intermediate)</p></div>
+        <div class="skill-group"><h4>Beyond the terminal</h4><p>Professional saxophone diploma · Triathlon athlete</p></div>
+        <div class="skill-group"><h4>Coaching Certifications</h4><p>Level 2 Triathlon Coach · Advanced Triathlon (Middle &amp; Long Distance) · Long-Distance Triathlon Training · TrainingPeaks · HIIT Training · Cycling Biomechanics</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Elsa López Pérez — <a href="mailto:elsa.lopez.133@outlook.es">elsa.lopez.133@outlook.es</a></p>
+      <p> <a href="https://www.linkedin.com/in/elopezpe" target="_blank">LinkedIn</a> · <a href="https://github.com/ElsaLopez133" target="_blank">GitHub</a></p>
+    </div>
+  </footer>
+</main>
+
+<!-- ════════════════════════ WORLD 1 — CRYPTO / TERMINAL ════════════════════════ -->
+<div class="world" id="world-crypto" aria-hidden="true">
+  <div class="world-bar">
+    <button class="back-btn" onclick="closeWorld()">◂ esc :: back to hub</button>
+    <div class="world-switch">
+      <button onclick="openWorld('ml')" title="ML world">🤖</button>
+      <button onclick="openWorld('sports')" title="Sports world">🏃‍♀️</button>
+    </div>
+  </div>
+  <div class="world-inner">
+    <div class="term-window">
+      <div class="term-titlebar">
+        <span class="term-dot td-r"></span><span class="term-dot td-y"></span><span class="term-dot td-g"></span>
+        <span style="margin-left:0.6rem;">elsa@inria: ~/crypto-iot</span>
+      </div>
+      <div class="term-body">
+        <div id="term-stream"></div><span class="term-cursor" id="term-cursor"></span>
+        <div id="term-projects"></div>
+        <div id="term-input-line">
+          <span class="term-prompt-line">elsa@inria</span>:<span class="term-path">~/crypto-iot</span>$&nbsp;
+          <input id="term-input" autocomplete="off" spellcheck="false" placeholder="type 'help' ↵">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════ WORLD 2 — ML / NEURAL ════════════════════════ -->
+<div class="world" id="world-ml" aria-hidden="true">
+  <canvas id="neural-canvas"></canvas>
+  <div class="world-bar">
+    <button class="back-btn" onclick="closeWorld()">◂ esc :: back to hub</button>
+    <div class="world-switch">
+      <button onclick="openWorld('crypto')" title="Crypto world">🔐</button>
+      <button onclick="openWorld('sports')" title="Sports world">🏃‍♀️</button>
+    </div>
+  </div>
+  <div class="world-inner">
+    <p class="world-tag">// neural net online · inference mode</p>
+    <h2 class="world-title">Machine Learning, AI &amp; Computer Vision</h2>
+    <p class="world-lede">From <span class="hl">multi-robot reinforcement learning</span> to <span class="hl">variational autoencoders</span> on <span class="hl">190k pharmaceutical images</span> — models that learn structure from messy, real, high-stakes data.</p>
+    <div class="ml-grid">
+
+      <div class="ml-card" style="--w:98%">
+        <p class="ml-kicker">Reinforcement Learning · Robotics</p>
+        <h3>Multi-Robot Navigation with RVO-Shaped RL</h3>
+        <img class="ml-thumb" src="assets/nokia/curriculum-phases.png" alt="Curriculum training phases: 4 robots, 10 robots, 10 robots with walls" loading="lazy" onclick="openCase('nokia')">
+        <div class="ml-metric"><span class="num" data-count="98" data-suffix="%">0%</span><span class="lbl">nav success · 20 agents</span></div>
+        <div class="ml-bar"><span></span></div>
+        <p>At Nokia Bell Labs: integrated and re-trained a PPO multi-agent policy in a full ROS stack, then led the sim-to-real transfer closing the Gazebo↔hardware gap with an RVO-shaped reward and a 4→10→20 robot curriculum.</p>
+        <div class="ml-tags"><span>Python</span><span>ROS</span><span>Gazebo</span><span>PPO</span></div>
+        <div class="ml-foot">
+          <button class="ml-more" onclick="openCase('nokia')">▶ Case study</button>
+          <a href="https://github.com/ElsaLopez133/rl_rvo_nav" target="_blank">GitHub ↗</a>
         </div>
       </div>
 
-      <!-- EDHOC-PSK lakers -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Cryptography · IoT Protocol</span>
-          <div class="project-badges">
-            <span class="badge badge-rust">Rust</span>
-            <span class="badge">no_std</span>
-            <span class="badge">IETF LAKE</span>
-          </div>
-        </div>
-        <h3>EDHOC-PSK — lakers crate</h3>
-        <p class="project-desc">
-          Core contributor to <em>lakers</em>, the reference Rust implementation of the EDHOC lightweight
-          authenticated key exchange protocol (RFC 9528). I designed and implemented the Pre-Shared Key (PSK)
-          authentication extension, working directly with IETF LAKE Working Group engineers to ensure
-          interoperability across implementations and production readiness for constrained IoT hardware.
-        </p>
-        <ul class="project-highlights">
-          <li>PSK extension enables EDHOC on devices with no PKI infrastructure, reducing handshake overhead</li>
-          <li>Supports both software backends (RustCrypto) and hardware-accelerated backends (STM32 PKA, Nordic CC310) through a unified abstraction layer</li>
-          <li><code>no_std</code>, zero heap allocations — runs on ARM Cortex-M with kilobytes of RAM</li>
-          <li>C and Python bindings shipped alongside the core library</li>
-        </ul>
-        <div class="project-footer">
-          <span class="highlight-stat">70k+ crate downloads</span>
-          <a class="project-link" href="https://github.com/ElsaLopez133/lakers" target="_blank">GitHub</a>
-          <a class="project-link" href="https://crates.io/crates/lakers" target="_blank">crates.io</a>
-          <a class="project-link" href="https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/" target="_blank">IETF Draft</a>
+      <div class="ml-card" style="--w:86%">
+        <p class="ml-kicker">Deep Learning · Computer Vision</p>
+        <h3>Semi-Supervised VAE for Pharmaceutical Imaging</h3>
+        <img class="ml-thumb" src="assets/ibisc-vae/01-snippets.png" alt="Particle snippets extracted from a microscopic flow-imaging scan" loading="lazy" onclick="openCase('ibisc')">
+        <div class="ml-metric"><span class="num" data-count="86" data-suffix="%">0%</span><span class="lbl">accuracy (from 70%)</span></div>
+        <div class="ml-bar"><span></span></div>
+        <p>A convolutional VAE learning compact latent representations over 190k+ microscopic flow-imaging particles, leveraging a huge unlabelled pool for automated QC under class imbalance and label noise (IBISC).</p>
+        <div class="ml-tags"><span>PyTorch</span><span>scikit-learn</span><span>OpenCV</span><span>t-SNE</span></div>
+        <div class="ml-foot">
+          <button class="ml-more" onclick="openCase('ibisc')">▶ Walk the pipeline</button>
+          <a href="https://github.com/ElsaLopez133/ibisc-pharmaceutical_imaging" target="_blank">GitHub ↗</a>
         </div>
       </div>
 
-      <!-- Formal analysis -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Formal Verification · Security Proofs</span>
-          <div class="project-badges">
-            <span class="badge badge-tamarin">Tamarin</span>
-            <span class="badge badge-tamarin">ProVerif</span>
-            <span class="badge badge-tamarin">SAPIC+</span>
-            <span class="badge badge-python">Python</span>
-          </div>
-        </div>
-        <h3>Formal Security Analysis of EDHOC-PSK</h3>
-        <p class="project-desc">
-          Symbolic security proofs for the EDHOC-PSK protocol extension, modelling authentication, secrecy,
-          anonymity, and unlinkability under advanced adversary models, including post-quantum
-          Save-Now-Decrypt-Later (SNDL) attackers. Published at ACM ASIACCS 2026.
-        </p>
-        <ul class="project-highlights">
-          <li>Protocol models written in SAPIC+, automatically compiled to both Tamarin and ProVerif for cross-tool verification</li>
-          <li>Identified concrete authentication and identity-protection weaknesses under SNDL adversaries, fed back into the IETF standardization process</li>
-          <li>Dockerised automation scripts enable one-command reproduction of all proof results</li>
-          <li>Extended to 5G network attachment scenarios and remote attestation variants (separate repos)</li>
-        </ul>
-        <div class="project-footer">
-          <a class="project-link" href="https://github.com/ElsaLopez133/edhoc-psk-formal-analysis" target="_blank">GitHub (core)</a>
-          <a class="project-link" href="https://github.com/ElsaLopez133/edhoc-psk-5g-formal-analysis" target="_blank">5G variant</a>
-          <a class="project-link" href="https://github.com/ElsaLopez133/edhoc-psk-attestation-formal-analysis" target="_blank">Attestation variant</a>
-        </div>
+      <div class="ml-card" style="--w:75%">
+        <p class="ml-kicker">Machine Learning · Statistical Theory</p>
+        <h3>Supervised Learning with Gaussian Processes</h3>
+        <p>Bachelor's thesis on the theory of GP regression — its equivalence to kernel ridge regression and PAC-Bayesian guarantees — applied to map a 21-D input to the 7 torque outputs of an anthropomorphic robotic arm.</p>
+        <div class="ml-tags"><span>Python</span><span>Gaussian Processes</span><span>PAC-Bayes</span></div>
+        <a href="https://uvadoc.uva.es/handle/10324/50614" target="_blank">Full thesis ↗</a>
       </div>
 
-      <!-- embedded-cal / STM32 -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Embedded Systems · Hardware Cryptography</span>
-          <div class="project-badges">
-            <span class="badge badge-rust">Rust</span>
-            <span class="badge">STM32</span>
-            <span class="badge">nRF54</span>
-            <span class="badge">ARM Cortex-M</span>
-          </div>
-        </div>
-        <h3>embedded-cal — Formally Verified Cryptographic Provider</h3>
-        <p class="project-desc">
-          Co-designed with Cryspen a reusable Rust cryptographic abstraction layer that gives uniform access
-          to hardware-accelerated and formally verified software primitives across ARM Cortex-M platforms.
-          Received the <strong>Best Paper Award</strong> at SPT-IoT 2026.
-        </p>
-        <ul class="project-highlights">
-          <li>Unified HAL over STM32 PKA, AES-256, SHA-256 (STM32WBA55) and Nordic CryptoCell/CC310 (nRF54) — no code changes needed to switch targets</li>
-          <li>Benchmarked execution time, flash usage, and power consumption: hardware acceleration delivers significant speedups over software-only implementations at the same security level</li>
-          <li>Memory safety and secret-independence guarantees preserved end-to-end, verified against the formally verified HACL* cryptographic library</li>
-          <li>Bare-metal STM32 driver experiments publicly available in the companion repository</li>
-        </ul>
-        <div class="project-footer">
-          <span class="highlight-stat">Best Paper Award — SPT-IoT 2026</span>
-          <a class="project-link" href="https://github.com/ElsaLopez133/stm32wba55-crypto" target="_blank">STM32 repo</a>
-        </div>
-      </div>
-
-      <!-- Nokia RL -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Reinforcement Learning · Robotics</span>
-          <div class="project-badges">
-            <span class="badge badge-python">Python</span>
-            <span class="badge badge-ros">ROS</span>
-            <span class="badge badge-ros">Gazebo</span>
-            <span class="badge">PPO</span>
-          </div>
-        </div>
-        <h3>Multi-Robot Navigation with RVO-Shaped RL (Nokia Bell Labs)</h3>
-        <p class="project-desc">
-          At Nokia Bell Labs I integrated and re-trained a PPO-based multi-agent navigation policy within
-          a full ROS robotics stack, then led the simulation-to-real transfer analysis to close the
-          gap between Gazebo high-fidelity simulation and physical robot deployment.
-        </p>
-        <ul class="project-highlights">
-          <li>Re-trained the policy with a Reciprocal Velocity Obstacle (RVO) shaped reward to improve collision avoidance in dense multi-robot scenarios</li>
-          <li>Diagnosed and resolved sim-to-real failures caused by sensing noise and actuation delay — improved navigation success rate to 98% in randomised high-fidelity scenarios</li>
-          <li>Designed multi-stage curriculum training pipeline (4 robots → 10 robots → 20 robots) to progressively increase task difficulty</li>
-          <li>Validated policy generalisation across circle and random initialisation scenarios with up to 20 simultaneous agents</li>
-        </ul>
-        <div class="project-footer">
-          <a class="project-link" href="https://github.com/ElsaLopez133/rl_rvo_nav" target="_blank">GitHub</a>
-        </div>
-      </div>
-
-      <!-- Pharmaceutical VAE -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Deep Learning · Computer Vision</span>
-          <div class="project-badges">
-            <span class="badge badge-python">PyTorch</span>
-            <span class="badge badge-python">scikit-learn</span>
-            <span class="badge badge-python">OpenCV</span>
-          </div>
-        </div>
-        <h3>Semi-Supervised Deep Learning for Pharmaceutical Imaging (IBISC)</h3>
-        <p class="project-desc">
-          Built a semi-supervised classification pipeline for automated quality control of microscopic
-          flow imaging (MFI) particle images in a pharmaceutical manufacturing context, addressing
-          a dataset of over 190,000 images with significant class imbalance and label noise.
-        </p>
-        <ul class="project-highlights">
-          <li>Convolutional Variational Autoencoder (VAE) trained to learn compact latent representations combining texture, shape, and geometric features</li>
-          <li>Semi-supervised approach leverages the large unlabelled pool — critical when expert annotation is expensive in regulated pharmaceutical environments</li>
-          <li>Improved binary classification accuracy from 70% to 86% after systematic class-imbalance correction and mislabelling audit</li>
-          <li>Evaluated with confusion matrices, PCA, t-SNE, and reconstruction loss to understand failure modes and latent space structure</li>
-        </ul>
-        <div class="project-footer">
-          <span class="highlight-stat">+16 pp accuracy gain</span>
-          <span class="highlight-stat">190k+ images</span>
-          <a class="project-link" href="https://github.com/ElsaLopez133/ibisc-pharmaceutical_imaging" target="_blank">GitHub</a>
-        </div>
-      </div>
-
-      <!-- HPC Dijkstra -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">High-Performance Computing · Parallel Algorithms</span>
-          <div class="project-badges">
-            <span class="badge">C</span>
-            <span class="badge">MPI</span>
-            <span class="badge">OpenMP</span>
-            <span class="badge badge-python">Python</span>
-          </div>
-        </div>
-        <h3>Parallel Dijkstra for HPC Clusters</h3>
-        <p class="project-desc">
-          Parallel implementations of Dijkstra's shortest-path algorithm for high-performance computing
-          environments, comparing serial, OpenMP (shared-memory) and MPI (distributed-memory) strategies
-          on randomly generated graphs and benchmarking their scaling on a computing cluster.
-        </p>
-        <ul class="project-highlights">
-          <li>Three implementations — serial, OpenMP, and MPI — sharing a common graph-generation and benchmarking pipeline</li>
-          <li>Python tooling to generate random graphs and visualise results, with shell scripts for cluster job submission via <code>qsub</code></li>
-          <li>Evaluated parallel speedup and scaling behaviour across varying graph sizes and core counts on an MPICH cluster</li>
-        </ul>
-        <div class="project-footer">
-          <a class="project-link" href="https://github.com/ElsaLopez133/HPC-for-Data-Science" target="_blank">GitHub</a>
-        </div>
-      </div>
-
-      <!-- Data Mining -->
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Data Mining · Recommendation Systems</span>
-          <div class="project-badges">
-            <span class="badge badge-python">Python</span>
-            <span class="badge badge-python">Jupyter</span>
-            <span class="badge">Query Mining</span>
-          </div>
-        </div>
+      <div class="ml-card" style="--w:70%">
+        <p class="ml-kicker">Data Mining · Recommendation</p>
         <h3>Query Recommendation &amp; Importance Mining</h3>
-        <p class="project-desc">
-          A data mining project in two parts: a query recommendation system that suggests relevant queries
-          to users, and a method to quantify the importance of a query to a given user — applied to a
-          real-estate (house) search dataset.
-        </p>
-        <ul class="project-highlights">
-          <li>Built a query recommendation engine from user–query interaction data</li>
-          <li>Designed a scoring method to estimate how important a query is to each user</li>
-          <li>Modular notebooks with reusable auxiliary and database-handling functions over JSON-backed data</li>
+        <p>A two-part system: a query-recommendation engine built from user–query interaction data, plus a scoring method quantifying how important a query is to each user — applied to a real-estate search dataset.</p>
+        <div class="ml-tags"><span>Python</span><span>Jupyter</span><span>Query Mining</span></div>
+        <a href="https://github.com/ElsaLopez133/Data-Mining-Project" target="_blank">GitHub ↗</a>
+      </div>
+
+      <div class="ml-card" style="--w:80%">
+        <p class="ml-kicker">High-Performance Computing</p>
+        <h3>Parallel Dijkstra for HPC Clusters</h3>
+        <p>Serial, OpenMP and MPI implementations of shortest-path search sharing one benchmarking pipeline, with Python graph generation and <code>qsub</code> cluster jobs — measuring speedup and scaling on an MPICH cluster.</p>
+        <div class="ml-tags"><span>C</span><span>MPI</span><span>OpenMP</span><span>Python</span></div>
+        <a href="https://github.com/ElsaLopez133/HPC-for-Data-Science" target="_blank">GitHub ↗</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════ WORLD 3 — SPORTS / DASHBOARD ════════════════════════ -->
+<div class="world" id="world-sports" aria-hidden="true">
+  <div class="world-bar">
+    <button class="back-btn" onclick="closeWorld()">◂ esc :: back to hub</button>
+    <div class="world-switch">
+      <button onclick="openWorld('crypto')" title="Crypto world">🔐</button>
+      <button onclick="openWorld('ml')" title="ML world">🤖</button>
+    </div>
+  </div>
+  <div class="world-inner">
+    <p class="world-tag">▶ activity started · syncing wearables</p>
+    <h2 class="world-title">Sports Performance &amp; Physiology</h2>
+    <p class="world-lede">Where <span class="hl">rigorous data work meets the human body</span>. I turn longitudinal wearable signals into <span class="hl">recovery, load and performance insight</span> — and coach it on the road too.</p>
+
+    <div class="stat-rings">
+      <div class="ring-card">
+        <svg viewBox="0 0 64 64"><circle class="ring-bg" cx="32" cy="32" r="28"/><circle class="ring-fg" cx="32" cy="32" r="28" stroke="#ff3d5f" style="--off:18"/></svg>
+        <div class="rc-meta"><div class="rc-num">HRV</div><div class="rc-lbl">recovery signal</div></div>
+      </div>
+      <div class="ring-card">
+        <svg viewBox="0 0 64 64"><circle class="ring-bg" cx="32" cy="32" r="28"/><circle class="ring-fg" cx="32" cy="32" r="28" stroke="#ff7a18" style="--off:44"/></svg>
+        <div class="rc-meta"><div class="rc-num">Sleep</div><div class="rc-lbl">architecture</div></div>
+      </div>
+      <div class="ring-card">
+        <svg viewBox="0 0 64 64"><circle class="ring-bg" cx="32" cy="32" r="28"/><circle class="ring-fg" cx="32" cy="32" r="28" stroke="#ffb01f" style="--off:70"/></svg>
+        <div class="rc-meta"><div class="rc-num">Load</div><div class="rc-lbl">training stress</div></div>
+      </div>
+    </div>
+
+    <div class="hr-strip">
+      <h4>♥ HRV, resting HR &amp; menstrual-cycle phases · real wearable data</h4>
+      <img class="sport-plot" src="assets/garmin/hrv-rhr-cycle.png" alt="Daily HRV and resting HR over three months, shaded by menstrual cycle phase" loading="lazy" onclick="zoom(this.src)">
+      <p class="sport-cap">Continuous Garmin record: daily HRV (rMSSD, blue) against its baseline band and resting HR (red), with the background shaded by cycle phase — menstrual, follicular, ovulation and luteal. <em>Click to enlarge.</em></p>
+    </div>
+
+    <div class="sport-cards">
+      <div class="sport-card">
+        <p class="sc-kicker">Time-Series ML · Personal Research</p>
+        <h3>Cycle-Phase &amp; Ovulation Prediction from Wearables</h3>
+        <p>An end-to-end privacy-preserving platform collecting longitudinal HRV, resting HR, sleep, stress and training-load data from multiple participants, with a multi-class time-series pipeline to model cycle phases and detect ovulation from continuous biosignals.</p>
+        <ul>
+          <li>FastAPI web app + packaged cross-platform desktop app that gathers wearable data without ever storing credentials</li>
+          <li>Rolling-window feature engineering — lag features, past-only rolling means, day-to-day deltas across HRV, sleep stages &amp; load</li>
+          <li>Statistically validated the follicular→luteal (ovulation) transition is detectable from resting HR &amp; HRV (large effect sizes)</li>
         </ul>
-        <div class="project-footer">
-          <a class="project-link" href="https://github.com/ElsaLopez133/Data-Mining-Project" target="_blank">GitHub</a>
-        </div>
-      </div>
 
-      <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Machine Learning · Statistical Theory</span>
-          <div class="project-badges">
-            <span class="badge badge-python">Python</span>
-            <span class="badge">Gaussian Processes</span>
-            <span class="badge">PAC-Bayes</span>
-          </div>
+        <p class="sc-kicker" style="margin-top:0.4rem;">Key result · ovulation detection</p>
+        <img class="sport-plot" src="assets/garmin/ovulation-detection.jpg" alt="Cycle-aligned resting HR and HRV across the estimated ovulation boundary" loading="lazy" onclick="zoom(this.src)">
+        <p class="sport-cap">Averaged across 27 cycles and aligned to the estimated ovulation day (green line): resting HR steps <strong>up</strong> after ovulation while HRV drops <strong>down</strong> — a clean, statistically robust physiological signature. <em>Click to enlarge.</em></p>
+        <div class="sport-stats">
+          <span class="sport-stat">RHR ↑ +1.81 bpm · d = 1.53</span>
+          <span class="sport-stat">HRV ↓ −5.08 ms · d = −0.59</span>
+          <span class="sport-stat">p ≤ 0.005 · n = 27 cycles</span>
         </div>
-        <h3>Supervised Learning based on Gaussian Processes</h3>
-        <p class="project-desc">
-          Bachelor's thesis exploring the theoretical foundations of Gaussian process regression,
-          its connection to kernel-based methods, and statistical regularization. Grounded theoretical
-          results in experiments on real-world data.
-        </p>
-        <ul class="project-highlights">
-          <li>Studied PAC-Bayesian performance guarantees for supervised learning, connecting theory to practice</li>
-          <li>Analysed the equivalence between Gaussian process regression and kernel ridge regression</li>
-          <li>Applied GP regression to a 7-DOF anthropomorphic robotic arm: mapping a 21-dimensional input space to the corresponding 7 torque outputs</li>
-          <li>Validated theoretical results through experiments on real-world datasets</li>
-        </ul>
-        <div class="project-footer">
-          <a class="project-link" href="https://uvadoc.uva.es/handle/10324/50614" target="_blank">↗ Full thesis</a>
-        </div>
-      </div>
-      
-      <!-- <div class="project-card">
-        <div class="project-header">
-          <span class="project-kicker">Computational Physics · Simulation</span>
-          <div class="project-badges">
-            <span class="badge">Monte Carlo</span>
-            <span class="badge">Thermodynamics</span>
-            <span class="badge">Materials Science</span>
-          </div>
-        </div>
-        <h3>Monte Carlo Simulations for Hydrogen Storage in Polymers (PIMs)</h3>
-        <p class="project-desc">
-          Physics bachelor's thesis modelling hydrogen storage in microporous polymers as a clean
-          alternative fuel for hydrogen vehicles, using Monte Carlo simulations to evaluate
-          gravimetric and volumetric storage capacity across temperature and pressure conditions.
-        </p>
-        <ul class="project-highlights">
-          <li>Simulated HPB-PIM, PIM-TMN-Trip, and PIM-1 using Metropolis Monte Carlo at varying temperatures and pressures</li>
-          <li>Results showed strong agreement with experimental data, confirming PIMs as promising hydrogen storage materials</li>
-          <li>Work linked to the PROMETEO scholarship for market-oriented prototype development</li>
-        </ul>
-        <div class="project-footer">
-          <a class="project-link" href="https://uvadoc.uva.es/handle/10324/50711" target="_blank">↗ Full thesis</a>
-        </div>
-      </div> -->
-      
-    </div>
-  </div>
-</section>
 
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="container">
-    <p class="section-label">Career</p>
-    <h2>Experience &amp; Education</h2>
-    <div class="timeline">
-
-      <div class="timeline-item">
-        <div class="timeline-meta">
-          <strong>Inria · Sorbonne</strong>
-          Nov 2023 – Dec 2026<br>Paris, France
-        </div>
-        <div class="timeline-body">
-          <h4>Inria – Sorbonne Université</h4>
-          <p class="role">PhD Researcher — Secure IoT Protocols</p>
-          <ul>
-            <li>Designed, implemented, and formally verified the EDHOC-PSK authentication protocol for constrained IoT devices using SAPIC+</li>
-            <li>Identified authentication and identity-protection weaknesses under advanced adversary models including post-quantum attackers</li>
-            <li>Benchmarked performance and memory footprint on ARM Cortex-M platforms</li>
-            <li>Contributed protocol specifications directly to the IETF LAKE standardization process</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-meta">
-          <strong>Nokia Bell Labs</strong>
-          Mar – Aug 2023<br>Paris, France
-        </div>
-        <div class="timeline-body">
-          <h4>Nokia Bell Labs</h4>
-          <p class="role">Research Intern — Reinforcement Learning &amp; Multi-Robot Systems</p>
-          <ul>
-            <li>Integrated and re-trained a PPO-based multi-agent navigation policy within a ROS robotics stack</li>
-            <li>Led simulation-to-real transfer analysis, resolving deployment failures from sensing noise and actuation delays</li>
-            <li>Improved navigation success rate to 98% in randomised high-fidelity simulation</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-meta">
-          <strong>IBISC · Paris-Saclay</strong>
-          May – Aug 2022<br>Évry, France
-        </div>
-        <div class="timeline-body">
-          <h4>IBISC – Université Paris-Saclay</h4>
-          <p class="role">ML Intern — AI for Pharmaceutical Imaging</p>
-          <ul>
-            <li>Built a semi-supervised deep learning pipeline for automated classification of 190k+ MFI particle images</li>
-            <li>Improved binary classification accuracy from 70% to 86% by addressing class imbalance and dataset mislabelling</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-meta">
-          <strong>Education</strong>
-          2016 – 2026
-        </div>
-        <div class="timeline-body">
-          <h4>Academic Background</h4>
-          <p class="role">PhD · Master · Double Bachelor</p>
-          <ul>
-            <li><strong>PhD in Secure Protocols</strong> — Sorbonne Université &amp; Inria (2023–2026)</li>
-            <li><strong>EIT Digital Master in Data Science &amp; AI</strong> — Université Paris-Saclay &amp; Università di Trento (2021–2023)</li>
-            <li><strong>Double Bachelor, Mathematics &amp; Physics</strong> — Univ. of Valladolid &amp; Univ. of Dundee, Erasmus (2016–2021)</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- PUBLICATIONS -->
-<section id="publications">
-  <div class="container">
-    <p class="section-label">Research</p>
-    <h2>Selected Publications</h2>
-    <p style="margin-bottom: 1.5rem;">
-      <a class="project-link" href="https://scholar.google.com/citations?user=Lw9WMpUAAAAJ&hl=es" target="_blank">↗ View full list on Google Scholar</a>
-    </p>
-    <div class="pubs">
-      <div class="pub-item">
-        <span class="pub-year">2026</span>
-        <div class="pub-body">
-          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:ufrVoPGSRksC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">embedded-cal: A Formally Verified Cryptographic Provider for Embedded Platforms</a>
-            <span class="pub-award">🏆 Best Paper</span>
-          </h4>
-          <p>Elsa López Pérez et al. — SPT-IoT 2026</p>
-        </div>
-      </div>
-      <div class="pub-item">
-        <span class="pub-year">2026</span>
-        <div class="pub-body">
-          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:roLk4NBRz8UC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">Formal Verification of EDHOC-PSK: A Symbolic Approach</a></h4>
-          <p>Elsa López Pérez et al. — ACM ASIACCS 2026</p>
-        </div>
-      </div>
-      <div class="pub-item">
-        <span class="pub-year">2025</span>
-        <div class="pub-body">
-          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:eQOLeE2rZwMC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">Pre-Shared Key Authentication With EDHOC: The Security–Performance Tradeoff</a></h4>
-          <p>Elsa López Pérez et al. — IEEE Access 2025</p>
-        </div>
-      </div>
-      <div class="pub-item">
-        <span class="pub-year">2024</span>
-        <div class="pub-body">
-          <h4><a href="https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">EDHOC Authenticated with Pre-Shared Keys (PSK)</a></h4>
-          <p>Elsa López Pérez et al. — IETF Internet Draft 2024</p>
-        </div>
-      </div>
-      <div class="pub-item">
-        <span class="pub-year">2024</span>
-        <div class="pub-body">
-          <h4><a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:u-x6o8ySG0sC" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #c3d4fb;">EDHOC is a New Security Handshake Standard</a></h4>
-          <p>Elsa López Pérez et al. — IEEE Computer 2024</p>
-        </div>
+        <a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="container">
-    <p class="section-label">Toolbox</p>
-    <h2>Skills</h2>
-    <div class="skills-grid">
-      <div class="skill-group">
-        <h4>Languages</h4>
-        <p>Rust (embedded cryptography), C/C++ (microcontroller drivers), Python (ML pipelines)</p>
+    <div class="sport-block-title">🎓 Coaching education &amp; certifications</div>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <h5>Advanced Triathlon Coaching</h5>
+        <p class="cert-cat">Triathlon · Middle &amp; Long Distance</p>
       </div>
-      <div class="skill-group">
-        <h4>ML &amp; Data Science</h4>
-        <p>PyTorch, scikit-learn, TensorFlow, time-series analysis, multi-agent RL, VAEs, PPO</p>
+      <div class="cert-card">
+        <h5>Triathlon Coaching — Long-Distance Training</h5>
+        <p class="cert-cat">Triathlon</p>
       </div>
-      <div class="skill-group">
-        <h4>Formal Methods</h4>
-        <p>Tamarin Prover, ProVerif, SAPIC+, symbolic security analysis, protocol modelling</p>
+      <div class="cert-card">
+        <h5>TrainingPeaks</h5>
+        <p class="cert-cat">Endurance Sports</p>
       </div>
-      <div class="skill-group">
-        <h4>Embedded &amp; Hardware</h4>
-        <p>ARM Cortex-M, STM32WBA55, nRF54, bare-metal Rust, hardware crypto accelerators</p>
+      <div class="cert-card">
+        <h5>HIIT Training</h5>
+        <p class="cert-cat">Sports Science</p>
       </div>
-      <div class="skill-group">
-        <h4>Robotics</h4>
-        <p>ROS, Gazebo simulation, sim-to-real transfer, multi-robot coordination</p>
-      </div>
-      <div class="skill-group">
-        <h4>Standardization</h4>
-        <p>IETF LAKE Working Group contributor, RFC 9528 (EDHOC), CoAP, COSE, CBOR, OSCORE</p>
-      </div>
-      <div class="skill-group">
-        <h4>Languages spoken</h4>
-        <p>Spanish (native), English (proficient), French (proficient), Italian (intermediate)</p>
-      </div>
-      <div class="skill-group">
-        <h4>Beyond the terminal</h4>
-        <p>Professional saxophone diploma · Level 2 Triathlon coach · Triathlon athlete</p>
+      <div class="cert-card">
+        <h5>Cycling Biomechanics Coaching</h5>
+        <p class="cert-cat">Cycling</p>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <p>Elsa López Pérez — <a href="mailto:elsa.lopez.133@outlook.es">elsa.lopez.133@outlook.es</a></p>
-    <p>+33 07 45 47 36 40 · <a href="https://www.linkedin.com/in/elopezpe" target="_blank">LinkedIn</a> · <a href="https://github.com/ElsaLopez133" target="_blank">GitHub</a></p>
+    <div class="sport-pills">
+      <div class="sport-pill">🥇 <b>Level 2</b> certified triathlon coach</div>
+      <div class="sport-pill">🏊🚴🏃 Triathlon <b>athlete</b></div>
+      <div class="sport-pill">📊 Recovery · Load · Performance</div>
+    </div>
   </div>
-</footer>
+</div>
 
+<!-- ════════════════════════ CASE STUDY OVERLAY ════════════════════════ -->
+<div class="case-overlay" id="case-study" aria-hidden="true">
+  <div class="case-panel">
+    <button class="case-close" onclick="closeCase()">✕ close</button>
+    <div id="case-content"></div>
+  </div>
+</div>
+
+<div id="lightbox" onclick="this.classList.remove('open')"><img alt="enlarged plot"></div>
+
+<div id="egg">⌨ achievement unlocked: you found the konami code 🏆</div>
+
+<script>
+const body = document.body;
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let activeWorld = null;
+
+function openWorld(w) {
+  activeWorld = w;
+  body.dataset.world = w;
+  window.scrollTo(0, 0);
+  if (w === 'crypto') startTerminal();
+  if (w === 'ml') { startNeural(); revealMlCards(); animateCounters(); }
+  history.replaceState(null, '', '#' + w);
+}
+function closeWorld() {
+  activeWorld = null;
+  body.dataset.world = 'hub';
+  body.classList.remove('term-ready');
+  stopNeural();
+  history.replaceState(null, '', '#hub');
+}
+document.addEventListener('keydown', function(e){
+  const caseOpen = document.getElementById('case-study').classList.contains('open');
+  if (e.key === 'Escape') {
+    const lb = document.getElementById('lightbox');
+    if (lb.classList.contains('open')) { lb.classList.remove('open'); return; }
+    if (caseOpen) { closeCase(); return; }
+    if (activeWorld) closeWorld();
+    return;
+  }
+  if (caseOpen && caseKey === 'ibisc') {
+    if (e.key === 'ArrowRight') ibiscGo(stepIdx + 1);
+    if (e.key === 'ArrowLeft')  ibiscGo(stepIdx - 1);
+  }
+});
+
+/* ───────── Terminal world ───────── */
+const cryptoProjects = [
+  { cmd: 'cat lakers/EDHOC-PSK.rs',
+    head: '🔐 EDHOC-PSK — lakers crate',
+    meta: 'Rust · no_std · IETF LAKE · RFC 9528',
+    desc: 'Core contributor to lakers, the reference Rust implementation of EDHOC. Designed and built the Pre-Shared Key authentication extension with the IETF LAKE WG — runs on ARM Cortex-M with kilobytes of RAM, with hardware and software crypto backends and C/Python bindings.',
+    stat: '★ 70k+ crate downloads',
+    links: [['GitHub','https://github.com/ElsaLopez133/lakers'],['crates.io','https://crates.io/crates/lakers'],['IETF Draft','https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/']] },
+  { cmd: 'tamarin-prover ./edhoc-psk.spthy --prove',
+    head: '🔐 Formal Security Analysis of EDHOC-PSK',
+    meta: 'SAPIC+ → Tamarin + ProVerif · Python',
+    desc: 'Symbolic proofs of authentication, secrecy, anonymity and unlinkability under advanced adversaries — including post-quantum Save-Now-Decrypt-Later attackers. Found concrete weaknesses fed back into the IETF process. One-command Dockerised reproduction. Published at ACM ASIACCS 2026.',
+    stat: '✔ verified across two provers',
+    links: [['GitHub (core)','https://github.com/ElsaLopez133/edhoc-psk-formal-analysis'],['5G variant','https://github.com/ElsaLopez133/edhoc-psk-5g-formal-analysis'],['Attestation','https://github.com/ElsaLopez133/edhoc-psk-attestation-formal-analysis']] },
+  { cmd: './bench --target stm32wba55 --hw-accel',
+    head: '🔐 embedded-cal — Formally Verified Crypto Provider',
+    meta: 'Rust · STM32 · nRF54 · ARM Cortex-M',
+    desc: 'Co-designed with Cryspen: a reusable Rust crypto abstraction layer giving uniform access to hardware-accelerated and formally verified software primitives. One unified HAL over STM32 PKA/AES/SHA and Nordic CC310 — switch targets with zero code change. Memory-safety and secret-independence verified against HACL*.',
+    stat: '🏆 Best Paper Award — SPT-IoT 2026',
+    links: [['STM32 repo','https://github.com/ElsaLopez133/stm32wba55-crypto']] },
+];
+
+let terminalDone = false;
+function startTerminal() {
+  body.classList.remove('term-ready');
+  const cursor = document.getElementById('term-cursor');
+  if (terminalDone || reduce) { renderTerminalInstant(); return; }
+  terminalDone = true;
+  const stream = document.getElementById('term-stream');
+  stream.textContent = '';
+  cursor.style.display = 'inline-block';
+  const bootLines = [
+    { prompt: true, t: 'elsa@inria:~$ ', after: './decrypt --section crypto-iot' },
+    { t: '[  ok  ] mounting secure enclave…' },
+    { t: '[  ok  ] verifying HACL* primitives…' },
+    { t: '[  ok  ] handshake complete — welcome 👋' },
+    { t: '' },
+    { t: '>>> 3 projects decrypted. printing…' },
+    { t: '' },
+  ];
+  let li = 0, ci = 0;
+  function typeLine() {
+    if (li >= bootLines.length) { cursor.style.display = 'none'; printProjects(); return; }
+    const line = bootLines[li];
+    const full = (line.after !== undefined ? line.t + line.after : line.t);
+    if (ci < full.length) {
+      stream.append(full[ci]); ci++;
+      setTimeout(typeLine, line.after !== undefined ? 26 : 7);
+    } else {
+      stream.append('\n'); li++; ci = 0;
+      setTimeout(typeLine, 110);
+    }
+  }
+  typeLine();
+}
+
+function printProjects() {
+  const wrap = document.getElementById('term-projects');
+  wrap.innerHTML = '';
+  cryptoProjects.forEach(function(p, i){
+    setTimeout(function(){
+      const div = document.createElement('div');
+      div.className = 'crypto-proj';
+      div.innerHTML =
+        '<div class="cp-meta">$ ' + p.cmd + '</div>' +
+        '<div class="cp-head">' + p.head + '</div>' +
+        '<div class="cp-meta">' + p.meta + '</div>' +
+        '<div class="cp-desc">' + p.desc + '</div>' +
+        '<div class="cp-stat">' + p.stat + '</div>' +
+        '<div style="margin-top:0.4rem;">' + p.links.map(function(l){ return '<a href="'+l[1]+'" target="_blank">'+l[0]+' ↗</a>'; }).join('  ·  ') + '</div>';
+      wrap.appendChild(div);
+      if (i === cryptoProjects.length - 1) body.classList.add('term-ready');
+    }, i * 450);
+  });
+}
+
+function renderTerminalInstant() {
+  const stream = document.getElementById('term-stream');
+  document.getElementById('term-cursor').style.display = 'none';
+  stream.textContent = 'elsa@inria:~$ ./decrypt --section crypto-iot\n>>> 3 projects decrypted.\n';
+  printProjects();
+  body.classList.add('term-ready');
+}
+
+/* tiny interactive prompt */
+document.getElementById('term-input').addEventListener('keydown', function(e){
+  if (e.key !== 'Enter') return;
+  const v = this.value.trim().toLowerCase();
+  const out = document.getElementById('term-projects');
+  if (v === 'ml') { this.value=''; openWorld('ml'); return; }
+  if (v === 'sports') { this.value=''; openWorld('sports'); return; }
+  if (v === 'exit') { this.value=''; closeWorld(); return; }
+  if (v === 'clear') { out.innerHTML=''; this.value=''; return; }
+  if (v === '') return;
+  let resp = '';
+  if (v === 'help') resp = "commands: <span style='color:#ffd479'>projects</span>, <span style='color:#ffd479'>whoami</span>, <span style='color:#ffd479'>ml</span>, <span style='color:#ffd479'>sports</span>, <span style='color:#ffd479'>clear</span>, <span style='color:#ffd479'>exit</span>";
+  else if (v === 'whoami') resp = "elsa — PhD @ Inria/Sorbonne · IETF LAKE contributor · breaks and builds crypto protocols for tiny devices";
+  else if (v === 'projects') resp = "lakers (EDHOC-PSK) · formal analysis · embedded-cal — scroll up ↑";
+  else resp = "command not found: " + v + " — try <span style='color:#ffd479'>help</span>";
+  const echo = document.createElement('div');
+  echo.className = 'cp-meta';
+  echo.style.marginTop = '0.8rem';
+  echo.innerHTML = "<span class='term-prompt-line'>$</span> " + v + "<br>" + resp;
+  out.appendChild(echo);
+  this.value = '';
+  echo.scrollIntoView(false);
+});
+
+/* ───────── Neural canvas (ML world) ───────── */
+let neuralRAF = null, neuralResize = null;
+function startNeural() {
+  if (reduce) return;
+  const cv = document.getElementById('neural-canvas');
+  const ctx = cv.getContext('2d');
+  function resize(){ cv.width = innerWidth; cv.height = innerHeight; }
+  resize();
+  neuralResize = resize;
+  window.addEventListener('resize', resize);
+  const N = Math.min(70, Math.floor(innerWidth / 22));
+  const nodes = Array.from({length:N}, function(){ return {
+    x: Math.random()*innerWidth, y: Math.random()*innerHeight,
+    vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4
+  }; });
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for (const n of nodes){
+      n.x += n.vx; n.y += n.vy;
+      if (n.x<0 || n.x>cv.width) n.vx *= -1;
+      if (n.y<0 || n.y>cv.height) n.vy *= -1;
+    }
+    for (let i=0;i<nodes.length;i++){
+      for (let j=i+1;j<nodes.length;j++){
+        const a=nodes[i], b=nodes[j];
+        const d=Math.hypot(a.x-b.x, a.y-b.y);
+        if (d<130){
+          ctx.strokeStyle = 'rgba(124,92,246,' + (0.16*(1-d/130)) + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    for (const n of nodes){
+      ctx.fillStyle = 'rgba(103,232,249,0.8)';
+      ctx.beginPath(); ctx.arc(n.x,n.y,1.8,0,7); ctx.fill();
+    }
+    neuralRAF = requestAnimationFrame(draw);
+  }
+  cancelAnimationFrame(neuralRAF);
+  draw();
+}
+function stopNeural(){
+  if (neuralRAF) cancelAnimationFrame(neuralRAF);
+  neuralRAF = null;
+  if (neuralResize) { window.removeEventListener('resize', neuralResize); neuralResize = null; }
+}
+
+function revealMlCards(){
+  const cards = document.querySelectorAll('#world-ml .ml-card');
+  cards.forEach(function(c,i){ setTimeout(function(){ c.classList.add('in'); }, reduce?0:i*110); });
+}
+function animateCounters(){
+  document.querySelectorAll('#world-ml .num[data-count]').forEach(function(el){
+    const target = +el.dataset.count, suffix = el.dataset.suffix || '';
+    if (reduce){ el.textContent = target + suffix; return; }
+    let cur = 0; const step = Math.max(1, Math.round(target/40));
+    const t = setInterval(function(){ cur += step; if (cur>=target){ cur=target; clearInterval(t);} el.textContent = cur + suffix; }, 30);
+  });
+}
+
+/* ───────── Lightbox (click any plot to enlarge) ───────── */
+function zoom(src) {
+  const lb = document.getElementById('lightbox');
+  lb.querySelector('img').src = src;
+  lb.classList.add('open');
+}
+
+/* ───────── Case studies (IBISC pipeline + Nokia media) ───────── */
+let caseKey = null, stepIdx = 0;
+
+const ibiscSteps = [
+  { img: 'assets/ibisc-vae/01-snippets.png',
+    title: '1 · Snippet creation',
+    text: 'Each full microscopic flow-imaging (MFI) scan is scanned for particles, which are detected and cropped into fixed-size snippets — turning one wafer-scale image into thousands of training examples.' },
+  { img: 'assets/ibisc-vae/02-labelling.png',
+    title: '2 · Labelling',
+    text: 'A subset of snippets is expert-labelled (drug vs placebo / particle vs artefact). The vast majority of the 190k+ pool stays unlabelled — which is exactly what the semi-supervised approach is built to exploit.' },
+  { img: 'assets/ibisc-vae/03-architecture.png',
+    title: '3 · VAE design',
+    text: 'A convolutional VAE: a CNN encoder compresses each snippet into a low-dimensional latent code, and a CNN decoder reconstructs it — forcing the network to learn compact, meaningful representations of texture and shape.' },
+  { img: 'assets/ibisc-vae/04-training.png',
+    title: '4 · Training objective',
+    text: 'Trained by minimising reconstruction loss plus a KL term that regularises the latent space, augmented with hand-crafted features (texture, circularity…). Gradients flow back through both the VAE and the feature path.' },
+  { img: 'assets/ibisc-vae/05-reconstruction.png',
+    title: '5 · Reconstruction',
+    text: 'Reconstructions closely track the originals — evidence that the learned latent space genuinely captures the shape and texture that distinguish particle types, not just noise.' },
+  { img: 'assets/ibisc-vae/06-results.png',
+    title: '6 · Results',
+    text: 'A classifier over the learned latent space reaches 86.41% accuracy on the held-out test set — up from a 70% baseline after correcting class imbalance and auditing mislabelled data.' },
+];
+
+function openCase(key) {
+  caseKey = key;
+  const el = document.getElementById('case-content');
+  if (key === 'ibisc') { stepIdx = 0; renderIbisc(); }
+  else if (key === 'nokia') { el.innerHTML = nokiaHTML(); }
+  document.getElementById('case-study').classList.add('open');
+}
+function closeCase() {
+  const ov = document.getElementById('case-study');
+  ov.querySelectorAll('video').forEach(function(v){ v.pause(); });
+  ov.classList.remove('open');
+  caseKey = null;
+}
+/* click backdrop to close */
+document.getElementById('case-study').addEventListener('click', function(e){
+  if (e.target === this) closeCase();
+});
+
+function ibiscGo(i) {
+  stepIdx = Math.max(0, Math.min(ibiscSteps.length - 1, i));
+  renderIbisc();
+}
+function renderIbisc() {
+  const s = ibiscSteps[stepIdx];
+  const dots = ibiscSteps.map(function(_, i){
+    return '<button class="' + (i === stepIdx ? 'active' : '') + '" onclick="ibiscGo(' + i + ')">' + (i + 1) + '</button>';
+  }).join('');
+  document.getElementById('case-content').innerHTML =
+    '<h2 class="case-h">Semi-Supervised VAE — the full pipeline</h2>' +
+    '<p class="case-sub">IBISC · Université Paris-Saclay · 190k+ MFI images</p>' +
+    '<div class="step-dots">' + dots + '</div>' +
+    '<div class="step-stage"><img src="' + s.img + '" alt="' + s.title + '"></div>' +
+    '<div class="step-title">' + s.title + '</div>' +
+    '<div class="step-text">' + s.text + '</div>' +
+    '<div class="step-nav">' +
+      '<button onclick="ibiscGo(' + (stepIdx - 1) + ')" ' + (stepIdx === 0 ? 'disabled' : '') + '>◂ prev</button>' +
+      '<span class="step-count">' + (stepIdx + 1) + ' / ' + ibiscSteps.length + ' · ← → to navigate</span>' +
+      '<button onclick="ibiscGo(' + (stepIdx + 1) + ')" ' + (stepIdx === ibiscSteps.length - 1 ? 'disabled' : '') + '>next ▸</button>' +
+    '</div>';
+}
+
+function nokiaHTML() {
+  return '' +
+    '<h2 class="case-h">Multi-Robot Navigation with RVO-Shaped RL</h2>' +
+    '<p class="case-sub">Nokia Bell Labs · PPO · ROS · Gazebo · sim-to-real</p>' +
+    '<p class="case-intro">A PPO-based multi-agent navigation policy, re-trained with a Reciprocal Velocity Obstacle (RVO) shaped reward and transferred from high-fidelity Gazebo simulation toward physical deployment. Below: the policy in action, the curriculum that builds it up, and the trajectories it produces.</p>' +
+
+    '<div class="case-media-grid">' +
+      '<div class="case-fig"><video src="assets/nokia/video-1.webm" controls muted loop playsinline preload="metadata"></video>' +
+        '<p class="case-cap"><b>Simulation</b>Multi-robot navigation rollout in Gazebo.</p></div>' +
+      '<div class="case-fig"><video src="assets/nokia/video-2.webm" controls muted loop playsinline preload="metadata"></video>' +
+        '<p class="case-cap"><b>High-fidelity scenario</b>Dense, randomised high-fidelity transfer test.</p></div>' +
+    '</div>' +
+
+    '<div class="case-block-title">Curriculum training (4 → 10 → 20 robots)</div>' +
+    '<div class="case-fig"><img src="assets/nokia/curriculum-phases.png" alt="Three curriculum phases of increasing difficulty" loading="lazy">' +
+      '<p class="case-cap"><b>Progressive difficulty</b>Phase 1: 4 robots, empty world · Phase 2: 10 robots, empty world · Phase 3: 10 robots with walls. Each stage seeds the next so the policy scales to dense, obstacle-rich scenes.</p></div>' +
+
+    '<div class="case-block-title">Navigation results</div>' +
+    '<div class="case-media-grid">' +
+      '<div class="case-fig"><img src="assets/nokia/trajectory-swap.png" alt="Two-robot position-swap trajectories" loading="lazy">' +
+        '<p class="case-cap"><b>Position swap</b>Two agents swap goals (g0 ↔ g1) with smooth, collision-free paths.</p></div>' +
+      '<div class="case-fig"><img src="assets/nokia/trajectory-pose.png" alt="Robot pose trajectory plot" loading="lazy">' +
+        '<p class="case-cap"><b>Pose tracking</b>Recorded pose vs orientation over a full navigation run (v_max 1.5).</p></div>' +
+    '</div>';
+}
+
+/* ───────── Konami easter egg ───────── */
+const konami = ['arrowup','arrowup','arrowdown','arrowdown','arrowleft','arrowright','arrowleft','arrowright','b','a'];
+let kPos = 0;
+document.addEventListener('keydown', function(e){
+  const key = e.key.toLowerCase();
+  kPos = (key === konami[kPos]) ? kPos+1 : (key === konami[0] ? 1 : 0);
+  if (kPos === konami.length){
+    kPos = 0;
+    const egg = document.getElementById('egg');
+    egg.classList.add('show');
+    setTimeout(function(){ egg.classList.remove('show'); }, 3500);
+  }
+});
+
+/* deep-link support */
+const h = location.hash.replace('#','');
+if (['crypto','ml','sports'].indexOf(h) !== -1) openWorld(h);
+</script>
 </body>
 </html>
