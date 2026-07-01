@@ -892,21 +892,54 @@
 const body = document.body;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeWorld = null;
+const WORLDS = ['crypto', 'ml', 'sports'];
 
-function openWorld(w) {
+/* Render a world (or the hub) without touching history. */
+function renderWorld(w) {
+  if (!WORLDS.includes(w)) w = 'hub';
+  if (w === 'hub') {
+    if (activeWorld === null) return;
+    activeWorld = null;
+    body.dataset.world = 'hub';
+    body.classList.remove('term-ready');
+    stopNeural();
+    return;
+  }
+  if (w === activeWorld) return;
   activeWorld = w;
   body.dataset.world = w;
   window.scrollTo(0, 0);
   if (w === 'crypto') startTerminal();
   if (w === 'ml') { startNeural(); revealMlCards(); animateCounters(); }
-  history.replaceState(null, '', '#' + w);
 }
+
+/* Navigate to a world. Entering from the hub pushes a new history entry so
+   the browser / phone back button returns to the hub; switching between
+   worlds replaces it so back always lands on the hub, not a prior world. */
+function openWorld(w) {
+  if (activeWorld) history.replaceState({ world: w }, '', '#' + w);
+  else history.pushState({ world: w }, '', '#' + w);
+  renderWorld(w);
+}
+/* Esc / on-screen "back to hub" — pop the history entry so state stays in sync
+   with the back button. */
 function closeWorld() {
-  activeWorld = null;
-  body.dataset.world = 'hub';
-  body.classList.remove('term-ready');
-  stopNeural();
-  history.replaceState(null, '', '#hub');
+  if (activeWorld) history.back();
+}
+
+/* Single source of truth: sync the view to the current URL. */
+function applyLocation() {
+  const raw = (location.hash || '#hub').slice(1);
+  const slash = raw.indexOf('/');
+  const wPart = slash === -1 ? raw : raw.slice(0, slash);
+  const cPart = slash === -1 ? '' : raw.slice(slash + 1);
+  renderWorld(wPart);
+  const caseOpen = document.getElementById('case-study').classList.contains('open');
+  if (cPart === 'nokia' || cPart === 'ibisc') {
+    if (!caseOpen || caseKey !== cPart) renderCase(cPart);
+  } else if (caseOpen) {
+    renderCaseClosed();
+  }
 }
 document.addEventListener('keydown', function(e){
   const caseOpen = document.getElementById('case-study').classList.contains('open');
@@ -1123,18 +1156,28 @@ const ibiscSteps = [
     text: 'A classifier over the learned latent space reaches 86.41% accuracy on the held-out test set — up from a 70% baseline after correcting class imbalance and auditing mislabelled data.' },
 ];
 
-function openCase(key) {
+/* Build/tear down the case-study overlay without touching history. */
+function renderCase(key) {
   caseKey = key;
   const el = document.getElementById('case-content');
   if (key === 'ibisc') { stepIdx = 0; renderIbisc(); }
   else if (key === 'nokia') { el.innerHTML = nokiaHTML(); }
   document.getElementById('case-study').classList.add('open');
 }
-function closeCase() {
+function renderCaseClosed() {
   const ov = document.getElementById('case-study');
   ov.querySelectorAll('video').forEach(function(v){ v.pause(); });
   ov.classList.remove('open');
   caseKey = null;
+}
+function openCase(key) {
+  history.pushState({ world: activeWorld, case: key }, '', '#' + activeWorld + '/' + key);
+  renderCase(key);
+}
+/* Backdrop click / ✕ / Esc — pop the entry so the back button closes the case
+   study first, then the world. */
+function closeCase() {
+  history.back();
 }
 /* click backdrop to close */
 document.getElementById('case-study').addEventListener('click', function(e){
@@ -1204,9 +1247,20 @@ document.addEventListener('keydown', function(e){
   }
 });
 
-/* deep-link support */
-const h = location.hash.replace('#','');
-if (['crypto','ml','sports'].indexOf(h) !== -1) openWorld(h);
+/* deep-link support + history seeding: always keep a hub entry underneath so
+   the browser / phone back button returns to the hub instead of leaving the
+   page, even when the visitor lands directly on a #world or #world/case URL. */
+(function initNav() {
+  const raw = (location.hash || '').slice(1);
+  const wPart = raw.split('/')[0];
+  const cPart = raw.split('/')[1];
+  history.replaceState({ world: 'hub' }, '', '#hub');
+  if (WORLDS.indexOf(wPart) !== -1) {
+    openWorld(wPart);
+    if (cPart === 'nokia' || cPart === 'ibisc') openCase(cPart);
+  }
+  window.addEventListener('popstate', applyLocation);
+})();
 </script>
 </body>
 </html>
