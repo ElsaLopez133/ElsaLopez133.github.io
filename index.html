@@ -824,20 +824,35 @@
       <div class="sport-card">
         <p class="sc-kicker">Time-Series ML · Personal Research</p>
         <h3>Cycle-Phase &amp; Ovulation Prediction from Wearables</h3>
-        <p>An end-to-end privacy-preserving platform collecting longitudinal HRV, resting HR, sleep, stress and training-load data from multiple participants, with a multi-class time-series pipeline to model cycle phases and detect ovulation from continuous biosignals.</p>
+        <p>An end-to-end, privacy-preserving platform that collects longitudinal HRV, resting HR, respiration, sleep, stress and training-load data from multiple participants, then models menstrual-cycle phases and pinpoints ovulation from continuous biosignals — no cycle-tracking app, hormone strip or manual logging required.</p>
         <ul>
-          <li>FastAPI web app + packaged cross-platform desktop app that gathers wearable data without ever storing credentials</li>
-          <li>Rolling-window feature engineering — lag features, past-only rolling means, day-to-day deltas across HRV, sleep stages &amp; load</li>
-          <li>Statistically validated the follicular→luteal (ovulation) transition is detectable from resting HR &amp; HRV (large effect sizes)</li>
+          <li><b>Collection</b> — a FastAPI web app plus a packaged cross-platform desktop app pull Garmin Connect metrics and push them to Google Drive via GitHub Actions, without ever storing credentials</li>
+          <li><b>Preprocessing</b> — cycle-phase anchoring (early-follicular / late-luteal windows) and a Hampel-filter + Mahalanobis-distance confounder detector that masks illness, alcohol, travel and hard-training days without erasing normal cycle variation</li>
+          <li><b>Features</b> — strictly causal, past-only rolling means, lag features and day-to-day deltas across HRV, resting HR, respiration, sleep stages &amp; load</li>
         </ul>
 
-        <p class="sc-kicker" style="margin-top:0.4rem;">Key result · ovulation detection</p>
+        <p class="sc-kicker" style="margin-top:0.6rem;">Two models for the ovulation boundary</p>
+        <ul>
+          <li><b>Change-point baseline</b> — an AUC-weighted composite of resting HR, HRV, respiration &amp; sleep-stress that flags the follicular→luteal shift</li>
+          <li><b>Hidden semi-Markov model</b> — a sequence model with an explicit luteal-duration prior (~13 days), which it then recovers independently from the data</li>
+        </ul>
+
+        <p class="sc-kicker" style="margin-top:0.6rem;">Key result · personal record</p>
         <img class="sport-plot" src="assets/garmin/ovulation-detection.jpg" alt="Cycle-aligned resting HR and HRV across the estimated ovulation boundary" loading="lazy" onclick="zoom(this.src)">
         <p class="sport-cap">Averaged across 27 cycles and aligned to the estimated ovulation day (green line): resting HR steps <strong>up</strong> after ovulation while HRV drops <strong>down</strong> — a clean, statistically robust physiological signature. <em>Click to enlarge.</em></p>
         <div class="sport-stats">
           <span class="sport-stat">RHR ↑ +1.81 bpm · d = 1.53</span>
           <span class="sport-stat">HRV ↓ −5.08 ms · d = −0.59</span>
           <span class="sport-stat">p ≤ 0.005 · n = 27 cycles</span>
+        </div>
+
+        <p class="sc-kicker" style="margin-top:0.8rem;">External validation · mcPHASES (Fitbit + hormone assays)</p>
+        <img class="sport-plot" src="assets/garmin/mcphases-validation.png" alt="mcPHASES validation: HSMM boundary vs LH peak and vs labelled luteal onset, plus pooled follicular vs luteal emission means" loading="lazy" onclick="zoom(this.src)">
+        <p class="sport-cap">Blind-tested on the mcPHASES cohort (42 participants, Fitbit + lab hormone assays). The HSMM's estimated boundary lands within <strong>±2 days</strong> of hormonally-confirmed luteal onset <strong>65%</strong> of the time (median offset 0d, MAD 2.0d), and trails the earlier LH peak by a physiologically-expected <strong>~3.5 days</strong> (MAD 1.5d). Pooled emissions reproduce the same signature as my own record — resting HR &amp; respiration up, HRV down, in the luteal phase. <em>Click to enlarge.</em></p>
+        <div class="sport-stats">
+          <span class="sport-stat">±2d of luteal onset · 65%</span>
+          <span class="sport-stat">median offset 0d · MAD 2.0d</span>
+          <span class="sport-stat">LH-peak lag ~3.5d · n = 42</span>
         </div>
 
         <a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a>
