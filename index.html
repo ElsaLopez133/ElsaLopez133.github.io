@@ -534,6 +534,28 @@
     .ml-card { opacity: 1 !important; transform: none !important; }
     .hr-line { stroke-dashoffset: 0 !important; }
   }
+  /* Pitch boxes: challenge / solution / my part */
+  .pitch-box { border: 1px solid #4c3a8a; background: rgba(124,92,246,0.10); border-radius: 10px; padding: 0.9rem 1.1rem; margin: 0 0 1.6rem; }
+  .pitch-box dl { margin: 0; }
+  .pitch-box dt { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: #67e8f9; margin-top: 0.6rem; }
+  .pitch-box dt:first-child { margin-top: 0; }
+  .pitch-box dd { margin: 0.15rem 0 0; font-size: 0.88rem; color: #dcd8f5; line-height: 1.55; }
+  .pitch-box.light { border-color: #ffcdb8; background: #fff6f1; }
+  .pitch-box.light dt { color: #b8261a; }
+  .pitch-box.light dd { color: #2a1410; }
+  .case-table-wrap { overflow-x: auto; margin: 0 0 1rem; }
+  .case-table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.82rem; }
+  .case-table th, .case-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid #3a2f66; vertical-align: top; color: #dcd8f5; }
+  .case-table th { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: #67e8f9; }
+  .case-table td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .case-list { margin: 0 0 1rem 1.1rem; font-size: 0.88rem; color: #b3acd6; line-height: 1.6; }
+  .case-list li { margin: 0.3rem 0; }
+  .case-list b { color: #f0eeff; }
+  .case-links { font-family: var(--mono); font-size: 0.78rem; margin-top: 1.2rem; }
+  .case-links a { color: #67e8f9; text-decoration: none; border-bottom: 1px dotted #67e8f9; }
+  .crypto-proj .cp-case { font-family: var(--mono); font-size: 0.78rem; color: #0b0f0c; background: #4dffa0; border: 0; border-radius: 4px; padding: 0.25rem 0.6rem; cursor: pointer; margin-right: 0.6rem; }
+  .crypto-proj .cp-case:hover { background: #9dffc9; }
+  .ml-subhead { grid-column: 1 / -1; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #67e8f9; margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid rgba(103,232,249,0.25); }
 </style>
 </head>
 <body data-world="hub">
@@ -541,7 +563,7 @@
 <!-- ════════════════════════ HUB ════════════════════════ -->
 <header id="hub-hero">
   <div class="container">
-    <p class="hub-eyebrow">PhD Researcher · IoT Security · ML · Sports Performance</p>
+    <p class="hub-eyebrow">PhD Researcher · Sports Performance · ML · IoT Security</p>
     <h1>Elsa López <span>Pérez</span></h1>
     <p class="hub-summary">
       I build <span class="hl">formally verified cryptographic protocols</span> for tiny IoT devices, train
@@ -554,11 +576,11 @@
 
     <p class="hub-prompt">selected projects —  pick a world</p>
     <div class="portals">
-      <button class="portal portal-crypto" onclick="openWorld('crypto')">
-        <span class="p-icon">🔐</span>
-        <span class="p-title">Crypto &amp; IoT Security</span>
-        <span class="p-sub">protocols · formal proofs · embedded</span>
-        <span class="p-enter">$ ./enter --terminal ▸</span>
+      <button class="portal portal-sports" onclick="openWorld('sports')">
+        <span class="p-icon">🏃‍♀️</span>
+        <span class="p-title">Sports Performance</span>
+        <span class="p-sub">wearables · physiology · coaching</span>
+        <span class="p-enter">start activity ▸</span>
       </button>
       <button class="portal portal-ml" onclick="openWorld('ml')">
         <span class="p-icon">🤖</span>
@@ -566,11 +588,11 @@
         <span class="p-sub">deep learning · RL · computer vision</span>
         <span class="p-enter">model.load() ▸</span>
       </button>
-      <button class="portal portal-sports" onclick="openWorld('sports')">
-        <span class="p-icon">🏃‍♀️</span>
-        <span class="p-title">Sports Performance</span>
-        <span class="p-sub">wearables · physiology · coaching</span>
-        <span class="p-enter">start activity ▸</span>
+      <button class="portal portal-crypto" onclick="openWorld('crypto')">
+        <span class="p-icon">🔐</span>
+        <span class="p-title">Crypto &amp; IoT Security</span>
+        <span class="p-sub">protocols · formal proofs · embedded</span>
+        <span class="p-enter">$ ./enter --terminal ▸</span>
       </button>
     </div>
 
@@ -593,7 +615,7 @@
       <h2>Experience &amp; Education</h2>
       <div class="timeline">
         <div class="timeline-item">
-          <div class="timeline-meta"><strong>Inria · Sorbonne</strong>Nov 2023 – Dec 2026<br>Paris, France<br>· mobility @ HPI, Potsdam</div>
+          <div class="timeline-meta"><strong>Inria · Sorbonne</strong>Nov 2023 – Dec 2026 (expected)<br>Paris, France<br>· mobility @ HPI, Potsdam</div>
           <div class="timeline-body">
             <h4>Inria – Sorbonne Université</h4>
             <p class="role">PhD Researcher — Secure IoT Protocols</p>
@@ -635,7 +657,7 @@
             <h4>Academic Background</h4>
             <p class="role">PhD · Master · Double Bachelor</p>
             <ul>
-              <li><strong class="hl">PhD in Secure Protocols</strong> — Sorbonne Université &amp; Inria (2023–2026)</li>
+              <li><strong class="hl">PhD in Secure Protocols</strong> — Sorbonne Université &amp; Inria (2023–2026, expected)</li>
               <li><strong class="hl">EIT Digital Master in Data Science &amp; AI</strong> — Université Paris-Saclay &amp; Università di Trento (2021–2023)</li>
               <li><strong class="hl">Double Bachelor, Mathematics &amp; Physics</strong> — Univ. of Valladolid &amp; Univ. of Dundee, Erasmus (2016–2021)</li>
             </ul>
@@ -733,7 +755,7 @@
         <p class="ml-kicker">Reinforcement Learning · Robotics</p>
         <h3>Multi-Robot Navigation with RVO-Shaped RL</h3>
         <img class="ml-thumb" src="assets/nokia/curriculum-phases.png" alt="Curriculum training phases: 4 robots, 10 robots, 10 robots with walls" loading="lazy" onclick="openCase('nokia')">
-        <div class="ml-metric"><span class="num" data-count="98" data-suffix="%">0%</span><span class="lbl">nav success · 20 agents</span></div>
+        <div class="ml-metric"><span class="num" data-count="98" data-suffix="%">98%</span><span class="lbl">nav success · 20 agents</span></div>
         <div class="ml-bar"><span></span></div>
         <p>At Nokia Bell Labs: integrated and re-trained a PPO multi-agent policy in a full ROS stack, then led the sim-to-real transfer closing the Gazebo↔hardware gap with an RVO-shaped reward and a 4→10→20 robot curriculum.</p>
         <div class="ml-tags"><span>Python</span><span>ROS</span><span>Gazebo</span><span>PPO</span></div>
@@ -747,7 +769,7 @@
         <p class="ml-kicker">Deep Learning · Computer Vision</p>
         <h3>Semi-Supervised VAE for Pharmaceutical Imaging</h3>
         <img class="ml-thumb" src="assets/ibisc-vae/01-snippets.png" alt="Particle snippets extracted from a microscopic flow-imaging scan" loading="lazy" onclick="openCase('ibisc')">
-        <div class="ml-metric"><span class="num" data-count="86" data-suffix="%">0%</span><span class="lbl">accuracy (from 70%)</span></div>
+        <div class="ml-metric"><span class="num" data-count="86" data-suffix="%">86%</span><span class="lbl">accuracy (from 70%)</span></div>
         <div class="ml-bar"><span></span></div>
         <p>A convolutional VAE learning compact latent representations over 190k+ microscopic flow-imaging particles, leveraging a huge unlabelled pool for automated QC under class imbalance and label noise (IBISC).</p>
         <div class="ml-tags"><span>PyTorch</span><span>scikit-learn</span><span>OpenCV</span><span>t-SNE</span></div>
@@ -756,6 +778,8 @@
           <a href="https://github.com/ElsaLopez133/ibisc-pharmaceutical_imaging" target="_blank">GitHub ↗</a>
         </div>
       </div>
+
+      <p class="ml-subhead">// other projects</p>
 
       <div class="ml-card" style="--w:75%">
         <p class="ml-kicker">Machine Learning · Statistical Theory</p>
@@ -823,18 +847,29 @@
     <div class="sport-cards">
       <div class="sport-card">
         <p class="sc-kicker">Time-Series ML · Personal Research</p>
-        <h3>Cycle-Phase &amp; Ovulation Prediction from Wearables</h3>
-        <p>An end-to-end, privacy-preserving platform that collects longitudinal HRV, resting HR, respiration, sleep, stress and training-load data from multiple participants, then models menstrual-cycle phases and pinpoints ovulation from continuous biosignals — no cycle-tracking app, hormone strip or manual logging required.</p>
+        <h3>Cycle-Phase Detection from Wearables</h3>
+        <div class="pitch-box light">
+          <dl>
+            <dt>The challenge</dt>
+            <dd>The menstrual cycle shapes how athletes respond to training, but most people only know when their period starts. Watches record resting HR, HRV and breathing every night, and these shift after ovulation, but the signal is subtle and buried in noise from training, illness, alcohol and travel. The only labels available are period dates.</dd>
+            <dt>How it was solved</dt>
+            <dd>Mask the disrupted days, learn what each phase looks like from confidently labelled days, and use a hidden semi-Markov model that knows the luteal phase lasts about 13 days. It returns the most likely transition day and how confident it is, validated against hormone tests, with a live version that updates every day.</dd>
+            <dt>My part</dt>
+            <dd>A personal research project, built end to end: the data-collection platform, preprocessing, models, hormone validation and live detector.</dd>
+          </dl>
+        </div>
+        <p>An end-to-end, privacy-preserving platform that collects longitudinal HRV, resting HR, respiration, sleep, stress and training-load data from multiple participants, then models menstrual-cycle phases and detects the follicular→luteal transition (the <em>wearable luteal onset</em>) from continuous biosignals. Because resting HR and HRV respond to progesterone after ovulation, the estimate trails the hormonal LH surge by a few days.</p>
         <ul>
           <li><b>Collection</b> — a FastAPI web app plus a packaged cross-platform desktop app pull Garmin Connect metrics and push them to Google Drive via GitHub Actions, without ever storing credentials</li>
           <li><b>Preprocessing</b> — cycle-phase anchoring (early-follicular / late-luteal windows) and a Hampel-filter + Mahalanobis-distance confounder detector that masks illness, alcohol, travel and hard-training days without erasing normal cycle variation</li>
           <li><b>Features</b> — strictly causal, past-only rolling means, lag features and day-to-day deltas across HRV, resting HR, respiration, sleep stages &amp; load</li>
         </ul>
 
-        <p class="sc-kicker" style="margin-top:0.6rem;">Two models for the ovulation boundary</p>
+        <p class="sc-kicker" style="margin-top:0.6rem;">Models for the follicular→luteal boundary</p>
         <ul>
-          <li><b>Change-point baseline</b> — an AUC-weighted composite of resting HR, HRV, respiration &amp; sleep-stress that flags the follicular→luteal shift</li>
-          <li><b>Hidden semi-Markov model</b> — a sequence model with an explicit luteal-duration prior (~13 days), which it then recovers independently from the data</li>
+          <li><b>Change-point baseline</b> — an AUC-weighted composite of resting HR, HRV, respiration &amp; sleep-stress that flags the follicular→luteal shift (out-of-fold AUC ≈ 0.85 for follicular vs luteal days)</li>
+          <li><b>Hidden semi-Markov model</b> — a sequence model with an explicit luteal-duration prior (~13 days), giving a most-likely boundary plus a posterior over it</li>
+          <li><b>Live detection</b> — a forward-filtered HSMM that updates P(transition has happened) each day using past data only; it beats a CUSUM detector on a cost that penalises early, late and missed detections</li>
         </ul>
 
         <p class="sc-kicker" style="margin-top:0.6rem;">Key result · personal record</p>
@@ -848,12 +883,13 @@
 
         <p class="sc-kicker" style="margin-top:0.8rem;">External validation · mcPHASES (Fitbit + hormone assays)</p>
         <img class="sport-plot" src="assets/garmin/mcphases-validation.png" alt="mcPHASES validation: HSMM boundary vs LH peak and vs labelled luteal onset, plus pooled follicular vs luteal emission means" loading="lazy" onclick="zoom(this.src)">
-        <p class="sport-cap">Blind-tested on the mcPHASES cohort (42 participants, Fitbit + lab hormone assays). The HSMM's estimated boundary lands within <strong>±2 days</strong> of hormonally-confirmed luteal onset <strong>65%</strong> of the time (median offset 0d, MAD 2.0d), and trails the earlier LH peak by a physiologically-expected <strong>~3.5 days</strong> (MAD 1.5d). Pooled emissions reproduce the same signature as my own record — resting HR &amp; respiration up, HRV down, in the luteal phase. <em>Click to enlarge.</em></p>
+        <p class="sport-cap">Validated on the public mcPHASES dataset (42 participants with Fitbit data and urine hormone tests; ~90 confident cycles from 29 participants). The HSMM's estimated boundary lands within <strong>±2 days</strong> of hormonally-confirmed luteal onset <strong>65%</strong> of the time (median offset 0d, MAD 2.0d), and trails the earlier LH peak by a physiologically-expected <strong>~3.5 days</strong> (MAD 1.5d). Pooled emissions reproduce the same signature as my own record — resting HR &amp; respiration up, HRV down, in the luteal phase. <em>Click to enlarge.</em></p>
         <div class="sport-stats">
           <span class="sport-stat">±2d of luteal onset · 65%</span>
           <span class="sport-stat">median offset 0d · MAD 2.0d</span>
-          <span class="sport-stat">LH-peak lag ~3.5d · n = 42</span>
+          <span class="sport-stat">LH-peak lag ~3.5d · ~90 cycles, 29 people</span>
         </div>
+        <p class="sport-cap"><b>Next steps:</b> leave-one-participant-out validation on mcPHASES (the pooled emissions are currently fitted in-sample), adding skin temperature, carrying the boundary's uncertainty through to the output, and a population prior so new users need no warm-up cycles.</p>
 
         <a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a>
       </div>
@@ -861,6 +897,10 @@
 
     <div class="sport-block-title">🎓 Coaching education &amp; certifications</div>
     <div class="cert-grid">
+      <div class="cert-card">
+        <h5>Brevet Fédéral de Triathlon — Level 2</h5>
+        <p class="cert-cat">FFTRI · 2026</p>
+      </div>
       <div class="cert-card">
         <h5>Advanced Triathlon Coaching</h5>
         <p class="cert-cat">Triathlon · Middle &amp; Long Distance</p>
@@ -908,6 +948,7 @@ const body = document.body;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeWorld = null;
 const WORLDS = ['crypto', 'ml', 'sports'];
+const CASES = ['nokia', 'ibisc', 'ecal'];
 
 /* Render a world (or the hub) without touching history. */
 function renderWorld(w) {
@@ -950,7 +991,7 @@ function applyLocation() {
   const cPart = slash === -1 ? '' : raw.slice(slash + 1);
   renderWorld(wPart);
   const caseOpen = document.getElementById('case-study').classList.contains('open');
-  if (cPart === 'nokia' || cPart === 'ibisc') {
+  if (CASES.indexOf(cPart) !== -1) {
     if (!caseOpen || caseKey !== cPart) renderCase(cPart);
   } else if (caseOpen) {
     renderCaseClosed();
@@ -988,9 +1029,10 @@ const cryptoProjects = [
   { cmd: './bench --target stm32wba55 --hw-accel',
     head: '🔐 embedded-cal — Formally Verified Crypto Provider',
     meta: 'Rust · STM32 · nRF54 · ARM Cortex-M',
-    desc: 'Co-designed with Cryspen: a reusable Rust crypto abstraction layer giving uniform access to hardware-accelerated and formally verified software primitives. One unified HAL over STM32 PKA/AES/SHA and Nordic CC310 — switch targets with zero code change. Memory-safety and secret-independence verified against HACL*.',
+    desc: 'Co-designed with Cryspen: a reusable Rust crypto abstraction layer giving one interface to hardware accelerators and formally verified software (libcrux). I wrote bare-metal drivers for the STM32WBA55 crypto peripherals (PKA, AES, HASH, RNG) and benchmarked time, flash and current on STM32WBA55 and nRF54L15. Correctness, runtime safety and secret independence verified on the Rust source with hax. Hardware ECDSA signing: 2.31 ms vs 653 ms in software on nRF54, 172 ms vs 1168 ms on STM32.',
     stat: '🏆 Best Paper Award — SPT-IoT 2026',
-    links: [['STM32 repo','https://github.com/ElsaLopez133/stm32wba55-crypto']] },
+    caseKey: 'ecal',
+    links: [['Paper','https://hal.science/hal-05524081'],['embedded-cal','https://github.com/lake-rs/embedded-cal'],['STM32 repo','https://github.com/ElsaLopez133/stm32wba55-crypto']] },
 ];
 
 let terminalDone = false;
@@ -1040,7 +1082,7 @@ function printProjects() {
         '<div class="cp-meta">' + p.meta + '</div>' +
         '<div class="cp-desc">' + p.desc + '</div>' +
         '<div class="cp-stat">' + p.stat + '</div>' +
-        '<div style="margin-top:0.4rem;">' + p.links.map(function(l){ return '<a href="'+l[1]+'" target="_blank">'+l[0]+' ↗</a>'; }).join('  ·  ') + '</div>';
+        '<div style="margin-top:0.4rem;">' + (p.caseKey ? '<button class="cp-case" onclick="openCase(\'' + p.caseKey + '\')">▶ case study</button>' : '') + p.links.map(function(l){ return '<a href="'+l[1]+'" target="_blank">'+l[0]+' ↗</a>'; }).join('  ·  ') + '</div>';
       wrap.appendChild(div);
       if (i === cryptoProjects.length - 1) body.classList.add('term-ready');
     }, i * 450);
@@ -1177,6 +1219,7 @@ function renderCase(key) {
   const el = document.getElementById('case-content');
   if (key === 'ibisc') { stepIdx = 0; renderIbisc(); }
   else if (key === 'nokia') { el.innerHTML = nokiaHTML(); }
+  else if (key === 'ecal') { el.innerHTML = ecalHTML(); }
   document.getElementById('case-study').classList.add('open');
 }
 function renderCaseClosed() {
@@ -1211,6 +1254,11 @@ function renderIbisc() {
   document.getElementById('case-content').innerHTML =
     '<h2 class="case-h">Semi-Supervised VAE — the full pipeline</h2>' +
     '<p class="case-sub">IBISC · Université Paris-Saclay · 190k+ MFI images</p>' +
+    (stepIdx === 0 ? '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>Pharmaceutical quality control photographs the particles in a drug product. More than 190,000 particle images needed classifying, with few reliable labels, mislabelled data and class imbalance; the baseline reached 70% accuracy.</dd>' +
+      '<dt>How it was solved</dt><dd>A semi-supervised pipeline: a convolutional variational autoencoder learns compact representations from the whole unlabelled pool, combined with hand-crafted texture and shape features, while class imbalance and mislabelling are addressed directly. Accuracy rose to 86%.</dd>' +
+      '<dt>My part</dt><dd>I designed the pipeline in Python (PyTorch, scikit-learn, OpenCV): particle snippets, augmentation, the VAE, and evaluation with confusion matrices, PCA and t-SNE.</dd>' +
+    '</dl></div>' : '') +
     '<div class="step-dots">' + dots + '</div>' +
     '<div class="step-stage"><img src="' + s.img + '" alt="' + s.title + '"></div>' +
     '<div class="step-title">' + s.title + '</div>' +
@@ -1226,6 +1274,11 @@ function nokiaHTML() {
   return '' +
     '<h2 class="case-h">Multi-Robot Navigation with RVO-Shaped RL</h2>' +
     '<p class="case-sub">Nokia Bell Labs · PPO · ROS · Gazebo · sim-to-real</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>A team of robots must reach their goals without colliding, each deciding for itself. A policy trained in simulation has to survive real sensors, which are noisy, and real motors, which respond with a delay.</dd>' +
+      '<dt>How it was solved</dt><dd>A reward shaped by reciprocal velocity obstacles, a training curriculum that scales up the number of robots, and an analysis of where reality differs from simulation. Navigation success reached 98% in randomised high-fidelity simulation.</dd>' +
+      '<dt>My part</dt><dd>I integrated and re-trained the PPO policy in a ROS stack (Python/C++), designed the multi-stage training, and led the sim-to-real analysis that resolved failures from sensing noise and actuation delays.</dd>' +
+    '</dl></div>' +
     '<p class="case-intro">A PPO-based multi-agent navigation policy, re-trained with a Reciprocal Velocity Obstacle (RVO) shaped reward and transferred from high-fidelity Gazebo simulation toward physical deployment. Below: the policy in action, the curriculum that builds it up, and the trajectories it produces.</p>' +
 
     '<div class="case-media-grid">' +
@@ -1246,6 +1299,44 @@ function nokiaHTML() {
       '<div class="case-fig"><img src="assets/nokia/trajectory-pose.png" alt="Robot pose trajectory plot" loading="lazy">' +
         '<p class="case-cap"><b>Pose tracking</b>Recorded pose vs orientation over a full navigation run (v_max 1.5).</p></div>' +
     '</div>';
+}
+
+function ecalHTML() {
+  return '' +
+    '<h2 class="case-h">embedded-cal — verified crypto for microcontrollers</h2>' +
+    '<p class="case-sub">Inria · Cryspen · Christian Amsüss · 🏆 Best Paper Award, SPT-IoT 2026 (IEEE PerCom)</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>Small connected devices need strong cryptography, but on a tiny battery-powered chip the maths is slow and costs energy. Most microcontrollers have crypto accelerators, yet each vendor exposes them differently, so Rust projects re-implement primitives per chip or wrap memory-unsafe C libraries, often without verified side-channel resistance.</dd>' +
+      '<dt>How it was solved</dt><dd>One Rust interface for hashing, AEAD and elliptic-curve operations. Each platform plugs in what its hardware accelerates and verified software (libcrux) fills the gaps. Correctness, runtime safety and secret independence are proven on the Rust source with the hax framework.</dd>' +
+      '<dt>My part</dt><dd>First author. I wrote the bare-metal drivers for the STM32WBA55 crypto peripherals and benchmarked execution time, current and flash on STM32WBA55 and nRF54L15.</dd>' +
+    '</dl></div>' +
+
+    '<div class="case-block-title">What the STM32 drivers do</div>' +
+    '<p class="case-intro">A driver turns "sign this with the hardware" into the exact register-level steps the chip needs, so a protocol such as EDHOC calls one function and never sees a clock, register or memory address. Working from the STMicroelectronics reference manual (RM0493), the code switches each peripheral\'s clock on, loads operands at fixed memory offsets, starts the operation with a mode code, polls status flags and reads the results back, with typed Rust errors instead of silent failures.</p>' +
+    '<div class="case-table-wrap"><table class="case-table">' +
+      '<thead><tr><th>Peripheral</th><th>What it does</th><th>What the driver covers</th></tr></thead><tbody>' +
+      '<tr><td>PKA</td><td>Public-key accelerator: big-number and elliptic-curve arithmetic</td><td>Modular arithmetic and exponentiation, Montgomery parameter, point checks, point addition, scalar multiplication, projective-to-affine, ECDSA sign and verify on P-256</td></tr>' +
+      '<tr><td>AES</td><td>Symmetric encryption</td><td>ECB and CBC modes, 128- and 256-bit keys</td></tr>' +
+      '<tr><td>HASH</td><td>SHA-256</td><td>Message input in 8- and 32-bit words, digest read-out, test-vector checks</td></tr>' +
+      '<tr><td>RNG</td><td>True random numbers</td><td>Clock selection and configuration sequence, for keys and signature nonces</td></tr>' +
+      '<tr><td>RCC · GPIO</td><td>Clocks · pins</td><td>Powering each peripheral; a pin toggled around each operation so the power profiler can time it</td></tr>' +
+    '</tbody></table></div>' +
+
+    '<div class="case-block-title">Results (paper, Table I)</div>' +
+    '<p class="case-intro">Execution time in ms, hardware-accelerated vs software-only RustCrypto, averaged over 10 runs with an Otii Arc power profiler at 3 V. STM32WBA55CG at 16 MHz, nRF54L15 at 64 MHz.</p>' +
+    '<div class="case-table-wrap"><table class="case-table">' +
+      '<thead><tr><th>Operation</th><th>STM32 HW</th><th>STM32 SW</th><th>nRF54 HW</th><th>nRF54 SW</th></tr></thead><tbody>' +
+      '<tr><td>AES-ECB-128</td><td class="n">0.02</td><td class="n">0.31</td><td class="n">0.02</td><td class="n">0.18</td></tr>' +
+      '<tr><td>SHA2-256</td><td class="n">0.02</td><td class="n">0.24</td><td class="n">0.02</td><td class="n">0.15</td></tr>' +
+      '<tr><td>ECDSA verify</td><td class="n">181.17</td><td class="n">1077.47</td><td class="n">1.82</td><td class="n">598.84</td></tr>' +
+      '<tr><td>ECDSA sign</td><td class="n">171.94</td><td class="n">1168.11</td><td class="n">2.31</td><td class="n">653.25</td></tr>' +
+      '<tr><td>ECC multiplication</td><td class="n">193.16</td><td class="n">540.17</td><td class="n">1.68</td><td class="n">300.21</td></tr>' +
+    '</tbody></table></div>' +
+    '<ul class="case-list">' +
+      '<li><b>Current reflects the chip, not the algorithm.</b> The nRF54L15 stays within 4–12 mA; enabling its CRACEN accelerator draws slightly more but finishes far sooner. The STM32WBA55CG draws a near-constant 15–19 mA, so its energy savings come from shorter run time.</li>' +
+      '<li><b>Hardware saves flash:</b> thin peripheral access instead of full software algorithms.</li>' +
+    '</ul>' +
+    '<p class="case-links"><a href="https://hal.science/hal-05524081" target="_blank">Paper ↗</a> · <a href="https://github.com/lake-rs/embedded-cal" target="_blank">lake-rs/embedded-cal ↗</a> · <a href="https://github.com/ElsaLopez133/stm32wba55-crypto" target="_blank">stm32wba55-crypto ↗</a></p>';
 }
 
 /* ───────── Konami easter egg ───────── */
@@ -1272,7 +1363,7 @@ document.addEventListener('keydown', function(e){
   history.replaceState({ world: 'hub' }, '', '#hub');
   if (WORLDS.indexOf(wPart) !== -1) {
     openWorld(wPart);
-    if (cPart === 'nokia' || cPart === 'ibisc') openCase(cPart);
+    if (CASES.indexOf(cPart) !== -1) openCase(cPart);
   }
   window.addEventListener('popstate', applyLocation);
 })();
