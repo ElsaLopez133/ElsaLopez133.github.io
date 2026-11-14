@@ -794,7 +794,10 @@
         <h3>Query Recommendation &amp; Importance Mining</h3>
         <p>A two-part system: a query-recommendation engine built from user–query interaction data, plus a scoring method quantifying how important a query is to each user — applied to a real-estate search dataset.</p>
         <div class="ml-tags"><span>Python</span><span>Jupyter</span><span>Query Mining</span></div>
-        <a href="https://github.com/ElsaLopez133/Data-Mining-Project" target="_blank">GitHub ↗</a>
+        <div class="ml-foot">
+          <button class="ml-more" onclick="openCase('datamining')">▶ More info</button>
+          <a href="https://github.com/ElsaLopez133/Data-Mining-Project" target="_blank">GitHub ↗</a>
+        </div>
       </div>
 
       <div class="ml-card" style="--w:80%">
@@ -802,7 +805,10 @@
         <h3>Parallel Dijkstra for HPC Clusters</h3>
         <p>Serial, OpenMP and MPI implementations of shortest-path search sharing one benchmarking pipeline, with Python graph generation and <code>qsub</code> cluster jobs — measuring speedup and scaling on an MPICH cluster.</p>
         <div class="ml-tags"><span>C</span><span>MPI</span><span>OpenMP</span><span>Python</span></div>
-        <a href="https://github.com/ElsaLopez133/HPC-for-Data-Science" target="_blank">GitHub ↗</a>
+        <div class="ml-foot">
+          <button class="ml-more" onclick="openCase('hpc')">▶ More info</button>
+          <a href="https://github.com/ElsaLopez133/HPC-for-Data-Science" target="_blank">GitHub ↗</a>
+        </div>
       </div>
 
     </div>
@@ -948,7 +954,7 @@ const body = document.body;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeWorld = null;
 const WORLDS = ['crypto', 'ml', 'sports'];
-const CASES = ['nokia', 'ibisc', 'ecal', 'lakers', 'formal'];
+const CASES = ['nokia', 'ibisc', 'ecal', 'lakers', 'formal', 'datamining', 'hpc'];
 
 /* Render a world (or the hub) without touching history. */
 function renderWorld(w) {
@@ -1197,16 +1203,16 @@ let caseKey = null, stepIdx = 0;
 const ibiscSteps = [
   { img: 'assets/ibisc-vae/01-snippets.png',
     title: '1 · Snippet creation',
-    text: 'Each full microscopic flow-imaging (MFI) scan is scanned for particles, which are detected and cropped into fixed-size snippets — turning one wafer-scale image into thousands of training examples.' },
+    text: 'Each full microscopic flow-imaging (MFI) scan is scanned for particles, which are detected and cropped into fixed-size snippets — turning one wafer-scale image into thousands of training examples. Snippets are then augmented (resizing, Gaussian blur, horizontal flips, rotations up to ±20°, small hue and saturation shifts) so the model is robust to imaging variation.' },
   { img: 'assets/ibisc-vae/02-labelling.png',
     title: '2 · Labelling',
     text: 'A subset of snippets is expert-labelled (drug vs placebo / particle vs artefact). The vast majority of the 190k+ pool stays unlabelled — which is exactly what the semi-supervised approach is built to exploit.' },
   { img: 'assets/ibisc-vae/03-architecture.png',
     title: '3 · VAE design',
-    text: 'A convolutional VAE: a CNN encoder compresses each snippet into a low-dimensional latent code, and a CNN decoder reconstructs it — forcing the network to learn compact, meaningful representations of texture and shape.' },
+    text: 'A convolutional VAE: a CNN encoder compresses each snippet into a low-dimensional latent code, and a CNN decoder reconstructs it — forcing the network to learn compact, meaningful representations of texture and shape. Concretely: two stride-2 convolutional layers feed two linear heads that output the mean and log-variance of the latent distribution; a latent vector is sampled with the reparameterisation trick (z = μ + σ·ε) so gradients can flow through the sampling step; and the decoder receives the latent vector together with the label, making it a conditional VAE.' },
   { img: 'assets/ibisc-vae/04-training.png',
     title: '4 · Training objective',
-    text: 'Trained by minimising reconstruction loss plus a KL term that regularises the latent space, augmented with hand-crafted features (texture, circularity…). Gradients flow back through both the VAE and the feature path.' },
+    text: 'Trained by minimising reconstruction loss plus a KL term that regularises the latent space, augmented with hand-crafted features (texture, circularity…). Gradients flow back through both the VAE and the feature path. The reconstruction term is pixel-wise binary cross-entropy (how well each pixel is reproduced); the KL-divergence term keeps the latent distribution close to a standard normal, so nearby points in latent space decode to similar particles. Texture comes from Haralick features, which summarise how grey levels co-occur across the image; size is the maximum Feret diameter.' },
   { img: 'assets/ibisc-vae/05-reconstruction.png',
     title: '5 · Reconstruction',
     text: 'Reconstructions closely track the originals — evidence that the learned latent space genuinely captures the shape and texture that distinguish particle types, not just noise.' },
@@ -1224,6 +1230,8 @@ function renderCase(key) {
   else if (key === 'ecal') { el.innerHTML = ecalHTML(); }
   else if (key === 'lakers') { el.innerHTML = lakersHTML(); }
   else if (key === 'formal') { el.innerHTML = formalHTML(); }
+  else if (key === 'datamining') { el.innerHTML = dataMiningHTML(); }
+  else if (key === 'hpc') { el.innerHTML = hpcHTML(); }
   document.getElementById('case-study').classList.add('open');
 }
 function renderCaseClosed() {
@@ -1292,6 +1300,14 @@ function nokiaHTML() {
         '<p class="case-cap"><b>High-fidelity scenario</b>Dense, randomised high-fidelity transfer test.</p></div>' +
     '</div>' +
 
+    '<div class="case-block-title">How it works</div>' +
+    '<ul class="case-list">' +
+      '<li><b>Decentralised policy.</b> Every robot runs the same neural-network policy and chooses its own velocity from what it observes about itself and its neighbours. There is no central planner, so the system scales to more robots.</li>' +
+      '<li><b>PPO (proximal policy optimisation).</b> A reinforcement-learning algorithm that improves the policy in small, clipped steps, so one bad batch of experience cannot wreck what has already been learned.</li>' +
+      '<li><b>RVO-shaped reward.</b> A reciprocal velocity obstacle is the set of velocities that would lead to a collision with a neighbour if both keep moving, with each robot taking half the responsibility for avoiding it. Rewarding the policy for staying out of that set teaches collision avoidance far faster than penalising crashes alone.</li>' +
+      '<li><b>Sim-to-real analysis.</b> Commanded velocities were logged against odometry to measure the delay between a command and the robot actually moving (linear, angular and omnidirectional), and experiments swept robot radius, number of robots and maximum speed to see where success rate breaks down.</li>' +
+      '<li><b>Starting point.</b> The method follows Han et al., <i>Reinforcement Learned Distributed Multi-Robot Navigation with Reciprocal Velocity Obstacle Shaped Rewards</i> (IEEE RA-L, 2022); the work at Nokia was re-training it and integrating it into a ROS stack.</li>' +
+    '</ul>' +
     '<div class="case-block-title">Curriculum training (4 → 10 → 20 robots)</div>' +
     '<div class="case-fig"><img src="assets/nokia/curriculum-phases.png" alt="Three curriculum phases of increasing difficulty" loading="lazy">' +
       '<p class="case-cap"><b>Progressive difficulty</b>Phase 1: 4 robots, empty world · Phase 2: 10 robots, empty world · Phase 3: 10 robots with walls. Each stage seeds the next so the policy scales to dense, obstacle-rich scenes.</p></div>' +
@@ -1411,6 +1427,71 @@ function formalHTML() {
     '</ul>' +
 
     '<p class="case-links"><a href="https://github.com/ElsaLopez133/edhoc-psk-formal-analysis" target="_blank">EDHOC-PSK models ↗</a> · <a href="https://github.com/ElsaLopez133/edhoc-psk-attestation-formal-analysis" target="_blank">Remote attestation models ↗</a> · <a href="https://github.com/ElsaLopez133/edhoc-psk-5g-formal-analysis" target="_blank">5G variant ↗</a> · <a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:roLk4NBRz8UC" target="_blank">ASIACCS 2026 paper ↗</a></p>';
+}
+
+function dataMiningHTML() {
+  return '' +
+    '<h2 class="case-h">Query Recommendation &amp; Importance Mining</h2>' +
+    '<p class="case-sub">Data Mining course · Università di Trento · January 2023 · with Eleonora Renz</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>Users of a database rate the queries they run, not the individual results, and most user–query ratings are missing. Classic collaborative filtering compares every user with every other user, which scales badly and struggles with sparse data.</dd>' +
+      '<dt>How it was solved</dt><dd>Cluster the database rows with k-means, assign each query to a cluster by majority vote over the rows it returns, and fill in missing ratings using only similar queries inside the same cluster. A second part scores how important any new query is to each user.</dd>' +
+      '<dt>My part</dt><dd>Co-designed and implemented both parts in Python with Eleonora Renz, including the synthetic database, the clustering and voting scheme, the similarity measure, and the evaluation experiments.</dd>' +
+    '</dl></div>' +
+
+    '<div class="case-block-title">Part A · filling the utility matrix</div>' +
+    '<ol class="case-list">' +
+      '<li><b>Cluster the data.</b> Rows of the database are reduced with PCA and clustered with k-means; the number of clusters is chosen with the elbow method (within-cluster sum of squares). DBSCAN was also considered.</li>' +
+      '<li><b>Assign queries by voting.</b> Each query is placed in the cluster that holds most of the rows it returns; ties go to the larger cluster.</li>' +
+      '<li><b>Represent queries.</b> A query is written as a multiset of its conditions, each repeated as many times as its value: <code>nrooms=2, windows=4</code> becomes (nrooms, nrooms, windows, windows, windows, windows).</li>' +
+      '<li><b>Predict missing ratings.</b> For each unrated query, find the k most similar queries the user did rate in the same cluster (Jaccard similarity on multisets) and take their weighted average; if none is similar, use the cluster average.</li>' +
+      '<li><b>Normalise.</b> Each user\'s ratings are rescaled to 0–100, because users use the scale differently.</li>' +
+    '</ol>' +
+
+    '<div class="case-block-title">Part B · importance of a new query</div>' +
+    '<p class="case-intro">For a query that may not exist yet, the system finds stored queries that share any combination of its conditions, then, for each user, compares them with the user\'s five highest-rated queries. Importance combines the rating, the Jaccard similarities and how often the similar query occurs, giving a score between 0 and 1.</p>' +
+
+    '<div class="case-block-title">Evaluation</div>' +
+    '<p class="case-intro">Ratings were removed from a complete utility matrix and then predicted; error is the absolute difference on the normalised 0–100 scale. The data is a synthetic house-features database (rooms, size, price, year, distance to the city and more).</p>' +
+    '<div class="case-table-wrap"><table class="case-table">' +
+      '<thead><tr><th>Experiment</th><th>Ratings removed</th><th>Average error (0–100)</th></tr></thead><tbody>' +
+      '<tr><td>1</td><td>30% across the whole matrix</td><td class="n">30.73</td></tr>' +
+      '<tr><td>2</td><td>70% for one user</td><td class="n">16.51</td></tr>' +
+      '<tr><td>3</td><td>70% for one query</td><td class="n">14.19</td></tr>' +
+    '</tbody></table></div>' +
+    '<ul class="case-list">' +
+      '<li><b>What it shows:</b> the method still recommends sensibly for a new user and for a brand-new query.</li>' +
+      '<li><b>Limitations noted in the report:</b> random data gives weak cluster structure (with k = 10, queries used only 3–5 clusters), DBSCAN finds a single dense region on such data, and computing the multiset representations and Jaccard similarities is slow. Real housing data would be the next test.</li>' +
+    '</ul>' +
+    '<p class="case-links"><a href="https://github.com/ElsaLopez133/Data-Mining-Project" target="_blank">GitHub ↗</a></p>';
+}
+
+function hpcHTML() {
+  return '' +
+    '<h2 class="case-h">Parallel Dijkstra for HPC Clusters</h2>' +
+    '<p class="case-sub">HPC for Data Science · Università di Trento · C · OpenMP · MPI · MPICH 3.2 · PBS</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>Dijkstra\'s algorithm finds the shortest path from one vertex to every other vertex in a weighted graph. Each step depends on the previous one, so it is a hard algorithm to parallelise: every iteration needs the single closest unvisited vertex across the whole graph.</dd>' +
+      '<dt>How it was solved</dt><dd>Three implementations sharing one benchmarking pipeline: a serial baseline, a shared-memory OpenMP version, and a distributed MPI version, run as batch jobs on the university cluster across graph sizes and process counts.</dd>' +
+      '<dt>The work</dt><dd>A course project covering graph generation and plotting in Python, the C implementations, the PBS job scripts, and the speedup, time-cost and efficiency analysis.</dd>' +
+    '</dl></div>' +
+
+    '<div class="case-block-title">The three implementations</div>' +
+    '<ul class="case-list">' +
+      '<li><b>Serial (C).</b> The reference: adjacency-matrix Dijkstra, picking the closest unvisited vertex at each step.</li>' +
+      '<li><b>OpenMP (shared memory).</b> Threads split the vertices; each finds the closest vertex in its own range, a critical section combines them into the global minimum, and barriers keep the threads in step before distances are updated.</li>' +
+      '<li><b>MPI (distributed memory).</b> The adjacency matrix is split into block columns, one per process, using a custom MPI datatype and <code>MPI_Scatter</code>. Each iteration, every process finds its local closest vertex and <code>MPI_Allreduce</code> with <code>MPI_MINLOC</code> picks the global one; results are collected with <code>MPI_Gather</code>. Based on an open-source MPI Dijkstra (Lehmannhen/MPI-Dijkstra), adapted for the benchmark.</li>' +
+    '</ul>' +
+
+    '<div class="case-block-title">Benchmark setup</div>' +
+    '<p class="case-intro">Random complete weighted graphs (edge weights 1–20, with a very large value standing for no edge) from 50 to 500 vertices, generated in Python. Jobs were submitted with PBS (<code>qsub</code>) to an MPICH cluster, sweeping the number of processes, and timed per phase.</p>' +
+
+    '<div class="case-block-title">What the results show</div>' +
+    '<ul class="case-list">' +
+      '<li><b>Small speedups, then a slowdown.</b> For the larger graphs, speedup peaked at about 1.4× with a handful of processes. Beyond that, adding processes made the run slower, and efficiency fell towards zero.</li>' +
+      '<li><b>Why.</b> Every iteration needs a global reduction to agree on the next vertex. With at most 500 vertices there is little work per process between these synchronisations, so communication cost dominates. On the 50-vertex graph, one process was fastest.</li>' +
+    '</ul>' +
+    '<p class="case-links"><a href="https://github.com/ElsaLopez133/HPC-for-Data-Science" target="_blank">GitHub ↗</a></p>';
 }
 
 /* ───────── Konami easter egg ───────── */
