@@ -768,7 +768,7 @@
       <div class="ml-card" style="--w:86%">
         <p class="ml-kicker">Deep Learning · Computer Vision</p>
         <h3>Semi-Supervised VAE for Pharmaceutical Imaging</h3>
-        <img class="ml-thumb" src="assets/ibisc-vae/01-snippets.png" alt="Particle snippets extracted from a microscopic flow-imaging scan" loading="lazy" onclick="openCase('ibisc')">
+        <img class="ml-thumb" src="assets/ibisc-vae/01-snippets.png?v=2" alt="Particle snippets extracted from a microscopic flow-imaging scan" loading="lazy" onclick="openCase('ibisc')">
         <div class="ml-metric"><span class="num" data-count="86" data-suffix="%">86%</span><span class="lbl">accuracy (from 70%)</span></div>
         <div class="ml-bar"><span></span></div>
         <p>A convolutional VAE learning compact latent representations over 190k+ microscopic flow-imaging particles, leveraging a huge unlabelled pool for automated QC under class imbalance and label noise (IBISC).</p>
@@ -1201,22 +1201,22 @@ function zoom(src) {
 let caseKey = null, stepIdx = 0;
 
 const ibiscSteps = [
-  { img: 'assets/ibisc-vae/01-snippets.png',
+  { img: 'assets/ibisc-vae/01-snippets.png?v=2',
     title: '1 · Snippet creation',
     text: 'Each full microscopic flow-imaging (MFI) scan is scanned for particles, which are detected and cropped into fixed-size snippets — turning one wafer-scale image into thousands of training examples. Snippets are then augmented (resizing, Gaussian blur, horizontal flips, rotations up to ±20°, small hue and saturation shifts) so the model is robust to imaging variation.' },
-  { img: 'assets/ibisc-vae/02-labelling.png',
+  { img: 'assets/ibisc-vae/02-labelling.png?v=2',
     title: '2 · Labelling',
     text: 'A subset of snippets is expert-labelled (drug vs placebo / particle vs artefact). The vast majority of the 190k+ pool stays unlabelled — which is exactly what the semi-supervised approach is built to exploit.' },
-  { img: 'assets/ibisc-vae/03-architecture.png',
+  { img: 'assets/ibisc-vae/03-architecture.png?v=2',
     title: '3 · VAE design',
     text: 'A convolutional VAE: a CNN encoder compresses each snippet into a low-dimensional latent code, and a CNN decoder reconstructs it — forcing the network to learn compact, meaningful representations of texture and shape. Concretely: two stride-2 convolutional layers feed two linear heads that output the mean and log-variance of the latent distribution; a latent vector is sampled with the reparameterisation trick (z = μ + σ·ε) so gradients can flow through the sampling step; and the decoder receives the latent vector together with the label, making it a conditional VAE.' },
-  { img: 'assets/ibisc-vae/04-training.png',
+  { img: 'assets/ibisc-vae/04-training.png?v=2',
     title: '4 · Training objective',
     text: 'Trained by minimising reconstruction loss plus a KL term that regularises the latent space, augmented with hand-crafted features (texture, circularity…). Gradients flow back through both the VAE and the feature path. The reconstruction term is pixel-wise binary cross-entropy (how well each pixel is reproduced); the KL-divergence term keeps the latent distribution close to a standard normal, so nearby points in latent space decode to similar particles. Texture comes from Haralick features, which summarise how grey levels co-occur across the image; size is the maximum Feret diameter.' },
-  { img: 'assets/ibisc-vae/05-reconstruction.png',
+  { img: 'assets/ibisc-vae/05-reconstruction.png?v=2',
     title: '5 · Reconstruction',
     text: 'Reconstructions closely track the originals — evidence that the learned latent space genuinely captures the shape and texture that distinguish particle types, not just noise.' },
-  { img: 'assets/ibisc-vae/06-results.png',
+  { img: 'assets/ibisc-vae/06-results.png?v=2',
     title: '6 · Results',
     text: 'A classifier over the learned latent space reaches 86.41% accuracy on the held-out test set — up from a 70% baseline after correcting class imbalance and auditing mislabelled data.' },
 ];
