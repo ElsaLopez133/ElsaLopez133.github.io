@@ -888,17 +888,14 @@
         </div>
 
         <p class="sc-kicker" style="margin-top:0.8rem;">External validation · mcPHASES (Fitbit + hormone assays)</p>
-        <img class="sport-plot" src="assets/garmin/mcphases-validation.png" alt="mcPHASES validation: HSMM boundary vs LH peak and vs labelled luteal onset, plus pooled follicular vs luteal emission means" loading="lazy" onclick="zoom(this.src)">
-        <p class="sport-cap">Validated on the public mcPHASES dataset (42 participants with Fitbit data and urine hormone tests; ~90 confident cycles from 29 participants). The HSMM's estimated boundary lands within <strong>±2 days</strong> of hormonally-confirmed luteal onset <strong>65%</strong> of the time (median offset 0d, MAD 2.0d), and trails the earlier LH peak by a physiologically-expected <strong>~3.5 days</strong> (MAD 1.5d). Pooled emissions reproduce the same signature as my own record — resting HR &amp; respiration up, HRV down, in the luteal phase. <em>Click to enlarge.</em></p>
+        <img class="sport-plot" src="assets/garmin/mcphases-validation.png?v=2" alt="mcPHASES validation: HSMM boundary vs LH peak and vs labelled luteal onset, plus pooled follicular vs luteal emission means" loading="lazy" onclick="zoom(this.src)">
+        <p class="sport-cap">Validated on the public mcPHASES dataset (42 participants with Fitbit data and urine hormone tests; ~90 confident cycles from 29 participants). The HSMM's estimated boundary lands within <strong>±2 days</strong> of hormonally-confirmed luteal onset <strong>65%</strong> of the time (median offset 0d, MAD 2.0d), and trails the earlier LH peak by a physiologically-expected <strong>~3.5 days</strong> (MAD 1.5d). Offsets beyond −8 or +10 days are grouped into the end bins. Pooled emissions reproduce the same signature as my own record — resting HR &amp; respiration up, HRV down, in the luteal phase. <em>Click to enlarge.</em></p>
         <div class="sport-stats">
           <span class="sport-stat">±2d of luteal onset · 65%</span>
           <span class="sport-stat">median offset 0d · MAD 2.0d</span>
           <span class="sport-stat">LH-peak lag ~3.5d · ~90 cycles, 29 people</span>
         </div>
 
-        <p class="sc-kicker" style="margin-top:0.8rem;">Emission model comparison · Gaussian vs discriminative</p>
-        <img class="sport-plot" src="assets/garmin/emissions-comparison.png?v=1" alt="Bar charts comparing Gaussian and discriminative emissions: share of cycles within 2 and 3 days of labelled luteal onset and of the LH peak, raw and bias-corrected" loading="lazy" onclick="zoom(this.src)">
-        <p class="sport-cap">Swapping only the emission model changes what the boundary tracks. <strong>Gaussian</strong> emissions match labelled luteal onset (0-day bias, <strong>65%</strong> within ±2 d, 80% within ±3 d). <strong>Discriminative</strong> emissions (a logistic P(luteal | x)) sit closer to the LH peak: bias <strong>+1.0 d</strong> instead of +3.5 d, and 57% within ±2 d without any correction. Once each model's fixed bias is removed, both place about <strong>71–72%</strong> of cycles within ±3 d of the LH peak. <em>Click to enlarge.</em></p>
         <p class="sport-cap"><b>Next steps:</b> leave-one-participant-out validation on mcPHASES (the pooled emissions are currently fitted in-sample), adding skin temperature, carrying the boundary's uncertainty through to the output, and a population prior so new users need no warm-up cycles.</p>
 
         <a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a>
