@@ -948,7 +948,7 @@ const body = document.body;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeWorld = null;
 const WORLDS = ['crypto', 'ml', 'sports'];
-const CASES = ['nokia', 'ibisc', 'ecal'];
+const CASES = ['nokia', 'ibisc', 'ecal', 'lakers', 'formal'];
 
 /* Render a world (or the hub) without touching history. */
 function renderWorld(w) {
@@ -1019,12 +1019,14 @@ const cryptoProjects = [
     meta: 'Rust · no_std · IETF LAKE · RFC 9528',
     desc: 'Core contributor to lakers, the reference Rust implementation of EDHOC. Designed and built the Pre-Shared Key authentication extension with the IETF LAKE WG — runs on ARM Cortex-M with kilobytes of RAM, with hardware and software crypto backends and C/Python bindings.',
     stat: '★ 70k+ crate downloads',
+    caseKey: 'lakers',
     links: [['GitHub','https://github.com/ElsaLopez133/lakers'],['crates.io','https://crates.io/crates/lakers'],['IETF Draft','https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/']] },
   { cmd: 'tamarin-prover ./edhoc-psk.spthy --prove',
     head: '🔐 Formal Security Analysis of EDHOC-PSK',
     meta: 'SAPIC+ → Tamarin + ProVerif · Python',
     desc: 'Symbolic proofs of authentication, secrecy, anonymity and unlinkability under advanced adversaries — including post-quantum Save-Now-Decrypt-Later attackers. Found concrete weaknesses fed back into the IETF process. One-command Dockerised reproduction. Published at ACM ASIACCS 2026.',
     stat: '✔ verified across two provers',
+    caseKey: 'formal',
     links: [['GitHub (core)','https://github.com/ElsaLopez133/edhoc-psk-formal-analysis'],['5G variant','https://github.com/ElsaLopez133/edhoc-psk-5g-formal-analysis'],['Attestation','https://github.com/ElsaLopez133/edhoc-psk-attestation-formal-analysis']] },
   { cmd: './bench --target stm32wba55 --hw-accel',
     head: '🔐 embedded-cal — Formally Verified Crypto Provider',
@@ -1082,7 +1084,7 @@ function printProjects() {
         '<div class="cp-meta">' + p.meta + '</div>' +
         '<div class="cp-desc">' + p.desc + '</div>' +
         '<div class="cp-stat">' + p.stat + '</div>' +
-        '<div style="margin-top:0.4rem;">' + (p.caseKey ? '<button class="cp-case" onclick="openCase(\'' + p.caseKey + '\')">▶ case study</button>' : '') + p.links.map(function(l){ return '<a href="'+l[1]+'" target="_blank">'+l[0]+' ↗</a>'; }).join('  ·  ') + '</div>';
+        '<div style="margin-top:0.4rem;">' + (p.caseKey ? '<button class="cp-case" onclick="openCase(\'' + p.caseKey + '\')">▶ more info</button>' : '') + p.links.map(function(l){ return '<a href="'+l[1]+'" target="_blank">'+l[0]+' ↗</a>'; }).join('  ·  ') + '</div>';
       wrap.appendChild(div);
       if (i === cryptoProjects.length - 1) body.classList.add('term-ready');
     }, i * 450);
@@ -1220,6 +1222,8 @@ function renderCase(key) {
   if (key === 'ibisc') { stepIdx = 0; renderIbisc(); }
   else if (key === 'nokia') { el.innerHTML = nokiaHTML(); }
   else if (key === 'ecal') { el.innerHTML = ecalHTML(); }
+  else if (key === 'lakers') { el.innerHTML = lakersHTML(); }
+  else if (key === 'formal') { el.innerHTML = formalHTML(); }
   document.getElementById('case-study').classList.add('open');
 }
 function renderCaseClosed() {
@@ -1337,6 +1341,76 @@ function ecalHTML() {
       '<li><b>Hardware saves flash:</b> thin peripheral access instead of full software algorithms.</li>' +
     '</ul>' +
     '<p class="case-links"><a href="https://hal.science/hal-05524081" target="_blank">Paper ↗</a> · <a href="https://github.com/lake-rs/embedded-cal" target="_blank">lake-rs/embedded-cal ↗</a> · <a href="https://github.com/ElsaLopez133/stm32wba55-crypto" target="_blank">stm32wba55-crypto ↗</a></p>';
+}
+
+function lakersHTML() {
+  return '' +
+    '<h2 class="case-h">EDHOC-PSK in lakers</h2>' +
+    '<p class="case-sub">Rust · no_std · IETF LAKE · RFC 9528 · 70k+ crate downloads</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>Before two IoT devices talk securely they must authenticate each other and agree on keys. EDHOC (RFC 9528) does this in as few as 101 bytes, but its standard methods rely on public-key operations that are slow on microcontrollers, while many deployments already share a symmetric key. That pre-shared-key (PSK) method needed a production implementation that fits devices with kilobytes of RAM.</dd>' +
+      '<dt>How it was solved</dt><dd>A PSK authentication method added to lakers, the Rust implementation of EDHOC: no standard library, no heap allocation, interchangeable crypto backends, and C and Python bindings.</dd>' +
+      '<dt>My part</dt><dd>Core contributor. I designed and built the PSK extension with the IETF LAKE working group, working on embedded compatibility, constant-time behaviour and hardware-accelerated backends.</dd>' +
+    '</dl></div>' +
+
+    '<div class="case-block-title">EDHOC in one paragraph</div>' +
+    '<p class="case-intro">Ephemeral Diffie-Hellman Over COSE (EDHOC) is an IETF standard for a lightweight authenticated key exchange: mutual authentication, forward secrecy and identity protection, in as few as 101 bytes for a full exchange. It reuses COSE, CBOR and CoAP, and its main use is to set up an OSCORE security context.</p>' +
+
+    '<div class="case-block-title">What the PSK implementation includes</div>' +
+    '<ul class="case-list">' +
+      '<li><b>Typestate API.</b> Initiator and responder states are separate types, so processing messages in the wrong order does not compile.</li>' +
+      '<li><b>A dedicated key type.</b> <code>BufferPsk</code> rejects keys below a minimum length, prints only a redaction marker in debug output, and has no equality comparison, because a naive comparison would leak the key through timing.</li>' +
+      '<li><b>Credential lookup.</b> The responder resolves the initiator\'s <code>ID_CRED_PSK</code> through an application-supplied resolver, since a PSK can only come from local storage.</li>' +
+      '<li><b>Tests and examples.</b> Forged-credential tests, and CoAP client and server examples using PSK.</li>' +
+      '<li><b>Backends.</b> RustCrypto, Nordic CryptoCell 310, PSA and embedded-cal.</li>' +
+    '</ul>' +
+
+    '<div class="case-block-title">Related publications</div>' +
+    '<ul class="case-list">' +
+      '<li><b>EDHOC Authenticated with Pre-Shared Keys (PSK)</b> — IETF Internet-Draft, 2024</li>' +
+      '<li><b>Pre-Shared Key Authentication With EDHOC: The Security–Performance Tradeoff</b> — IEEE Access, 2025</li>' +
+      '<li><b>EDHOC is a New Security Handshake Standard</b> — IEEE Computer, 2024</li>' +
+    '</ul>' +
+    '<p class="case-links"><a href="https://github.com/lake-rs/lakers" target="_blank">lake-rs/lakers ↗</a> · <a href="https://crates.io/crates/lakers" target="_blank">crates.io ↗</a> · <a href="https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc-psk/" target="_blank">IETF draft ↗</a></p>';
+}
+
+function formalHTML() {
+  return '' +
+    '<h2 class="case-h">Formal analysis of EDHOC-PSK and remote attestation</h2>' +
+    '<p class="case-sub">SAPIC+ → Tamarin + ProVerif · ACM ASIACCS 2026</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>A new security protocol has to hold against attackers who control the network, steal keys, or record traffic today to decrypt it later with a quantum computer. Testing can only try some attacks; it cannot show that none exist.</dd>' +
+      '<dt>How it was solved</dt><dd>Model the protocol mathematically and let automated provers check every possible attacker behaviour. Each property is either proven or comes back with a concrete attack trace.</dd>' +
+      '<dt>My part</dt><dd>I wrote the SAPIC+ models, the security properties and the attacker capabilities for EDHOC-PSK and for remote attestation over EDHOC-PSK, with scripts and Docker images for one-command reproduction. The weaknesses found were fed back into the IETF process.</dd>' +
+    '</dl></div>' +
+
+    '<div class="case-block-title">The method</div>' +
+    '<p class="case-intro">The protocol is written once in SAPIC+ (applied pi-calculus, with properties as first-order logic lemmas). Tamarin proves the lemmas directly; the same model is translated to ProVerif, which also proves privacy properties through diff-equivalence: two runs that the attacker cannot tell apart.</p>' +
+
+    '<div class="case-block-title">EDHOC-PSK: what was verified</div>' +
+    '<div class="case-table-wrap"><table class="case-table">' +
+      '<thead><tr><th>Property</th><th>Meaning</th></tr></thead><tbody>' +
+      '<tr><td>Secrecy of the PSK and session key</td><td>The attacker never learns the shared key or the derived session key</td></tr>' +
+      '<tr><td>Perfect forward secrecy</td><td>Past sessions stay safe even if long-term keys leak later</td></tr>' +
+      '<tr><td>Full agreement (both directions)</td><td>Initiator and responder agree on who they talked to and on the session parameters</td></tr>' +
+      '<tr><td>Anonymity (active attacker)</td><td>An attacker interfering with the exchange cannot tell which device took part</td></tr>' +
+      '<tr><td>Unlinkability (passive attacker)</td><td>An eavesdropper cannot tell whether two sessions came from the same device</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="case-table-wrap"><table class="case-table">' +
+      '<thead><tr><th>Attacker capability</th><th>Meaning</th></tr></thead><tbody>' +
+      '<tr><td>LeakShare</td><td>The ephemeral Diffie-Hellman secret leaks</td></tr>' +
+      '<tr><td>LeakSKey</td><td>The final session key leaks</td></tr>' +
+      '<tr><td>PQDL</td><td>Post-quantum "Save-Now, Decrypt-Later": the attacker records traffic and later recovers Diffie-Hellman exponents with a discrete-log oracle</td></tr>' +
+    '</tbody></table></div>' +
+
+    '<div class="case-block-title">Remote attestation over EDHOC-PSK</div>' +
+    '<p class="case-intro">Remote attestation lets a device prove what software it is running while it authenticates, following the IETF LAKE remote-attestation draft. The model checks authentication, attestation, and both together. In the recorded Tamarin run, all eight properties were proven, each in 18–35 seconds:</p>' +
+    '<ul class="case-list">' +
+      '<li><b>Authentication:</b> agreement on parameters, channel binding, mutual authentication and injective agreement in both directions</li>' +
+      '<li><b>Attestation:</b> freshness and integrity of the attestation evidence</li>' +
+    '</ul>' +
+
+    '<p class="case-links"><a href="https://github.com/ElsaLopez133/edhoc-psk-formal-analysis" target="_blank">EDHOC-PSK models ↗</a> · <a href="https://github.com/ElsaLopez133/edhoc-psk-attestation-formal-analysis" target="_blank">Remote attestation models ↗</a> · <a href="https://github.com/ElsaLopez133/edhoc-psk-5g-formal-analysis" target="_blank">5G variant ↗</a> · <a href="https://scholar.google.com/citations?view_op=view_citation&hl=es&user=Lw9WMpUAAAAJ&citation_for_view=Lw9WMpUAAAAJ:roLk4NBRz8UC" target="_blank">ASIACCS 2026 paper ↗</a></p>';
 }
 
 /* ───────── Konami easter egg ───────── */
