@@ -782,11 +782,24 @@
       <p class="ml-subhead">// other projects</p>
 
       <div class="ml-card" style="--w:75%">
-        <p class="ml-kicker">Machine Learning · Statistical Theory</p>
+        <p class="ml-kicker">Machine Learning · Statistical Theory · Maths bachelor's thesis</p>
         <h3>Supervised Learning with Gaussian Processes</h3>
         <p>Bachelor's thesis on the theory of GP regression — its equivalence to kernel ridge regression and PAC-Bayesian guarantees — applied to map a 21-D input to the 7 torque outputs of an anthropomorphic robotic arm.</p>
         <div class="ml-tags"><span>Python</span><span>Gaussian Processes</span><span>PAC-Bayes</span></div>
-        <a href="https://uvadoc.uva.es/handle/10324/50614" target="_blank">Full thesis ↗</a>
+        <div class="ml-foot">
+          <button class="ml-more" onclick="openCase('gp')">▶ More info</button>
+          <a href="https://uvadoc.uva.es/handle/10324/50614" target="_blank">Full thesis ↗</a>
+        </div>
+      </div>
+
+      <div class="ml-card" style="--w:70%">
+        <p class="ml-kicker">Computational Physics · Physics bachelor's thesis</p>
+        <h3>Monte Carlo Simulation of Hydrogen Storage in Microporous Polymers</h3>
+        <p>Grand-canonical Monte Carlo–Metropolis simulations of hydrogen physisorption in three polymers of intrinsic microporosity (HPB-PIM, PIM-TMN-Trip, PIM-1) at 77 K and room temperature, deriving how storage capacity depends on polymer density.</p>
+        <div class="ml-tags"><span>Monte Carlo</span><span>Statistical physics</span><span>Simulation</span></div>
+        <div class="ml-foot">
+          <button class="ml-more" onclick="openCase('pims')">▶ More info</button>
+        </div>
       </div>
 
       <div class="ml-card" style="--w:70%">
@@ -889,14 +902,14 @@
 
         <p class="sc-kicker" style="margin-top:0.8rem;">External validation · mcPHASES (Fitbit + hormone assays)</p>
         <img class="sport-plot" src="assets/garmin/mcphases-validation.png?v=2" alt="mcPHASES validation: HSMM boundary vs LH peak and vs labelled luteal onset, plus pooled follicular vs luteal emission means" loading="lazy" onclick="zoom(this.src)">
-        <p class="sport-cap">Validated on the public mcPHASES dataset (42 participants with Fitbit data and urine hormone tests; ~90 confident cycles from 29 participants). The HSMM's estimated boundary lands within <strong>±2 days</strong> of hormonally-confirmed luteal onset <strong>65%</strong> of the time (median offset 0d, MAD 2.0d), and trails the earlier LH peak by a physiologically-expected <strong>~3.5 days</strong> (MAD 1.5d). Offsets beyond −8 or +10 days are grouped into the end bins. Pooled emissions reproduce the same signature as my own record — resting HR &amp; respiration up, HRV down, in the luteal phase. <em>Click to enlarge.</em></p>
+        <p class="sport-cap">Validated on the public mcPHASES dataset (42 participants with Fitbit data and urine hormone tests). Headline numbers are <strong>out-of-fold</strong>: each participant is scored by emissions fitted on the <em>other</em> participants (leave-one-participant-out), any lag correction is learned from the others, and 95% CIs come from a bootstrap that resamples the 29 participants. Against hormonally labelled luteal onset (84 cycles), the boundary has a <strong>0-day</strong> median bias [−1, 1], MAD 2 d, and lands within <strong>±2 days in 63%</strong> of cycles [51–76] and within ±3 days in 77% [65–88]. It trails the LH peak by <strong>+4 days</strong> [2, 4], the expected lag before resting HR, HRV and respiration respond. With a lag learned from the other participants, it falls within ±2 days of the LH peak in 56% of cycles [44–69]. Fitting in-sample barely inflated the results (64% → 63% within ±2 days), and pooled emissions beat per-person ones (42%). The figure shows the in-sample pooled fit; offsets beyond −8 or +10 days are grouped into the end bins. <em>Click to enlarge.</em></p>
         <div class="sport-stats">
-          <span class="sport-stat">±2d of luteal onset · 65%</span>
-          <span class="sport-stat">median offset 0d · MAD 2.0d</span>
-          <span class="sport-stat">LH-peak lag ~3.5d · ~90 cycles, 29 people</span>
+          <span class="sport-stat">±2d of luteal onset · 63% [51–76]</span>
+          <span class="sport-stat">median offset 0d · MAD 2d</span>
+          <span class="sport-stat">LH-peak lag +4d · leave-one-participant-out · 29 people</span>
         </div>
 
-        <p class="sport-cap"><b>Next steps:</b> leave-one-participant-out validation on mcPHASES (the pooled emissions are currently fitted in-sample), adding skin temperature, carrying the boundary's uncertainty through to the output, and a population prior so new users need no warm-up cycles.</p>
+        <p class="sport-cap"><b>Next steps:</b> baseline-relative skin-temperature features, partially pooled (hierarchical) emissions that shrink each person towards the population, richer and calibrated features for the discriminative emission, and carrying the boundary's uncertainty through to the output.</p>
 
         <a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a>
       </div>
@@ -955,7 +968,7 @@ const body = document.body;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeWorld = null;
 const WORLDS = ['crypto', 'ml', 'sports'];
-const CASES = ['nokia', 'ibisc', 'ecal', 'lakers', 'formal', 'datamining', 'hpc'];
+const CASES = ['nokia', 'ibisc', 'ecal', 'lakers', 'formal', 'datamining', 'hpc', 'gp', 'pims'];
 
 /* Render a world (or the hub) without touching history. */
 function renderWorld(w) {
@@ -1233,6 +1246,8 @@ function renderCase(key) {
   else if (key === 'formal') { el.innerHTML = formalHTML(); }
   else if (key === 'datamining') { el.innerHTML = dataMiningHTML(); }
   else if (key === 'hpc') { el.innerHTML = hpcHTML(); }
+  else if (key === 'gp') { el.innerHTML = gpHTML(); }
+  else if (key === 'pims') { el.innerHTML = pimsHTML(); }
   document.getElementById('case-study').classList.add('open');
 }
 function renderCaseClosed() {
@@ -1493,6 +1508,57 @@ function hpcHTML() {
       '<li><b>Why.</b> Every iteration needs a global reduction to agree on the next vertex. With at most 500 vertices there is little work per process between these synchronisations, so communication cost dominates. On the 50-vertex graph, one process was fastest.</li>' +
     '</ul>' +
     '<p class="case-links"><a href="https://github.com/ElsaLopez133/HPC-for-Data-Science" target="_blank">GitHub ↗</a></p>';
+}
+
+function gpHTML() {
+  return '' +
+    '<h2 class="case-h">Supervised Learning with Gaussian Processes</h2>' +
+    '<p class="case-sub">Bachelor\'s thesis · Mathematics · University of Valladolid</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The question</dt><dd>Gaussian-process regression and kernel ridge regression look like two different methods: one Bayesian, one an optimisation problem. Why do they give the same predictions, and what guarantees does a GP give on unseen data?</dd>' +
+      '<dt>The approach</dt><dd>Build GP regression from the measure-theoretic foundations up, connect it to kernels and reproducing-kernel Hilbert spaces, prove the equivalence with ridge regression, study PAC-Bayesian bounds, and apply the method to predicting the 7 joint torques of an anthropomorphic robotic arm from a 21-dimensional input.</dd>' +
+    '</dl></div>' +
+    '<div class="case-block-title">The theory, step by step</div>' +
+    '<ol class="case-list">' +
+      '<li><b>Stochastic processes.</b> A process is a family of random variables indexed by time or space. Kolmogorov\'s extension theorem guarantees that a consistent family of finite-dimensional distributions defines a unique process, which is what makes it possible to put a probability distribution on functions.</li>' +
+      '<li><b>Gaussian processes.</b> A process is Gaussian when every finite set of its values is jointly normal. It is fully described by a mean function and a covariance function, and any positive-definite covariance defines one.</li>' +
+      '<li><b>Kernels and RKHS.</b> A kernel is an inner product in a (possibly unknown) feature space, which lets linear methods learn non-linear relations without computing the features (the kernel trick). A function is a kernel exactly when it is symmetric and positive definite; each kernel has its own reproducing-kernel Hilbert space (RKHS), described through Mercer\'s representation, and new kernels can be built by combining existing ones.</li>' +
+      '<li><b>GP regression, two views.</b> In the <i>weight-space</i> view, a Bayesian linear model on features gives a Gaussian posterior over weights. In the <i>function-space</i> view, a GP prior over functions is conditioned on noisy observations, giving a posterior mean and variance at every new input.</li>' +
+      '<li><b>Ridge regression.</b> Least squares with a penalty on the size of the weights, solved in closed form, and kernelised.</li>' +
+      '<li><b>The equivalence.</b> The GP posterior mean equals the kernel ridge regression solution when the ridge penalty matches the noise variance: the noisier the data, the smoother the fitted function. What the GP adds is the predictive variance.</li>' +
+    '</ol>' +
+    '<p class="case-links"><a href="https://uvadoc.uva.es/handle/10324/50614" target="_blank">Full thesis (UVaDoc) ↗</a></p>';
+}
+
+function pimsHTML() {
+  return '' +
+    '<h2 class="case-h">Monte Carlo Simulation of Hydrogen Storage in PIMs</h2>' +
+    '<p class="case-sub">Bachelor\'s thesis · Physics · University of Valladolid · June 2021 · supervised by Iván Cabria Álvaro and Mª Begoña Torres Cabrera</p>' +
+    '<div class="pitch-box"><dl>' +
+      '<dt>The challenge</dt><dd>Hydrogen cars emit no CO₂, but hydrogen has to be stored on board in a small volume. One option is physisorption: hydrogen molecules stick to the inner surface of microporous materials. Polymers of intrinsic microporosity (PIMs) pack inefficiently, leaving empty micropores where hydrogen can sit. How much can they hold?</dd>' +
+      '<dt>How it was solved</dt><dd>Grand-canonical Monte Carlo simulations of three PIMs (HPB-PIM, PIM-TMN-Trip and PIM-1) and two of their monomers, at 77 K (0.1–15 MPa) and 298.15 K (0.1–25 MPa), compared with experimental results from the literature.</dd>' +
+      '<dt>My part</dt><dd>The full study: building the simulation cells, running the simulations, and analysing and explaining the results.</dd>' +
+    '</dl></div>' +
+    '<div class="case-block-title">Method</div>' +
+    '<ul class="case-list">' +
+      '<li><b>Simulation cell.</b> About 50 × 50 × 50 Å³ per polymer, filled with randomly oriented and placed chains until the experimental polymer density is reached; the arrangement with the lowest total energy is kept.</li>' +
+      '<li><b>Monte Carlo–Metropolis.</b> Random moves (displacing, inserting or removing hydrogen molecules) are accepted with the Metropolis criterion, so the system samples configurations with the right Boltzmann probabilities.</li>' +
+      '<li><b>Grand-canonical ensemble.</b> Temperature, volume and chemical potential are fixed, so the number of hydrogen molecules adjusts to the pressure. The chemical potential at each pressure comes from the Soave–Redlich–Kwong equation of state.</li>' +
+      '<li><b>Outputs.</b> Gravimetric capacity (hydrogen as a percentage of total mass) and volumetric capacity (kg of hydrogen per litre) at each temperature and pressure.</li>' +
+    '</ul>' +
+    '<div class="case-block-title">Results at the highest pressure (thesis, Table 6.2)</div>' +
+    '<div class="case-table-wrap"><table class="case-table">' +
+      '<thead><tr><th>Polymer</th><th>Density (kg/L)</th><th>Gravimetric, 298 K (wt%)</th><th>Gravimetric, 77 K (wt%)</th><th>Volumetric, 77 K (kg/L)</th></tr></thead><tbody>' +
+      '<tr><td>PIM-TMN-Trip</td><td class="n">0.965</td><td class="n">1.32</td><td class="n">3.69</td><td class="n">0.037</td></tr>' +
+      '<tr><td>PIM-1</td><td class="n">1.114</td><td class="n">0.99</td><td class="n">2.77</td><td class="n">0.032</td></tr>' +
+      '<tr><td>HPB-PIM</td><td class="n">1.174</td><td class="n">0.81</td><td class="n">2.46</td><td class="n">0.030</td></tr>' +
+    '</tbody></table></div>' +
+    '<p class="case-intro">25 MPa at 298.15 K and 15 MPa at 77 K.</p>' +
+    '<ul class="case-list">' +
+      '<li><b>The lighter the polymer, the more it stores.</b> Both capacities rank the polymers the same way: PIM-TMN-Trip, then PIM-1, then HPB-PIM, which is the reverse of their density.</li>' +
+      '<li><b>A simple law links the two capacities.</b> Gravimetric capacity ≈ 100 × volumetric capacity ÷ polymer density. It matches the simulations almost exactly at room temperature, and explains why the much less dense monomers show far higher gravimetric capacities.</li>' +
+      '<li><b>Agreement with experiment.</b> The simulated results agreed well with experimental values from the literature.</li>' +
+    '</ul>';
 }
 
 /* ───────── Konami easter egg ───────── */
