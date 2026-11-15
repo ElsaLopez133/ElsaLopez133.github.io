@@ -1527,6 +1527,9 @@ function gpHTML() {
       '<li><b>Ridge regression.</b> Least squares with a penalty on the size of the weights, solved in closed form, and kernelised.</li>' +
       '<li><b>The equivalence.</b> The GP posterior mean equals the kernel ridge regression solution when the ridge penalty matches the noise variance: the noisier the data, the smoother the fitted function. What the GP adds is the predictive variance.</li>' +
     '</ol>' +
+    '<div class="case-block-title">GP regression in pictures</div>' +
+    '<div class="case-fig"><img src="assets/tfg/gp-regression.png?v=1" alt="Samples from a Gaussian-process prior and posterior, for noise-free and noisy observations" loading="lazy"></div>' +
+    '<p class="case-cap">From the thesis: functions sampled from the prior, then from the posterior once the training points are observed.</p>' +
     '<p class="case-links"><a href="https://uvadoc.uva.es/handle/10324/50614" target="_blank">Full thesis (UVaDoc) ↗</a></p>';
 }
 
@@ -1539,6 +1542,8 @@ function pimsHTML() {
       '<dt>How it was solved</dt><dd>Grand-canonical Monte Carlo simulations of three PIMs (HPB-PIM, PIM-TMN-Trip and PIM-1) and two of their monomers, at 77 K (0.1–15 MPa) and 298.15 K (0.1–25 MPa), compared with experimental results from the literature.</dd>' +
       '<dt>My part</dt><dd>The full study: building the simulation cells, running the simulations, and analysing and explaining the results.</dd>' +
     '</dl></div>' +
+    '<div class="case-fig"><img src="assets/tfg/pims-cells.png?v=1" alt="Rendered simulation cells of HPB-PIM, PIM-TMN-Trip and PIM-1, each made of randomly packed polymer chains" loading="lazy"></div>' +
+    '<p class="case-cap">The three simulation cells built for the thesis.</p>' +
     '<div class="case-block-title">Method</div>' +
     '<ul class="case-list">' +
       '<li><b>Simulation cell.</b> About 50 × 50 × 50 Å³ per polymer, filled with randomly oriented and placed chains until the experimental polymer density is reached; the arrangement with the lowest total energy is kept.</li>' +
@@ -1554,6 +1559,8 @@ function pimsHTML() {
       '<tr><td>HPB-PIM</td><td class="n">1.174</td><td class="n">0.81</td><td class="n">2.46</td><td class="n">0.030</td></tr>' +
     '</tbody></table></div>' +
     '<p class="case-intro">25 MPa at 298.15 K and 15 MPa at 77 K.</p>' +
+    '<div class="case-fig"><img src="assets/tfg/pims-results.png?v=1" alt="Plots from the thesis: gravimetric capacity at 298 K and volumetric capacity at 77 K versus pressure for the three polymers, and simulated versus predicted gravimetric capacity" loading="lazy"></div>' +
+    '<p class="case-cap">Capacity versus pressure for the three polymers, and the simulated capacity against the density-based prediction, which falls on the straight line.</p>' +
     '<ul class="case-list">' +
       '<li><b>The lighter the polymer, the more it stores.</b> Both capacities rank the polymers the same way: PIM-TMN-Trip, then PIM-1, then HPB-PIM, which is the reverse of their density.</li>' +
       '<li><b>A simple law links the two capacities.</b> Gravimetric capacity ≈ 100 × volumetric capacity ÷ polymer density. It matches the simulations almost exactly at room temperature, and explains why the much less dense monomers show far higher gravimetric capacities.</li>' +
