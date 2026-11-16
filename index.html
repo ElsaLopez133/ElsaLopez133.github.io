@@ -439,14 +439,6 @@
   .sport-card li::before { content: '🏁'; position: absolute; left: 0; font-size: 0.8rem; }
   .sport-card a { font-family: var(--mono); font-size: 0.76rem; color: #d8501a; text-decoration: none; border-bottom: 1px solid transparent; }
   .sport-card a:hover { border-color: #d8501a; }
-  .sport-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; margin-top: 0.4rem; }
-  .sport-more { font-family: var(--mono); font-size: 0.76rem; color: #fff; background: #d8501a; border: 0; border-radius: 6px; padding: 0.35rem 0.75rem; cursor: pointer; }
-  .sport-more:hover { background: #b8261a; }
-  .case-formula { font-family: var(--mono); font-size: 0.82rem; color: #f0eeff; background: rgba(255,255,255,0.06); border-radius: 8px; padding: 0.55rem 0.8rem; margin: 0.2rem 0 0.9rem; overflow-x: auto; white-space: nowrap; }
-  .concept-group { margin-top: 1.6rem; }
-  dl.concepts { margin: 0; }
-  dl.concepts dt { font-weight: 700; color: #f0eeff; font-size: 0.92rem; margin-top: 0.9rem; }
-  dl.concepts dd { margin: 0.2rem 0 0; color: #b3acd6; font-size: 0.88rem; line-height: 1.6; }
   .sport-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
   .sport-pill { background: #fff; border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.82rem; box-shadow: 0 6px 18px rgba(255,61,95,0.08); }
   .sport-pill b { color: #b8261a; }
@@ -919,8 +911,7 @@
 
         <p class="sport-cap"><b>Next steps:</b> baseline-relative skin-temperature features, partially pooled (hierarchical) emissions that shrink each person towards the population, richer and calibrated features for the discriminative emission, and carrying the boundary's uncertainty through to the output.</p>
 
-        <div class="sport-foot"><button class="sport-more" onclick="openCase('garmin')">▶ Concepts explained</button>
-        <a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a></div>
+        <a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a>
       </div>
     </div>
 
@@ -977,7 +968,7 @@ const body = document.body;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeWorld = null;
 const WORLDS = ['crypto', 'ml', 'sports'];
-const CASES = ['nokia', 'ibisc', 'ecal', 'lakers', 'formal', 'datamining', 'hpc', 'gp', 'pims', 'garmin'];
+const CASES = ['nokia', 'ibisc', 'ecal', 'lakers', 'formal', 'datamining', 'hpc', 'gp', 'pims'];
 
 /* Render a world (or the hub) without touching history. */
 function renderWorld(w) {
@@ -1257,7 +1248,6 @@ function renderCase(key) {
   else if (key === 'hpc') { el.innerHTML = hpcHTML(); }
   else if (key === 'gp') { el.innerHTML = gpHTML(); }
   else if (key === 'pims') { el.innerHTML = pimsHTML(); }
-  else if (key === 'garmin') { el.innerHTML = garminHTML(); }
   document.getElementById('case-study').classList.add('open');
 }
 function renderCaseClosed() {
@@ -1576,63 +1566,6 @@ function pimsHTML() {
       '<li><b>A simple law links the two capacities.</b> Gravimetric capacity ≈ 100 × volumetric capacity ÷ polymer density. It matches the simulations almost exactly at room temperature, and explains why the much less dense monomers show far higher gravimetric capacities.</li>' +
       '<li><b>Agreement with experiment.</b> The simulated results agreed well with experimental values from the literature.</li>' +
     '</ul>';
-}
-
-function garminHTML() {
-  return '' +
-    '<h2 class="case-h">Cycle-phase detection: the concepts</h2>' +
-    '<p class="case-sub">Every technical term used in the project, in the order the pipeline uses them</p>' +
-    '<div class="concept-group"><div class="case-block-title">The physiology</div><dl class="concepts">' +
-      '<dt>Menstrual cycle phases</dt><dd>The <b>follicular phase</b> runs from the first day of the period to ovulation and varies a lot in length. The <b>luteal phase</b> runs from ovulation to the next period and is fairly stable, about 12–14 days. The model exploits that stability.</dd>' +
-      '<dt>LH surge</dt><dd>A sharp rise in luteinising hormone that triggers ovulation about a day later. It is what urine ovulation tests detect, and the hormonal reference used for validation.</dd>' +
-      '<dt>Progesterone and the wearable signals</dt><dd>After ovulation the corpus luteum releases progesterone, which raises body temperature, resting heart rate and breathing rate and tends to lower heart-rate variability. A watch sees these changes, a few days after the LH surge.</dd>' +
-      '<dt>Wearable luteal onset</dt><dd>What the model actually estimates: the day the nightly signals switch from follicular-like to luteal-like. It is not an ovulation test, because the biometric shift lags the hormones.</dd>' +
-    '</dl></div>' +
-    '<div class="concept-group"><div class="case-block-title">The signals</div><dl class="concepts">' +
-      '<dt>Resting heart rate (RHR)</dt><dd>The lowest sustained heart rate during the night, in beats per minute.</dd>' +
-      '<dt>HRV and RMSSD</dt><dd>Heart-rate variability measures how much the time between heartbeats varies. RMSSD is the standard short-term measure: the root mean square of the differences between consecutive beat intervals. Higher values reflect more parasympathetic (“rest and digest”) activity.</dd><div class="case-formula">RMSSD = √( mean over i of (RR<sub>i+1</sub> − RR<sub>i</sub>)² )</div>' +
-      '<dt>Sleep respiration and sleep stress</dt><dd>Average breaths per minute during sleep, and Garmin’s 0–100 stress score derived from HRV during sleep.</dd>' +
-    '</dl></div>' +
-    '<div class="concept-group"><div class="case-block-title">Cleaning and standardising the data</div><dl class="concepts">' +
-      '<dt>Median and MAD</dt><dd>The median is the middle value. The <b>median absolute deviation</b> (MAD) is the median distance of the points from that median: a measure of spread that a few extreme values barely move, unlike the standard deviation. For normally distributed data, 1.4826 × MAD estimates the standard deviation.</dd><div class="case-formula">MAD(x) = median<sub>i</sub> | x<sub>i</sub> − median(x) |</div>' +
-      '<dt>Robust standardisation (robust z-score)</dt><dd>Each signal is re-expressed as “how many robust standard deviations from this person’s median”. This removes units (bpm, ms, breaths/min) and individual baselines, so models learn the <i>shape</i> of the cycle rather than anyone’s absolute level.</dd><div class="case-formula">z = (x − median(x)) / (1.4826 · MAD(x))</div>' +
-      '<dt>Rolling median and residual</dt><dd>The rolling median over a 7-day window follows the slow cycle trend but ignores one-day spikes. The residual is the day’s departure from that trend, so the normal luteal rise is never mistaken for an outlier.</dd><div class="case-formula">r<sub>t</sub> = x<sub>t</sub> − median(x<sub>t−3</sub>, …, x<sub>t+3</sub>)</div>' +
-      '<dt>Hampel filter</dt><dd>A per-signal spike detector: a day is flagged when its residual is more than k robust standard deviations from the trend (k = 3).</dd><div class="case-formula">flag if | r<sub>t</sub> | / (1.4826 · MAD(r)) &gt; 3</div>' +
-      '<dt>Mahalanobis distance and MCD</dt><dd>Illness or alcohol often move all four signals a little at once, which a one-signal test misses. The Mahalanobis distance measures how unusual a day’s vector of residuals is, accounting for how signals normally vary together (the covariance matrix Σ). The covariance is estimated robustly with the <b>minimum covariance determinant</b> (MCD), which fits it on the tightest half of the days so outliers cannot hide themselves.</dd><div class="case-formula">D<sub>M</sub>(r) = √( (r − μ)<sup>T</sup> Σ<sup>−1</sup> (r − μ) )</div>' +
-      '<dt>Masking and imputation</dt><dd>A day is flagged only when several signals agree. Flagged days keep their place in the calendar, but their values are set to missing and filled in by interpolation, so one bad night cannot drag the boundary.</dd>' +
-    '</dl></div>' +
-    '<div class="concept-group"><div class="case-block-title">Labels and the first classifier</div><dl class="concepts">' +
-      '<dt>Anchor days and semi-supervised learning</dt><dd>The only ground truth is period dates. That makes two windows per cycle confidently labelled: the 6 days after the period ends (follicular) and the last 6 days before the next period (luteal). The middle is unlabelled. Training on the confident days and inferring the rest is <b>semi-supervised</b> learning.</dd>' +
-      '<dt>Logistic regression</dt><dd>A linear model that turns features into a probability. The quantity inside the sigmoid is the <b>log-odds</b>, log(p / (1 − p)).</dd><div class="case-formula">P(luteal | x) = 1 / (1 + e<sup>−(w₀ + w·x)</sup>)</div>' +
-      '<dt>L1 regularisation</dt><dd>A penalty on the absolute size of the weights, which pushes most of them to exactly zero and keeps only a few useful features out of many near-duplicates.</dd>' +
-      '<dt>Leave-one-cycle-out cross-validation and out-of-fold predictions</dt><dd>Train on every cycle except one, predict the held-out cycle, repeat for all cycles. Each prediction is <b>out-of-fold</b>: made by a model that never saw that cycle, which avoids leakage between neighbouring, correlated days.</dd>' +
-      '<dt>ROC curve and AUC</dt><dd>Sweep a threshold over the predicted probabilities and plot true-positive rate against false-positive rate. The <b>area under the curve</b> (AUC) is the probability that a random luteal day scores higher than a random follicular day: 0.5 is chance, 1 is perfect. Here it is about 0.85.</dd>' +
-      '<dt>Change-point</dt><dd>The day that best splits a series into a low and a high plateau. Applied to the daily P(luteal), it gives a first estimate of the transition.</dd>' +
-    '</dl></div>' +
-    '<div class="concept-group"><div class="case-block-title">The hidden semi-Markov model</div><dl class="concepts">' +
-      '<dt>Markov chain</dt><dd>A sequence of states where tomorrow depends only on today, not on the earlier history.</dd>' +
-      '<dt>Hidden Markov model (HMM)</dt><dd>A Markov chain you cannot observe directly. You only see observations, each produced by the current hidden state through an <b>emission distribution</b>. Here the hidden state is the cycle phase and the observation is the night’s vector of standardised signals.</dd>' +
-      '<dt>Hidden semi-Markov model (HSMM) and the duration prior</dt><dd>An HMM where the time spent in each state follows an explicit duration distribution. In a plain HMM, a constant daily chance of switching implies a geometric duration that always peaks at 1 day, which cannot describe a luteal phase concentrated around 13 days. The HSMM uses a Gaussian prior on luteal length (13 ± 2.5 days) instead.<br><svg viewBox=\"0 0 560 230\" style=\"width:100%;max-width:560px;display:block;margin:0.4rem 0 0.3rem\" role=\"img\" aria-label=\"Geometric duration distribution peaking at one day versus a Gaussian luteal prior centred on 13 days\"><g stroke=\"#3a2f66\"><line x1=\"48\" y1=\"45\" x2=\"544\" y2=\"45\"/><line x1=\"48\" y1=\"93.3\" x2=\"544\" y2=\"93.3\"/><line x1=\"48\" y1=\"141.7\" x2=\"544\" y2=\"141.7\"/><line x1=\"48\" y1=\"190\" x2=\"544\" y2=\"190\"/></g><g fill=\"#b3acd6\" font-size=\"12\"><text x=\"40\" y=\"49\" text-anchor=\"end\">0.15</text><text x=\"40\" y=\"97\" text-anchor=\"end\">0.10</text><text x=\"40\" y=\"146\" text-anchor=\"end\">0.05</text><text x=\"40\" y=\"194\" text-anchor=\"end\">0</text><text x=\"48\" y=\"208\" text-anchor=\"middle\">1</text><text x=\"130.7\" y=\"208\" text-anchor=\"middle\">5</text><text x=\"234\" y=\"208\" text-anchor=\"middle\">10</text><text x=\"296\" y=\"208\" text-anchor=\"middle\">13</text><text x=\"337.3\" y=\"208\" text-anchor=\"middle\">15</text><text x=\"440.7\" y=\"208\" text-anchor=\"middle\">20</text><text x=\"544\" y=\"208\" text-anchor=\"middle\">25</text><text x=\"296\" y=\"226\" text-anchor=\"middle\">luteal length (days)</text></g><path d=\"M48.0,115.6 L68.7,121.4 L89.3,126.6 L110.0,131.5 L130.7,136.0 L151.3,140.2 L172.0,144.0 L192.7,147.5 L213.3,150.8 L234.0,153.8 L254.7,156.6 L275.3,159.2 L296.0,161.5 L316.7,163.7 L337.3,165.8 L358.0,167.6 L378.7,169.3 L399.3,170.9 L420.0,172.4 L440.7,173.7 L461.3,175.0 L482.0,176.2 L502.7,177.2 L523.3,178.2 L544.0,179.1\" fill=\"none\" stroke=\"#b3acd6\" stroke-width=\"2.2\" stroke-dasharray=\"6 4\"/><path d=\"M48.0,190.0 L68.7,190.0 L89.3,189.9 L110.0,189.8 L130.7,189.1 L151.3,186.9 L172.0,181.3 L192.7,169.1 L213.3,147.1 L234.0,114.9 L254.7,78.0 L275.3,47.6 L296.0,35.7 L316.7,47.6 L337.3,78.0 L358.0,114.9 L378.7,147.1 L399.3,169.1 L420.0,181.3 L440.7,186.9 L461.3,189.1 L482.0,189.8 L502.7,189.9 L523.3,190.0 L544.0,190.0\" fill=\"none\" stroke=\"#ff5c8a\" stroke-width=\"2.6\"/><text x=\"352\" y=\"40\" fill=\"#ff5c8a\" font-size=\"12\">HSMM prior: Gaussian, μ = 13, σ = 2.5</text><text x=\"70\" y=\"106\" fill=\"#b3acd6\" font-size=\"12\">Plain HMM: geometric, same mean</text></svg></dd>' +
-      '<dt>The one-boundary model</dt><dd>Each cycle is Menstruation → Follicular → Luteal. Period days are observed, so the only unknown is the boundary b, the first luteal day. Every feasible b is scored: how well the days before b fit the follicular emission, how well the days after fit the luteal emission, plus the log of the duration prior.</dd><div class="case-formula">score(b) = Σ<sub>t&lt;b</sub> log p(x<sub>t</sub> | F) + Σ<sub>t≥b</sub> log p(x<sub>t</sub> | L) − ½ ((ℓ − b − 13) / 2.5)²</div>' +
-      '<dt>Posterior and MAP</dt><dd>Normalising the exponentiated scores gives a probability for every candidate day (Bayes’ rule: posterior ∝ likelihood × prior). The <b>maximum a posteriori</b> (MAP) day is the single most likely boundary; the spread of the posterior says how confident the model is.</dd><div class="case-formula">P(b | data) = e<sup>score(b)</sup> / Σ<sub>b′</sub> e<sup>score(b′)</sup></div>' +
-      '<dt>Gaussian vs discriminative emissions</dt><dd><b>Gaussian</b> (generative) emissions model what the signals look like in each phase with a multivariate normal distribution. <b>Discriminative</b> emissions use a classifier’s P(luteal | x) directly. Both are trained on the same anchor days.</dd>' +
-      '<dt>Pooled vs per-person emissions</dt><dd>Per-person emissions fit each individual but have little data; pooled emissions share strength across people. This is the <b>bias–variance trade-off</b>: on mcPHASES, pooled emissions were more accurate (63% vs 42% within ±2 days).</dd>' +
-    '</dl></div>' +
-    '<div class="concept-group"><div class="case-block-title">Validation</div><dl class="concepts">' +
-      '<dt>mcPHASES</dt><dd>A public PhysioNet dataset with Fitbit data and daily urine hormone tests (LH, plus estrogen and progesterone metabolites) for 42 participants: the hormonal ground truth.</dd>' +
-      '<dt>Bias, MAD of offsets, within ±k days</dt><dd>For each cycle, offset = model boundary − reference day. <b>Bias</b> is the median offset (systematically early or late), <b>MAD</b> its spread, and <b>within ±k</b> the share of cycles at most k days off.</dd>' +
-      '<dt>Leave-one-participant-out (LOPO)</dt><dd>Each participant is scored by emissions fitted on everyone else, and any lag correction is learned from the others too, so no one is evaluated by a model that saw their data.</dd>' +
-      '<dt>Participant bootstrap confidence intervals</dt><dd>Cycles from the same person are correlated, so the 95% intervals come from resampling whole participants (a cluster bootstrap) and recomputing the metrics many times.</dd>' +
-    '</dl></div>' +
-    '<div class="concept-group"><div class="case-block-title">Running it live</div><dl class="concepts">' +
-      '<dt>Smoothing vs filtering</dt><dd>The offline model <b>smooths</b>: it uses the whole finished cycle. A live product must <b>filter</b>: on day t it may only use data up to t.</dd>' +
-      '<dt>Causal features and the expanding window</dt><dd>Features use only past data, and the model for a cycle is trained only on that person’s earlier, completed cycles, with a warm-up of a few cycles before it starts scoring.</dd>' +
-      '<dt>CUSUM</dt><dd>A cumulative-sum detector from quality control. It adds up each day’s evidence for “luteal” (the log-odds), minus a drift K so follicular noise cannot accumulate, resets at zero, and fires when the sum passes a threshold H.</dd><div class="case-formula">S<sub>t</sub> = max(0, S<sub>t−1</sub> + log(p<sub>t</sub> / (1 − p<sub>t</sub>)) − K),   fire when S<sub>t</sub> &gt; H</div>' +
-      '<dt>Hazard function and the forward filter</dt><dd>The hazard is the chance that the switch happens today, given it has not happened yet, built from the person’s past transition days. The forward-filtered HSMM predicts with the hazard, then updates with tonight’s data, giving a proper probability that the luteal phase has started.</dd><div class="case-formula">predict: π̃<sub>t</sub> = π<sub>t−1</sub> + (1 − π<sub>t−1</sub>) h(t),   update: π<sub>t</sub> ∝ π̃<sub>t</sub> · p(x<sub>t</sub> | L)</div>' +
-      '<dt>Calibration</dt><dd>A probability is calibrated when events given 80% happen about 80% of the time. Because the forward filter outputs a real posterior, a single threshold on it is interpretable; CUSUM’s H is not.</dd>' +
-      '<dt>Two-sided cost</dt><dd>Detectors are scored per cycle against the full-information boundary: firing late costs 1 per day, firing early 1.5 per day, and missing the transition costs 12. Measuring only the detection rate would reward a detector that fires too early.</dd>' +
-    '</dl></div>' +
-    '<p class="case-links"><a href="https://github.com/ElsaLopez133/garmin" target="_blank">GitHub ↗</a></p>';
 }
 
 /* ───────── Konami easter egg ───────── */
